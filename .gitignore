@@ -22,3 +22,49 @@
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 replay_pid*
+
+# Ignore Xcode and iOS build files
+## iOS
+*.ipa
+*.xcworkspace/
+xcuserdata/
+DerivedData/
+## CocoaPods
+Pods/
+
+# Ignore Node.js dependencies
+## ReactJS
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Ignore Java build files
+## Spring Boot
+target/
+.classpath
+.settings/
+.project
+
+# Ignore database files
+## MySQL
+*.sql
+
+# Ignore log files and IDE-specific files
+logs/
+.idea/
+.vscode/
+.DS_Store
+
+# Ignore generated or compiled code
+build/
+
+# Ignore temporary files
+*.swp
+
+# Ignore environment-specific files
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+
