@@ -68,3 +68,5 @@ build/
 .env.test
 .env.production
 
+*.properties
+
