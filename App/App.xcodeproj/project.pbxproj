@@ -12,6 +12,7 @@
 		248081AC2AB9BEA500148538 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 248081AB2AB9BEA500148538 /* Assets.xcassets */; };
 		248081AF2AB9BEA500148538 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 248081AE2AB9BEA500148538 /* Preview Assets.xcassets */; };
 		248081BB2AB9BFF600148538 /* RegisterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 248081BA2AB9BFF600148538 /* RegisterView.swift */; };
+		248081C02ABAB63300148538 /* Login.swift in Sources */ = {isa = PBXBuildFile; fileRef = 248081BF2ABAB63300148538 /* Login.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -21,6 +22,7 @@
 		248081AB2AB9BEA500148538 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		248081AE2AB9BEA500148538 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		248081BA2AB9BFF600148538 /* RegisterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterView.swift; sourceTree = "<group>"; };
+		248081BF2ABAB63300148538 /* Login.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Login.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -53,8 +55,6 @@
 		248081A62AB9BEA400148538 /* App */ = {
 			isa = PBXGroup;
 			children = (
-				248081B72AB9BF2C00148538 /* Model */,
-				248081B62AB9BF1B00148538 /* ViewModel */,
 				248081B52AB9BF0B00148538 /* Views */,
 				248081A72AB9BEA400148538 /* AppApp.swift */,
 				248081A92AB9BEA400148538 /* ContentView.swift */,
@@ -75,24 +75,10 @@
 		248081B52AB9BF0B00148538 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				248081B92AB9BF9900148538 /* Login */,
+				248081BE2ABAB62400148538 /* Login */,
 				248081B82AB9BF8500148538 /* Register */,
 			);
 			path = Views;
-			sourceTree = "<group>";
-		};
-		248081B62AB9BF1B00148538 /* ViewModel */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = ViewModel;
-			sourceTree = "<group>";
-		};
-		248081B72AB9BF2C00148538 /* Model */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Model;
 			sourceTree = "<group>";
 		};
 		248081B82AB9BF8500148538 /* Register */ = {
@@ -103,9 +89,10 @@
 			path = Register;
 			sourceTree = "<group>";
 		};
-		248081B92AB9BF9900148538 /* Login */ = {
+		248081BE2ABAB62400148538 /* Login */ = {
 			isa = PBXGroup;
 			children = (
+				248081BF2ABAB63300148538 /* Login.swift */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -183,6 +170,7 @@
 				248081BB2AB9BFF600148538 /* RegisterView.swift in Sources */,
 				248081AA2AB9BEA400148538 /* ContentView.swift in Sources */,
 				248081A82AB9BEA400148538 /* AppApp.swift in Sources */,
+				248081C02ABAB63300148538 /* Login.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
