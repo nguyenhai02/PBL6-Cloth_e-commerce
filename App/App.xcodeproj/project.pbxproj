@@ -7,22 +7,32 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2422FF1D2AD6B6B20092CE45 /* RegisterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2422FF1C2AD6B6B20092CE45 /* RegisterViewModel.swift */; };
+		24630BBA2AD6923500191991 /* Users.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24630BB92AD6923500191991 /* Users.swift */; };
+		24630BBC2AD692C800191991 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24630BBB2AD692C800191991 /* LoginViewModel.swift */; };
+		24630BBF2AD698D800191991 /* TLTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24630BBE2AD698D800191991 /* TLTextField.swift */; };
+		24630BC12AD69EA300191991 /* TLButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24630BC02AD69EA300191991 /* TLButton.swift */; };
 		248081A82AB9BEA400148538 /* AppApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 248081A72AB9BEA400148538 /* AppApp.swift */; };
 		248081AA2AB9BEA400148538 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 248081A92AB9BEA400148538 /* ContentView.swift */; };
 		248081AC2AB9BEA500148538 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 248081AB2AB9BEA500148538 /* Assets.xcassets */; };
 		248081AF2AB9BEA500148538 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 248081AE2AB9BEA500148538 /* Preview Assets.xcassets */; };
 		248081BB2AB9BFF600148538 /* RegisterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 248081BA2AB9BFF600148538 /* RegisterView.swift */; };
-		248081C02ABAB63300148538 /* Login.swift in Sources */ = {isa = PBXBuildFile; fileRef = 248081BF2ABAB63300148538 /* Login.swift */; };
+		248081C02ABAB63300148538 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 248081BF2ABAB63300148538 /* LoginView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2422FF1C2AD6B6B20092CE45 /* RegisterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewModel.swift; sourceTree = "<group>"; };
+		24630BB92AD6923500191991 /* Users.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Users.swift; sourceTree = "<group>"; };
+		24630BBB2AD692C800191991 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
+		24630BBE2AD698D800191991 /* TLTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TLTextField.swift; sourceTree = "<group>"; };
+		24630BC02AD69EA300191991 /* TLButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TLButton.swift; sourceTree = "<group>"; };
 		248081A42AB9BEA400148538 /* App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = App.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		248081A72AB9BEA400148538 /* AppApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppApp.swift; sourceTree = "<group>"; };
 		248081A92AB9BEA400148538 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		248081AB2AB9BEA500148538 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		248081AE2AB9BEA500148538 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		248081BA2AB9BFF600148538 /* RegisterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterView.swift; sourceTree = "<group>"; };
-		248081BF2ABAB63300148538 /* Login.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Login.swift; sourceTree = "<group>"; };
+		248081BF2ABAB63300148538 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -36,6 +46,32 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		24630BB72AD6866C00191991 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				24630BBB2AD692C800191991 /* LoginViewModel.swift */,
+				2422FF1C2AD6B6B20092CE45 /* RegisterViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		24630BB82AD6868500191991 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				24630BB92AD6923500191991 /* Users.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		24630BBD2AD6984D00191991 /* Other */ = {
+			isa = PBXGroup;
+			children = (
+				24630BBE2AD698D800191991 /* TLTextField.swift */,
+				24630BC02AD69EA300191991 /* TLButton.swift */,
+			);
+			path = Other;
+			sourceTree = "<group>";
+		};
 		2480819B2AB9BEA400148538 = {
 			isa = PBXGroup;
 			children = (
@@ -56,8 +92,11 @@
 			isa = PBXGroup;
 			children = (
 				248081B52AB9BF0B00148538 /* Views */,
+				24630BBD2AD6984D00191991 /* Other */,
 				248081A72AB9BEA400148538 /* AppApp.swift */,
 				248081A92AB9BEA400148538 /* ContentView.swift */,
+				24630BB72AD6866C00191991 /* ViewModel */,
+				24630BB82AD6868500191991 /* Model */,
 				248081AB2AB9BEA500148538 /* Assets.xcassets */,
 				248081AD2AB9BEA500148538 /* Preview Content */,
 			);
@@ -92,7 +131,7 @@
 		248081BE2ABAB62400148538 /* Login */ = {
 			isa = PBXGroup;
 			children = (
-				248081BF2ABAB63300148538 /* Login.swift */,
+				248081BF2ABAB63300148538 /* LoginView.swift */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -169,8 +208,13 @@
 			files = (
 				248081BB2AB9BFF600148538 /* RegisterView.swift in Sources */,
 				248081AA2AB9BEA400148538 /* ContentView.swift in Sources */,
+				24630BBC2AD692C800191991 /* LoginViewModel.swift in Sources */,
+				24630BBF2AD698D800191991 /* TLTextField.swift in Sources */,
+				24630BBA2AD6923500191991 /* Users.swift in Sources */,
+				24630BC12AD69EA300191991 /* TLButton.swift in Sources */,
 				248081A82AB9BEA400148538 /* AppApp.swift in Sources */,
-				248081C02ABAB63300148538 /* Login.swift in Sources */,
+				2422FF1D2AD6B6B20092CE45 /* RegisterViewModel.swift in Sources */,
+				248081C02ABAB63300148538 /* LoginView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
