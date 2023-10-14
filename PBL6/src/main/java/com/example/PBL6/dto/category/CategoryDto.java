@@ -1,4 +1,4 @@
-package com.example.PBL6.dto;
+package com.example.PBL6.dto.category;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserLoginDto {
-    private String email;
-    private String password;
+public class CategoryDto {
+    private String name;
+    private String description;
 }

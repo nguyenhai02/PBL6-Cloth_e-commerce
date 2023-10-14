@@ -1,4 +1,4 @@
-package com.example.PBL6.dto;
+package com.example.PBL6.dto.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class AuthResponse {
-    private String token;
+public class UserLoginDto {
+    private String email;
+    private String password;
 }

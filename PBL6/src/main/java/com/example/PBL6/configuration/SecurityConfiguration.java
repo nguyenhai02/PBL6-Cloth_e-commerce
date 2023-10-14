@@ -1,5 +1,6 @@
 package com.example.PBL6.configuration;
 
+import com.example.PBL6.persistance.UserRole;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,8 +28,10 @@ public class SecurityConfiguration {
                 .disable()
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests()
-                .requestMatchers("/user/register/**", "/user/login/**", "/user/all**")
+                .requestMatchers("/user/register/**", "/user/login/**")
                 .permitAll()
+                .requestMatchers("/user/all/**", "/category/add/**", "/category/delete/**")
+                .hasAuthority(UserRole.ADMIN.name())
                 .anyRequest()
                 .authenticated()
                 .and()

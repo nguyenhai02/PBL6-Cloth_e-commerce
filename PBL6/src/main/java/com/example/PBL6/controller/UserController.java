@@ -1,8 +1,8 @@
 package com.example.PBL6.controller;
 
-import com.example.PBL6.dto.AuthResponse;
-import com.example.PBL6.dto.UserLoginDto;
-import com.example.PBL6.dto.UserRegisterDto;
+import com.example.PBL6.dto.user.AuthResponse;
+import com.example.PBL6.dto.user.UserLoginDto;
+import com.example.PBL6.dto.user.UserRegisterDto;
 import com.example.PBL6.persistance.User;
 import com.example.PBL6.service.AuthService;
 import com.example.PBL6.service.UserService;
@@ -38,7 +38,7 @@ public class UserController {
         }
     }
 
-    @GetMapping("login")
+    @GetMapping("/login")
     public ResponseEntity<Object> authenticate(@RequestBody UserLoginDto userLoginDto) {
         return ResponseEntity.ok(authService.login(userLoginDto));
     }
