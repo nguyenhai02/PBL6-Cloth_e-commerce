@@ -2,9 +2,9 @@ package com.example.PBL6.service.impl;
 
 
 import com.example.PBL6.configuration.JwtService;
-import com.example.PBL6.dto.AuthResponse;
-import com.example.PBL6.dto.UserLoginDto;
-import com.example.PBL6.dto.UserRegisterDto;
+import com.example.PBL6.dto.user.AuthResponse;
+import com.example.PBL6.dto.user.UserLoginDto;
+import com.example.PBL6.dto.user.UserRegisterDto;
 import com.example.PBL6.persistance.User;
 import com.example.PBL6.persistance.UserRole;
 import com.example.PBL6.repository.UserRepository;
@@ -37,7 +37,7 @@ public class AuthServiceImpl implements AuthService {
                     .password(PasswordUtils.encodePassword(userRegisterDto.getPassword()))
                     .address(userRegisterDto.getAddress())
                     .phone(userRegisterDto.getPhone())
-                    .role(UserRole.CUSTOMER)
+                    .role(UserRole.ADMIN)
                     .build();
             userRepository.save(user);
             var jwtToken = jwtService.generateToken(user);

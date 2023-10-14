@@ -1,4 +1,4 @@
-package com.example.PBL6.dto;
+package com.example.PBL6.dto.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
