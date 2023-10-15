@@ -6,7 +6,9 @@ import com.example.PBL6.dto.user.UserRegisterDto;
 import com.example.PBL6.persistance.User;
 import com.example.PBL6.service.AuthService;
 import com.example.PBL6.service.UserService;
+import com.example.PBL6.util.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -41,5 +43,16 @@ public class UserController {
     @GetMapping("/login")
     public ResponseEntity<Object> authenticate(@RequestBody UserLoginDto userLoginDto) {
         return ResponseEntity.ok(authService.login(userLoginDto));
+    }
+
+    @GetMapping("/profile")
+    public ResponseEntity<User> getUserProfile(@RequestHeader(HttpHeaders.AUTHORIZATION) String token){
+        String email = JwtUtils.getUserEmailFromJwt(token);
+        User user =  userService.getUserProfile(email).orElse(null);
+        if(user != null) {
+            return ResponseEntity.ok(user);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(user);
+        }
     }
 }
