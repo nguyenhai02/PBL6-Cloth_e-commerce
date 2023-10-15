@@ -7,8 +7,3 @@
 
 import Foundation
 
-struct Users {
-    let id: String
-    let email: String
-    let password: String
-}
