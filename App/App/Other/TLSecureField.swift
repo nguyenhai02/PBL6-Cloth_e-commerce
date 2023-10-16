@@ -1,13 +1,14 @@
 //
-//  TLTextField.swift
+//  TLSecureField.swift
 //  App
 //
-//  Created by Thanh Hien on 11/10/2023.
+//  Created by Thanh Hien on 13/10/2023.
 //
 
+import Foundation
 import SwiftUI
 
-struct TLTextField: View {
+struct TLSecureField: View {
     var title: String
     let color: Color
     let imageURL: String
@@ -20,14 +21,13 @@ struct TLTextField: View {
                         .resizable()
                         .frame(width: 24, height: 24)
                         .padding([.leading,.trailing], 12)
-                   TextField("Enter \(title.lowercased())", text: $text)
+                   SecureField("Enter \(title.lowercased())", text: $text)
                        .padding(.leading, 50)
                        .frame(height: 48)
                        .overlay(
                            RoundedRectangle(cornerRadius: 8)
                                .stroke(isFocused ? color : Color("E1E2E7"), lineWidth: 1)
                        )
-                       .autocapitalization(UITextAutocapitalizationType.none)
                        .focused($isFocused) // Sử dụng .focused với FocusState
                        .padding(.top, 2)
             
@@ -36,8 +36,8 @@ struct TLTextField: View {
     }
 }
 
-struct TLTextField_Previews: PreviewProvider {
+struct TLSecureField_Previews: PreviewProvider {
     static var previews: some View {
-        TLTextField(title: "Email", color: .green.opacity(0.3), imageURL: "message", text: .constant(""))
+        TLSecureField(title: "password", color: .green.opacity(0.3), imageURL: "password", text: .constant(""))
     }
 }

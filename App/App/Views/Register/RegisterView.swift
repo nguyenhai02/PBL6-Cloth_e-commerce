@@ -9,46 +9,56 @@ import SwiftUI
 
 struct RegisterView: View {
     @ObservedObject var viewModel = RegisterViewModel()
+    
     var body: some View {
-        NavigationView {
             VStack(alignment: .leading, spacing: 0) {
-                Spacer().frame(height: 35)
+                Spacer().frame(height: 40)
                 Group {
-                    Text("Lets Register Account")
-                        .font(.system(size: 28))
-                        .foregroundColor(Color("4A3AFF"))
+                    Image("logo1")
+                        .resizable()
+                        .frame(width: 72, height: 72)
+                    Text("Welcome to E-Com!")
+                        .font(.system(size: 18))
+                        .padding(.top, 20)
                         .bold()
-                    Text("Hello user , you have a greatful journey")
-                        .font(.system(size: 28))
-                        .padding(.top, 10)
-                        .multilineTextAlignment(.center)
-                        .frame(width: 300)
+                    Text("Let’s make your account.")
+                        .font(.system(size: 16))
+                        .foregroundColor(Color("848484"))
+                        .padding(.top, 2)
+                    Text("\(viewModel.errorMessage)")
+                        .foregroundColor(.red)
+                        .font(.system(size: 12))
+                        .padding(.top, 16)
                 }
                 .frame(maxWidth: .infinity)
-                Spacer().frame(height: 35)
+                Spacer().frame(height: 15)
                 Group {
-                    TLTextField(title: "First name", color: Color("4A3AFF"), text: $viewModel.firstName)
-                    TLTextField(title: "Last name", color: Color("4A3AFF"), text: $viewModel.lastName)
-                    TLTextField(title: "Phone", color: Color("4A3AFF"), text: $viewModel.phone)
-                    TLTextField(title: "Email", color: Color("4A3AFF"), text: $viewModel.email)
-                    TLTextField(title: "Password", color: Color("4A3AFF"), text: $viewModel.password)
+                    TLTextField(title: "Name", color: Color("002482"), imageURL: "person", text: $viewModel.name)
+                    TLTextField(title: "Email", color: Color("002482"), imageURL: "message", text: $viewModel.email)
+                    TLSecureField(title: "Password", color: Color("002482"), imageURL: "password", text: $viewModel.password)
+                    TLTextField(title: "Address", color: Color("002482"), imageURL: "address",  text: $viewModel.address)
+                    TLTextField(title: "Phone", color: Color("002482"), imageURL: "phone", text: $viewModel.phone)
                     
-                    Spacer().frame(height: 30)
-                    TLButton(title: "Sign up", background: Color("4A3AFF"), action: {
+                    Spacer().frame(height: 35)
+                    TLButton(title: "Sign up", background: Color("002482"), action: {
+                        viewModel.Register()
                     })
                 }
-                .padding([.leading, .trailing], 22)
+                .padding([.leading, .trailing], 30)
                 HStack {
                     Text("Already  have an account ?")
                         .foregroundColor(.gray)
                     NavigationLink("Login", destination: LoginView())
-                        .foregroundColor(.black)
+                        .foregroundColor(Color("002482"))
                         .bold()
                 }
                 .frame(maxWidth: .infinity)
-                .padding(.top, 25)
+                .padding(.top, 20)
                 Spacer()
             }
+        .navigationBarBackButtonHidden()
+        .navigationDestination(isPresented: $viewModel.isRegistered){
+            TagBarView()
         }
     }
 }
