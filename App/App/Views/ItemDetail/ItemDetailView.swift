@@ -19,30 +19,43 @@ struct ItemDetailView: View {
         VStack {
             HStack() {
                 Button(action: {
-                    
+                    self.presentationMode.wrappedValue.dismiss()
                 }) {
-                    Image(systemName: "magnifyingglass")
+                    Image(systemName: "arrow.left")
                         .foregroundColor(Color("272727"))
-                        .frame(width: 30, height: 30)
                 }
-                Button(action: {
-                    
-                }) {
-                    Image(systemName: "heart")
-                        .foregroundColor(Color("272727"))
-                        .frame(width: 30, height: 30)
-
+                .padding(.leading, 20)
+                .frame()
+                .frame(maxWidth: .infinity, alignment: .leading)
+                
+                Group {
+                    Button(action: {
+                        
+                    }) {
+                        Image(systemName: "magnifyingglass")
+                            .foregroundColor(Color("272727"))
+                    }
+                    Button(action: {
+                        
+                    }) {
+                        Image(systemName: "heart")
+                            .foregroundColor(Color("272727"))
+                    }
+                    Button(action: {
+                    }) {
+                        Image(systemName: "bag")
+                            .foregroundColor(Color("272727"))
+                          
+                    }
                 }
-                Button(action: {
-                    
-                }) {
-                    Image(systemName: "bag")
-                        .foregroundColor(Color("272727"))
-                        .frame(width: 30, height: 30)
-                }
+                .padding(.trailing, 30)
+                .frame(maxWidth: .infinity, alignment: .trailing)
+                .frame(width: 35, height: 35)
+                
+                
             }
-            .padding(.trailing, 26)
-            .frame(maxWidth: .infinity, alignment: .trailing)
+            
+           
             ScrollView {
                 VStack(alignment: .leading, spacing: 0) {
                     PagingView(index: $index.animation(), maxIndex: arrImage.count - 1 ) {

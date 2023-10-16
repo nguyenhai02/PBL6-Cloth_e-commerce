@@ -33,7 +33,7 @@ struct HomeView: View {
                 ScrollView {
                     Spacer().frame(height: 10)
                     ScrollView(.horizontal,showsIndicators: false, content:  {
-                        HStack(spacing: 15) {
+                        HStack(spacing: 30) {
                             ForEach(viewModel.categories, id: \.id) { categories in
                                 CategoriesItem(categories: categories)
                             }
@@ -69,8 +69,10 @@ struct HomeView: View {
                                 .font(.system(size: 18))
                                 .foregroundColor(Color("272727"))
                                 .fontWeight(.medium)
+                                .padding(.top, 5)
+                                .padding(.leading, 10)
                             ScrollView(.horizontal, showsIndicators: false, content:  {
-                                HStack() {
+                                HStack(spacing: 0) {
                                     ForEach(self.arrProduct, id: \.id) { product in
                                         ItemRow(product: product)
                                     }
@@ -80,6 +82,8 @@ struct HomeView: View {
                                 .font(.system(size: 18))
                                 .foregroundColor(Color("272727"))
                                 .fontWeight(.medium)
+                                .padding(.top, 5)
+                                .padding(.leading, 10)
                             ScrollView(.horizontal, showsIndicators: false, content:  {
                                 HStack() {
                                     ForEach(self.arrProduct, id: \.id) { product in
@@ -91,6 +95,8 @@ struct HomeView: View {
                                 .font(.system(size: 18))
                                 .foregroundColor(Color("272727"))
                                 .fontWeight(.medium)
+                                .padding(.top, 5)
+                                .padding(.leading, 10)
                             ScrollView(.horizontal, showsIndicators: false, content:  {
                                 HStack() {
                                     ForEach(self.arrProduct, id: \.id) { product in
@@ -99,12 +105,11 @@ struct HomeView: View {
                                 }
                             })
                         }
-                        .padding(.leading, 13)
-                        
                     }
                 }
             }
-        }
+        .navigationBarBackButtonHidden(true)
+    }
 }
 
 struct CategoriesItem: View {
@@ -119,6 +124,10 @@ struct CategoriesItem: View {
                     Image(categories.name.lowercased())
                         .resizable()
                         .frame(width: 40, height: 40)
+                        .clipShape(Circle())
+//                        .padding(10)
+//                        .overlay(Circle().stroke(.gray.opacity(0.5), lineWidth: 0.5))
+//                        .shadow(color: Color("272727"), radius: 0.5)
                 }
                 Text(categories.name)
                     .foregroundColor(Color("272727"))

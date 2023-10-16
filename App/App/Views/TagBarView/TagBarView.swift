@@ -34,7 +34,7 @@ struct TagBarView: View {
                         }.tag(3)
                     HomeView(categories: Categories(id: 1, name: "category",  description: "ao nam", createDate: "11.11.11", updateDate: "11.11.11"))
                         .tabItem {
-                            Image("person")
+                            Image(systemName: "person")
                             Text("Profile")
                         }.tag(5)
                 }

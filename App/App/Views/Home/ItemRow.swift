@@ -16,7 +16,6 @@ struct ItemRow: View {
             Image(product.imageURL)
                 .resizable().renderingMode(.original)
                 .aspectRatio(contentMode: .fill)
-//                .frame(width: UIScreen.main.bounds.width / 2 - 30, height: 195)
                 .frame(width: 184, height: 245)
                 .cornerRadius(8)
                 .shadow(color: .black.opacity(0.5), radius: 5, x: 0.3, y: 0.3)
@@ -32,7 +31,7 @@ struct ItemRow: View {
                     .cornerRadius(20)
                     .opacity(0.9)
                     .shadow(color: .gray, radius: 0.5, x: 0.3, y: 0.3)
-                    .padding([.top, .trailing], 5)
+                    .padding([.top, .trailing], 8)
                     , alignment: .topTrailing
                 )
             
@@ -50,10 +49,8 @@ struct ItemRow: View {
                     .font(.system(size: 12))
                     .foregroundColor(Color("272727"))
             }
-            .padding([.horizontal], 5)
+            .padding([.horizontal], 6)
         }
-//        .frame(width: 20, height: 260)
-        .background(Color.clear)
         .padding(.all, 8)
         .clipped()
         .onTapGesture {

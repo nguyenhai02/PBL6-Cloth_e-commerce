@@ -12,7 +12,12 @@ struct AppApp: App {
     var body: some Scene {
         WindowGroup {
             NavigationStack{
-            LoginView()
+                let token = UserDefaults.standard.string(forKey: Constanst.tokenKey) ?? ""
+                if token.isEmpty {
+                    LoginView()
+                } else {
+                    SplashView()
+                }
         }
 //            RegisterView()
 //            HomeView(categories: Categories(id: 1, name: "category", description: "ao nam", imageURL: "category"))
