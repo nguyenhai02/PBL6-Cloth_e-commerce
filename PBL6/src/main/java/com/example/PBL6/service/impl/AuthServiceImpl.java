@@ -51,16 +51,12 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public AuthResponse login(UserLoginDto userLoginDto) {
-        System.out.println("Gmail: " + userLoginDto.getEmail());
-        System.out.println("Gmail: " + userLoginDto.getPassword());
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         userLoginDto.getEmail(),
                         userLoginDto.getPassword()
                 )
         );
-        System.out.println("111");
-        System.out.println("Gmail: " + userLoginDto.getEmail());
         var customer = userRepository.findUserByEmail(userLoginDto.getEmail())
                 .orElseThrow();
         var jwtToken = jwtService.generateToken(customer);
