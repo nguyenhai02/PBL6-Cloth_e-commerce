@@ -10,6 +10,7 @@ import SwiftUI
 struct ForgotPasswordView: View {
     @ObservedObject var viewModel = ForgotPasswordViewModel()
     @Environment(\.presentationMode) var presentationMode
+    @Binding var path: NavigationPath
     var body: some View {
             VStack(alignment: .leading, spacing: 0) {
                 Spacer().frame(height: 100)
@@ -53,6 +54,9 @@ struct ForgotPasswordView: View {
 
 struct ForgotPassword_Previews: PreviewProvider {
     static var previews: some View {
-        ForgotPasswordView()
+        ForgotPasswordView(path: Binding<NavigationPath>(get: {
+            NavigationPath()
+        }, set: { _, _ in
+        }))
     }
 }

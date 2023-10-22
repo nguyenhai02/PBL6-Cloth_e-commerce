@@ -9,33 +9,35 @@ import SwiftUI
 
 struct TagBarView: View {
     @State var selected = 0
+    @Binding var path : NavigationPath
+    
     var body: some View {
             VStack {
                 TabView(selection: $selected) {
-                    HomeView(categories: Categories(id: 1, name: "category", description: "ao nam", createDate: "11.11.11", updateDate: "11.11.11"))
+                    HomeView(path: $path)
                         .tabItem {
                             Image(systemName: "house.fill")
                             Text("Home")
                         }.tag(0)
-                    HomeView(categories: Categories(id: 1, name: "category", description: "ao nam", createDate: "11.11.11", updateDate: "11.11.11"))
+                    ShoppingView(path: $path)
                         .tabItem {
                             Image(systemName: "magnifyingglass")
                             Text("Tìm kiếm")
                         }.tag(1)
-                    HomeView(categories: Categories(id: 1, name: "category", description: "ao nam", createDate: "11.11.11", updateDate: "11.11.11"))
+                    FavoriteView(path: $path)
                         .tabItem {
-                            Image(systemName: "heart")
-                            Text("Yêu thích")
+                            Image(systemName: "bell.fill")
+                            Text("Thông báo")
                         }.tag(2)
-                    HomeView(categories: Categories(id: 1, name: "category", description: "ao nam", createDate: "11.11.11", updateDate: "11.11.11"))
+                    CartView(path: $path)
                         .tabItem {
-                            Image(systemName: "bag")
+                            Image(systemName: "cart")
                             Text("Cart")
                         }.tag(3)
-                    HomeView(categories: Categories(id: 1, name: "category",  description: "ao nam", createDate: "11.11.11", updateDate: "11.11.11"))
+                    SettingView(path: $path)
                         .tabItem {
                             Image(systemName: "person")
-                            Text("Profile")
+                            Text("Setting")
                         }.tag(5)
                 }
             }
@@ -47,6 +49,8 @@ struct TagBarView: View {
 
 struct TagBarView_Previews: PreviewProvider {
     static var previews: some View {
-        TagBarView()
+        TagBarView(path: Binding(get: {NavigationPath()}, set: { _, _ in
+            
+        }))
     }
 }

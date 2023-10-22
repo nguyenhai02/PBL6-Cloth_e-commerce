@@ -9,17 +9,23 @@ import SwiftUI
 
 struct SplashView: View {
     @ObservedObject var viewModel = SplashViewModel()
+    @State var path = NavigationPath()
     
     var body: some View {
-        VStack {
-            Image("logo4")
-                .resizable()
-                .aspectRatio(contentMode: .fill)
-                .frame(width: 150, height: 150)
-        }
-        .navigationBarBackButtonHidden(true)
-        .navigationDestination(isPresented: $viewModel.isLoggIned){
-            TagBarView()
+        NavigationStack(path: $path){
+            VStack {
+                Image("logo4")
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .frame(width: 150, height: 150)
+            }
+            .navigationBarBackButtonHidden(true)
+            .navigationDestination(isPresented: $viewModel.isLoggIned){
+                    TagBarView(path: $path)
+                }
+            .navigationDestination(isPresented: $viewModel.isNonLoggIned){
+                    LoginView(path: $path)
+                }
         }
     }
 }
@@ -28,6 +34,6 @@ struct SplashView: View {
 
 struct SplashView_Previews: PreviewProvider {
     static var previews: some View {
-        SplashView()
+        SplashView(path: NavigationPath())
     }
 }

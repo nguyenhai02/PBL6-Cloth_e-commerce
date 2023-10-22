@@ -13,18 +13,8 @@ class LoginViewModel: ObservableObject {
     @Published var password = ""
     @Published var isLoggedIn = false
     @Published var errorMessage = ""
+    @Published var emailError = ""
     @Published var isLoggIned: Bool = false
-    
-//    init() {
-//        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2, execute: { [weak self] in
-//            self?.checkLogin()
-//        })
-//    }
-//    
-//    func checkLogin(){
-//        let token = UserDefaults.standard.string(forKey: Constanst.tokenKey) ?? ""
-//        isLoggIned = !token.isEmpty
-//    }
     
     func login() {
         guard invalid() else {
@@ -32,26 +22,26 @@ class LoginViewModel: ObservableObject {
         }
         let plugin: PluginType =  NetworkLoggerPlugin(configuration: .init(logOptions: .verbose))
         let provider = MoyaProvider<MyService>(plugins: [plugin])
-        provider.request(.login(email: email, password: password)) { result in
+        provider.request(.login(email: email, password: password)) { [weak self] result in
             switch result  {
             case let .success(moyaResponse):
                 do {
                     let filteredResponse = try moyaResponse.filterSuccessfulStatusCodes()
                     let token = try filteredResponse.map(TokenResponse.self) // user is of type User
-                    print("data: \(token.token)")
+//                    print("data: \(token.token)")
                     UserDefaults.standard.set(token.token, forKey: Constanst.tokenKey)
+                    UserDefaults.standard.set(self?.email ?? "", forKey: Constanst.emailKey)
                 }
                 catch {}
                 let statusCode = moyaResponse.statusCode
                 if statusCode == 200 {
-                    self.isLoggIned = true
+                    self?.isLoggIned = true
                 } else {
-                    self.errorMessage = "Invalid email or password."
+                    self?.errorMessage = "Invalid email or password."
                 }
             case let .failure(error):
-                if let error = error as? MoyaError, let response = error.response {
+                if let response = error.response {
                     do {
-                        // Handle custom error response here
                         let data = try response.map(Data.self) // Parse your custom error response
                         let errorString = String(data: data, encoding: .utf8)
                         print("Error: \(errorString ?? "Unknown Error")")
@@ -65,14 +55,20 @@ class LoginViewModel: ObservableObject {
         }
     }
     
+    func isValidEmail(email: String) -> Bool {
+        let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
+        let emailPred = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
+        return emailPred.evaluate(with: email)
+    }
+    
+    func onValidateEmail(email: String){
+        emailError = email.isEmpty || isValidEmail(email: email) ? "" : "Email is not in correct format"
+    }
+    
     private func invalid() -> Bool {
         errorMessage = ""
         guard !email.trimmingCharacters(in: .whitespaces).isEmpty, !password.trimmingCharacters(in: .whitespaces).isEmpty else {
             errorMessage = "Please fill all fileds"
-            return false
-        }
-        guard email.contains("@") && email.contains(".com")  else {
-            errorMessage = " Please enter valid email "
             return false
         }
         return true

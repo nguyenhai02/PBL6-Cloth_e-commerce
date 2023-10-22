@@ -26,17 +26,29 @@ class RegisterViewModel: ObservableObject {
         provider.request(.register(name: name, email: email, password: password, address: address, phone: phone)) { result in
             switch result {
             case let .success(moyaResponse):
-                let data = moyaResponse.data
-                let moyaStatus = moyaResponse.statusCode
-                if moyaStatus == 200 {
+                do {
+                    let filteredResponse = try moyaResponse.filterSuccessfulStatusCodes()
+                    let token = try filteredResponse.map(TokenResponse.self)
+//                    print("data: \(token.token)")
+                    UserDefaults.standard.set(token.token, forKey: Constanst.tokenKey)
+                }
+                catch {}
+                let statusCode = moyaResponse.statusCode
+                if statusCode == 200 {
                     self.isRegistered = true
                 } else {
-                    self.errorMessage = "Email already exists."
+                    self.errorMessage = "Invalid email or password."
                 }
             case let .failure(error):
                 print(error)
             }
         }
+    }
+    
+    func isValidEmail(email: String) -> Bool {
+        let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
+        let emailPred = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
+        return emailPred.evaluate(with: email)
     }
     
     private func isValidPhone(phone: String) -> Bool {
@@ -51,7 +63,7 @@ class RegisterViewModel: ObservableObject {
             errorMessage = "Please fill all fileds"
             return false
         }
-        guard email.contains("@") && email.contains(".") else {
+        guard isValidEmail(email: email) else {
             errorMessage = " Please enter valid email "
             return false
         }

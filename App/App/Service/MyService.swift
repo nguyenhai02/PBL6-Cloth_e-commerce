@@ -12,6 +12,8 @@ enum MyService {
     case register(name: String, email: String, password: String, address: String, phone: String)
     case login(email: String, password: String)
     case showCategories
+    case showProfile
+    case showProduct
 }
 
 extension MyService: TargetType, AccessTokenAuthorizable {
@@ -23,12 +25,16 @@ extension MyService: TargetType, AccessTokenAuthorizable {
         case .login(_,_):
             return "/user/login"
         case .showCategories:
-            return "/categories/all"
+            return "/category/all"
+        case .showProfile:
+            return "/user/profile"
+        case .showProduct:
+            return "/product/all"
         }
     }
     var method: Moya.Method {
         switch self {
-        case .showCategories:
+        case .showCategories, .showProfile, .showProduct:
             return .get
         case .register, .login:
             return .post
@@ -36,7 +42,7 @@ extension MyService: TargetType, AccessTokenAuthorizable {
     }
     var task: Task {
         switch self {
-        case .showCategories:
+        case .showCategories, .showProfile, .showProduct:
             return .requestPlain
         case .register(name: let name, email: let email, password: let password, address: let address, phone: let phone):
             return .requestParameters(parameters: ["name": name, "email": email, "password": password, "address": address, "phone": phone], encoding: JSONEncoding.default)
@@ -50,7 +56,7 @@ extension MyService: TargetType, AccessTokenAuthorizable {
     
     var authorizationType: AuthorizationType? {
         switch self{
-        case .showCategories:
+        case .showCategories, .showProfile, .showProduct:
             return .bearer
         default:
             return nil
