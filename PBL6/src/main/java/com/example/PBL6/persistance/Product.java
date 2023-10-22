@@ -3,10 +3,12 @@ package com.example.PBL6.persistance;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.validation.annotation.Validated;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -43,6 +45,13 @@ public class Product {
 
     @Column(name = "update_date")
     private LocalDateTime updateDate;
+
+    @Column(name = "color")
+    private String color;
+
+    @Column(name = "size")
+    @Size(min = 1, max = 5, message = "size just from 1 to 5 characters")
+    private String size;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "categories_id", nullable = false)
