@@ -34,7 +34,7 @@ public class UserController {
     public ResponseEntity<Object> register(@RequestBody UserRegisterDto userRegisterDto) {
         AuthResponse authResponse = authService.register(userRegisterDto);
         if (authResponse.getToken() == null) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("Gmail đã tồn tại");
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Gmail is ready exist");
         } else {
             return ResponseEntity.ok(authResponse);
         }
@@ -52,7 +52,7 @@ public class UserController {
         if(user != null) {
             return ResponseEntity.ok(user);
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(user);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
 }
