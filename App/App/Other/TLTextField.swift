@@ -8,11 +8,12 @@
 import SwiftUI
 
 struct TLTextField: View {
-    var title: String
+    let title: String
     let color: Color
     let imageURL: String
     @Binding var text: String
-    @FocusState private var isFocused: Bool
+    @FocusState var isFocused: Bool
+    var onTextChange: ((String) -> Void)? = nil
     
     var body: some View {
         ZStack(alignment: .leading) {
@@ -30,6 +31,9 @@ struct TLTextField: View {
                        .autocapitalization(UITextAutocapitalizationType.none)
                        .focused($isFocused) // Sử dụng .focused với FocusState
                        .padding(.top, 2)
+                       .onChange(of: text) { newValue in
+                           onTextChange?(newValue)
+                       }
             
                }
         .padding(.top, 10)

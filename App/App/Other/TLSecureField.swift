@@ -28,7 +28,7 @@ struct TLSecureField: View {
                            RoundedRectangle(cornerRadius: 8)
                                .stroke(isFocused ? color : Color("E1E2E7"), lineWidth: 1)
                        )
-                       .focused($isFocused) // Sử dụng .focused với FocusState
+                       .focused($isFocused)
                        .padding(.top, 2)
             
                }

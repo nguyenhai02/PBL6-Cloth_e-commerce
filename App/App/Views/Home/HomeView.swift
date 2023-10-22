@@ -9,29 +9,47 @@ import SwiftUI
 
 struct HomeView: View {
     @ObservedObject var viewModel = HomeViewModel()
-    let categories: Categories
-    let arrProduct = Product.all()
-    //    @State var show = false   
+    @State private var show = false
+    @State private var showFavoriteView = false
+    @Binding var path : NavigationPath
     
-    @State var searchText: String = ""
     var body: some View {
+        print("stack \(path.count)")
         return VStack(alignment: .leading, spacing: 0) {
                 Spacer().frame(height: 7)
                 HStack {
-                    Image("girl")
-                        .resizable()
-                        .frame(width: 40, height: 40)
-                        .cornerRadius(35)
-                        .padding(.leading, 20)
-                    Text("Anna Doe")
-                        .font(.system(size: 20))
+                    Button(action: {
+                        self.show = true
+                    }) {
+                        Image("product")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 35, height: 35)
+                            .cornerRadius(35)
+                            .padding(.leading, 20)
+                    }
+                    Text("Hien Nguyen")
+                        .font(.system(size: 18))
                         .fontWeight(.medium)
                         .padding(.leading, 13)
+                    Spacer()
+                    Button(action: {
+                        self.showFavoriteView.toggle()
+                    }) {
+                        Image(systemName: "heart")
+                            .resizable()
+                            .foregroundColor(.black)
+                        .frame(width: 20, height: 20)
+                        .padding(.trailing, 20)
+                    }
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.bottom, 6)
+                .navigationDestination(isPresented: $show) {
+                    ProfileView(path: $path)
+                }
                 ScrollView {
-                    Spacer().frame(height: 10)
+                    Spacer().frame(height: 20)
                     ScrollView(.horizontal,showsIndicators: false, content:  {
                         HStack(spacing: 30) {
                             ForEach(viewModel.categories, id: \.id) { categories in
@@ -73,42 +91,49 @@ struct HomeView: View {
                                 .padding(.leading, 10)
                             ScrollView(.horizontal, showsIndicators: false, content:  {
                                 HStack(spacing: 0) {
-                                    ForEach(self.arrProduct, id: \.id) { product in
+                                    ForEach(viewModel.product, id: \.id) { product in
                                         ItemRow(product: product)
                                     }
+                                    .padding(.top, 15)
                                 }
                             })
                             Text("Deals Of The Day")
                                 .font(.system(size: 18))
                                 .foregroundColor(Color("272727"))
                                 .fontWeight(.medium)
-                                .padding(.top, 5)
+                                .padding(.top, 15)
                                 .padding(.leading, 10)
                             ScrollView(.horizontal, showsIndicators: false, content:  {
-                                HStack() {
-                                    ForEach(self.arrProduct, id: \.id) { product in
+                                HStack(spacing: 0) {
+                                    ForEach(viewModel.product, id: \.id) { product in
                                         ItemRow(product: product)
                                     }
+                                    .padding(.top, 15)
                                 }
+                                
                             })
                             Text("Our Collection")
                                 .font(.system(size: 18))
                                 .foregroundColor(Color("272727"))
                                 .fontWeight(.medium)
-                                .padding(.top, 5)
+                                .padding(.top, 15)
                                 .padding(.leading, 10)
                             ScrollView(.horizontal, showsIndicators: false, content:  {
-                                HStack() {
-                                    ForEach(self.arrProduct, id: \.id) { product in
+                                HStack(spacing: 0) {
+                                    ForEach(viewModel.product, id: \.id) { product in
                                         ItemRow(product: product)
                                     }
                                 }
+                                .padding(.top, 15)
                             })
                         }
                     }
                 }
             }
         .navigationBarBackButtonHidden(true)
+        .navigationDestination(isPresented: $showFavoriteView) {
+            FavoriteView(path: $path)
+        }
     }
 }
 
@@ -122,17 +147,16 @@ struct CategoriesItem: View {
                     
                 }) {
                     Image(categories.name.lowercased())
+//                    Image("product")
                         .resizable()
-                        .frame(width: 40, height: 40)
+                        .aspectRatio(contentMode: .fill)
+                        .frame(width: 62, height: 62)
                         .clipShape(Circle())
-//                        .padding(10)
-//                        .overlay(Circle().stroke(.gray.opacity(0.5), lineWidth: 0.5))
-//                        .shadow(color: Color("272727"), radius: 0.5)
                 }
                 Text(categories.name)
                     .foregroundColor(Color("272727"))
                     .font(.system(size: 14))
-                    .padding(.top, 10)
+                    .padding(.top, 8)
             }
             .onTapGesture {
                 self.show.toggle()
@@ -143,6 +167,6 @@ struct CategoriesItem: View {
 
 struct HomeView_Previews: PreviewProvider {
     static var previews: some View {
-        HomeView( categories: Categories(id: 1, name: "category", description: "ao nam", createDate: "11/11/2002", updateDate: "11/11/2002"))
+        HomeView(path: .constant(NavigationPath()))
     }
 }

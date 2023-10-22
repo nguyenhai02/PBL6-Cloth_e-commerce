@@ -12,46 +12,72 @@ struct ItemRow: View {
     var product: Product
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            Spacer().frame(height: 10)
-            Image(product.imageURL)
-                .resizable().renderingMode(.original)
+            Image("product")
+                .resizable()
                 .aspectRatio(contentMode: .fill)
-                .frame(width: 184, height: 245)
+                .frame(width: UIScreen.main.bounds.width / 2 - 30, height: 190)
                 .cornerRadius(8)
-                .shadow(color: .black.opacity(0.5), radius: 5, x: 0.3, y: 0.3)
                 .overlay (
                     Button(action: {
                         print("action")
                     }) {
-                        Image(systemName: product.isFavorite == true ? "heart.fill" : "heart")
-                            .foregroundColor(product.isFavorite == true ? .red : .gray)
+                        Image(systemName: "heart")
+//                        Image(systemName: product.isFavorite == true ? "heart.fill" : "heart")
+//                            .foregroundColor(product.isFavorite == true ? .red : .gray)
+                            .foregroundColor(.gray)
                             .frame(width: 30, height: 30)
                             .background(Color.white)
                     }
-                    .cornerRadius(20)
-                    .opacity(0.9)
-                    .shadow(color: .gray, radius: 0.5, x: 0.3, y: 0.3)
-                    .padding([.top, .trailing], 8)
+                        .cornerRadius(20)
+                        .opacity(0.9)
+                        .shadow(color: .gray, radius: 0.5, x: 0.3, y: 0.3)
+                        .padding([.top, .trailing], 8)
                     , alignment: .topTrailing
                 )
             
-           // label
+            // label
             Group {
                 Text(product.name)
                     .font(.system(size: 14))
                     .fontWeight(.medium)
                     .foregroundColor(Color("272727"))
                     .padding(.top, 9)
-                Text(product.brand)
+                    .padding([.horizontal], 10)
+//                Text(product.brand)
+//                    .font(.system(size: 12))
+//                    .foregroundColor(.gray)
+//                    .padding(.leading, 5)
+                HStack {
+                    Text("đ\(product.price - (product.price * product.discount)/100)")
+                        .font(.system(size: 12))
+                        .foregroundColor(.red)
+//                    Text("đ\(product.price)")
+//                        .font(.system(size: 10))
+//                        .strikethrough()
+                    Text("\(product.discount)% OFF")
+                        .font(.system(size: 11))
+                        .foregroundColor(Color("002482"))
+                }
+                .padding([.leading], 10)
+                .padding(.top, 5)
+                HStack {
+                    Text("Đã bán")
                     .font(.system(size: 12))
-                    .foregroundColor(Color("272727"))
-                Text("VND: \(product.price)")
+                    .foregroundColor(.black)
+                    Text("680")
                     .font(.system(size: 12))
-                    .foregroundColor(Color("272727"))
+                    .foregroundColor(.black)
+                }
+                .padding(.top, 5)
+                .padding(.bottom, 10)
+                .padding([.horizontal], 10)
             }
-            .padding([.horizontal], 6)
+            .padding([.horizontal], 5)
         }
-        .padding(.all, 8)
+        .frame(width: UIScreen.main.bounds.width / 2 - 30, height: 260)
+        .overlay(
+            RoundedRectangle(cornerRadius: 10).stroke(.gray, lineWidth: 1).shadow(radius: 2))
+        .padding(.leading, 20)
         .clipped()
         .onTapGesture {
             self.show.toggle()
@@ -63,6 +89,6 @@ struct ItemRow: View {
 
 struct ItemRow_Previews: PreviewProvider {
     static var previews: some View {
-        ItemRow(product:  Product(id: 2, name: "Men", description: "Men", imageURL: "product", price: "200", brand: "go chi", isFavorite: true))
+        ItemRow(product:  Product(id: 1, name: "Quần áo", description: " quần áo", price: 10000000, discount: 10, quantity: 1, createDate: "1/1/2023", updateDate: "1/2/2023"))
     }
 }

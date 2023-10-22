@@ -9,6 +9,8 @@ import SwiftUI
 
 struct RegisterView: View {
     @ObservedObject var viewModel = RegisterViewModel()
+    @Binding var path : NavigationPath
+    @State var showLoggin = false
     
     var body: some View {
             VStack(alignment: .leading, spacing: 0) {
@@ -25,13 +27,15 @@ struct RegisterView: View {
                         .font(.system(size: 16))
                         .foregroundColor(Color("848484"))
                         .padding(.top, 2)
-                    Text("\(viewModel.errorMessage)")
-                        .foregroundColor(.red)
-                        .font(.system(size: 12))
-                        .padding(.top, 16)
+                    if !viewModel.errorMessage.isEmpty {
+                        Text("\(viewModel.errorMessage)")
+                            .foregroundColor(.red)
+                            .font(.system(size: 12))
+                            .padding(.top, 15)
+                    }
                 }
                 .frame(maxWidth: .infinity)
-                Spacer().frame(height: 15)
+                Spacer().frame(height: 20)
                 Group {
                     TLTextField(title: "Name", color: Color("002482"), imageURL: "person", text: $viewModel.name)
                     TLTextField(title: "Email", color: Color("002482"), imageURL: "message", text: $viewModel.email)
@@ -48,9 +52,13 @@ struct RegisterView: View {
                 HStack {
                     Text("Already  have an account ?")
                         .foregroundColor(.gray)
-                    NavigationLink("Login", destination: LoginView())
-                        .foregroundColor(Color("002482"))
-                        .bold()
+                    Button(action: {
+                        self.showLoggin = true
+                    }) {
+                        Text("Login")
+                            .bold()
+                            .foregroundColor(Color("002482"))
+                    }
                 }
                 .frame(maxWidth: .infinity)
                 .padding(.top, 20)
@@ -58,13 +66,16 @@ struct RegisterView: View {
             }
         .navigationBarBackButtonHidden()
         .navigationDestination(isPresented: $viewModel.isRegistered){
-            TagBarView()
+            TagBarView(path: $path)
+        }
+        .navigationDestination(isPresented: $showLoggin){
+            LoginView(path: $path)
         }
     }
 }
 
 struct RegisterView_Previews: PreviewProvider {
     static var previews: some View {
-        RegisterView()
+        RegisterView(path: .constant(NavigationPath()))
     }
 }
