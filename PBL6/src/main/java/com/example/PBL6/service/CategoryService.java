@@ -1,7 +1,7 @@
 package com.example.PBL6.service;
 
 import com.example.PBL6.dto.category.CategoryDto;
-import com.example.PBL6.persistance.Category;
+import com.example.PBL6.persistance.product.Category;
 
 import java.util.List;
 

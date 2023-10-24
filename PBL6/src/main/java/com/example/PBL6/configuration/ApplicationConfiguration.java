@@ -1,7 +1,7 @@
 package com.example.PBL6.configuration;
 
 
-import com.example.PBL6.persistance.User;
+import com.example.PBL6.persistance.user.User;
 import com.example.PBL6.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;

@@ -2,7 +2,7 @@ package com.example.PBL6.controller;
 
 import com.example.PBL6.dto.product.ProductRequestDto;
 import com.example.PBL6.dto.product.ProductResponseDto;
-import com.example.PBL6.persistance.Product;
+import com.example.PBL6.persistance.product.Product;
 import com.example.PBL6.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

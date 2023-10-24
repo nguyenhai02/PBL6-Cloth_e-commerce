@@ -21,5 +21,5 @@ public class ProductRequestDto {
     public String color;
     public String size;
     public Integer categoryId;
-    public List<String> imageUrl;
+    public String imageUrl;
 }

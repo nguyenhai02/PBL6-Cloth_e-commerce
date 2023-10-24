@@ -1,7 +1,7 @@
 package com.example.PBL6.service.impl;
 
 import com.example.PBL6.dto.category.CategoryDto;
-import com.example.PBL6.persistance.Category;
+import com.example.PBL6.persistance.product.Category;
 import com.example.PBL6.repository.CategoryRepository;
 import com.example.PBL6.service.CategoryService;
 import jakarta.transaction.Transactional;

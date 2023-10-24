@@ -2,7 +2,7 @@ import axios from "axios";
 class Http {
   constructor() {
     this.instance = axios.create({
-      baseURL: "https://dummyjson.com/",
+      baseURL: "http://localhost:8080",
       name: "Mini Shop",
       timeout: 10000,
       headers: {
