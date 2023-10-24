@@ -1,6 +1,5 @@
 package com.example.PBL6.configuration;
 
-import com.example.PBL6.persistance.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;

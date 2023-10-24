@@ -1,4 +1,4 @@
-package com.example.PBL6.persistance;
+package com.example.PBL6.persistance.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -28,6 +28,13 @@ public class User implements UserDetails {
 
     @Column(name = "email", nullable = false)
     private String email;
+
+    @Column(name = "gender", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private UserGender gender;
+
+    @Column(name = "avatar")
+    private String avatar;
 
     @Column(name = "password", nullable = false)
     @JsonIgnore

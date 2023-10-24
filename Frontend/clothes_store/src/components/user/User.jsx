@@ -3,8 +3,7 @@ import { Option } from "antd/es/mentions";
 import React, { useEffect, useState } from "react";
 import "./User.scss";
 import { useNavigate } from "react-router-dom";
-const url =
-  "https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg";
+import login from "../../assets/images/login.jpg"
 const User = (props) => {
   const [form] = Form.useForm();
   const [isLogin, setIsLogin] = useState(false);
@@ -40,7 +39,7 @@ const User = (props) => {
           xl: 80,
           xxl: 100,
         }}
-        src={<Image src={url} alt="Avatar"></Image>}
+        src={<Image src={login} alt="Avatar" className="login-icon"></Image>}
         className="infor__avatar"
       />
       {isLogin ? (
@@ -83,13 +82,3 @@ const User = (props) => {
 };
 
 export default User;
-// //{
-//   "id": 15,
-//   "username": "kminchelle",
-//   "email": "kminchelle@qq.com",
-//   "firstName": "Jeanne",
-//   "lastName": "Halvorson",
-//   "gender": "female",
-//   "image": "https://robohash.org/autquiaut.png?size=50x50&set=set1",
-//   "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTUsInVzZXJuYW1lIjoia21pbmNoZWxsZSIsImVtYWlsIjoia21pbmNoZWxsZUBxcS5jb20iLCJmaXJzdE5hbWUiOiJKZWFubmUiLCJsYXN0TmFtZSI6IkhhbHZvcnNvbiIsImdlbmRlciI6ImZlbWFsZSIsImltYWdlIjoiaHR0cHM6Ly9yb2JvaGFzaC5vcmcvYXV0cXVpYXV0LnBuZz9zaXplPTUweDUwJnNldD1zZXQxIiwiaWF0IjoxNjM1NzczOTYyLCJleHAiOjE2MzU3Nzc1NjJ9.n9PQX8w8ocKo0dMCw3g8bKhjB8Wo7f7IONFBDqfxKhs"
-// }

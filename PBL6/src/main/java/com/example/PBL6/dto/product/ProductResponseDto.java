@@ -1,7 +1,7 @@
 package com.example.PBL6.dto.product;
 
-import com.example.PBL6.persistance.Product;
-import com.example.PBL6.persistance.ProductImage;
+import com.example.PBL6.persistance.product.Product;
+import com.example.PBL6.persistance.product.ProductVariant;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,5 +15,5 @@ import java.util.List;
 @AllArgsConstructor
 public class ProductResponseDto {
     private Product product;
-    private List<String> productImageUrl;
+    private List<ProductVariant> productVariants;
 }

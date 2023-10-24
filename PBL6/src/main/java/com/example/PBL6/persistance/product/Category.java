@@ -1,5 +1,6 @@
-package com.example.PBL6.persistance;
+package com.example.PBL6.persistance.product;
 
+import com.example.PBL6.persistance.product.Product;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;

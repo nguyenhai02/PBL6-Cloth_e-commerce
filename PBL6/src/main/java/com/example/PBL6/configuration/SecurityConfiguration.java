@@ -1,6 +1,6 @@
 package com.example.PBL6.configuration;
 
-import com.example.PBL6.persistance.UserRole;
+import com.example.PBL6.persistance.user.UserRole;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

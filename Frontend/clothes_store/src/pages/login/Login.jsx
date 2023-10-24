@@ -1,10 +1,20 @@
+import React from "react";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { Button, Checkbox, Col, Form, Input, Row, Space } from "antd";
-import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from 'react-redux';
+import { userLogin } from "../../stores/user/user-slice";
 import "./Login.scss";
 const Login = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const onFinish = (values) => {
+    dispatch(userLogin(values))
+    .unwrap()
+      .then((response) => {
+        console.log(response);
+        navigate("/");
+      });
     console.log("Received values of form: ", values);
   };
   return (
@@ -34,18 +44,18 @@ const Login = () => {
             onFinish={onFinish}
           >
             <Form.Item
-              name="username"
+              name="email"
               rules={[
                 {
                   required: true,
-                  message: "Please input your Username!",
+                  message: "Please input your email!",
                 },
               ]}
               className="form__username input-value"
             >
               <Input
                 prefix={<UserOutlined className="site-form-item-icon" />}
-                placeholder="Username"
+                placeholder="Email"
                 className="login__input"
               />
             </Form.Item>

@@ -1,6 +1,6 @@
 package com.example.PBL6.service;
 
-import com.example.PBL6.persistance.User;
+import com.example.PBL6.persistance.user.User;
 
 import java.util.List;
 import java.util.Optional;
