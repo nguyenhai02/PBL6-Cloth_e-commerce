@@ -12,87 +12,55 @@ struct ShoppingView: View {
     @Binding var path: NavigationPath
     @State var searchText: String = ""
     @State var selectedOption = 0
-    private let columns: [GridItem] = Array(repeating: .init(.flexible()), count: 2)
+    let columns: [GridItem] = Array(repeating: .init(.flexible(minimum: 10, maximum: 170)), count: 2)
     var body: some View {
-            VStack(alignment: .leading, spacing: 0) {
-                HeadView(searchText: $searchText)
-                Spacer().frame(height: 5)
-                HStack {
-                    Spacer()
+        VStack(alignment: .leading, spacing: 0) {
+            HeadView(searchText: $searchText)
+            Spacer().frame(height: 5)
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 10) {
                     Button(action: {
                         self.selectedOption = 0
                     }) {
-                        Text("Liên quan")
-                            .foregroundColor(.gray)
-                            .font(.system(size: 14))
+                        Text("Tất cả")
+                            .font(.system(size: 16))
+                            .foregroundColor(Color("002482"))
+                            .padding(7)
                     }
-                    VStack {
-                        Rectangle()
-                            .frame(width: 1, height: 20)
-                            .foregroundColor(.gray)
-                            .padding(.leading, 10)
-                            .padding(.trailing, 10)
-                    }
-                    Button(action: {
-                        self.selectedOption = 0
-                    }) {
-                        Text("Mới nhất")
-                            .foregroundColor(.gray)
-                            .font(.system(size: 14))
-//                            .padding(.leading, 20)
-                    }
-                    VStack {
-                        Rectangle()
-                            .frame(width: 1, height: 20)
-                            .foregroundColor(.gray)
-                            .padding(.leading, 10)
-                            .padding(.trailing, 10)
-                    }
-                    Button(action: {
-                        self.selectedOption = 1
-                    }) {
-                        Text("Bán chạy")
-                            .font(.system(size: 14))
-                            .foregroundColor(.gray)
-                    }
-                    VStack {
-                        Rectangle()
-                            .frame(width: 1, height: 20)
-                            .foregroundColor(.gray)
-                            .padding(.leading, 10)
-                            .padding(.trailing, 10)
-                    }
-                    Button(action: {
-                        self.selectedOption = 2
-                    }) {
-                        Text("giá")
-                            .font(.system(size: 14))
-                            .foregroundColor(.gray)
-                            .padding(.leading, 10)
-                            .padding(.trailing, 10)
-                    }
-                    Spacer()
-                }
-                .padding(10)
-                Divider().shadow(radius: 10)
-                Spacer()
-                ScrollView {
-                    ZStack {
-                        Color("F9F9F9")
-                            .edgesIgnoringSafeArea(.all)
-                        if selectedOption == 0 {
-                            LazyVGrid(columns: [
-                                GridItem(.flexible(), spacing: 0),
-                                GridItem(.flexible(), spacing: 0)
-                            ], spacing: 15)  {
-                                ForEach(viewModel.product, id: \.id) { product in
-                                    ItemRow(product: product)
-                                }
-                            }
+                    ForEach(viewModel.categories, id: \.id) { category in
+                        Button(action: {
+                            self.selectedOption = 1
+                            viewModel.showCategoryProduct(categoryId: category.id)
+                        }) {
+                            Text(category.name)
+                                .font(.system(size: 16))
+                                .foregroundColor(Color("002482"))
+                                .padding(7)
                         }
                     }
                 }
-                
+                .padding(.leading, 20)
+                .padding(.vertical, 10)
+            }
+            if selectedOption == 0 {
+                ScrollView {
+                    LazyVGrid(columns: columns, spacing: 15) {
+                        ForEach(viewModel.products, id: \.id) { product in
+                            ItemRow(path: $path, product: product)
+                        }
+                    }
+                }
+            } else {
+                ScrollView {
+                    LazyVGrid(columns: columns, spacing: 15) {
+                        ForEach(viewModel.categoryProduct, id: \.id) {
+                            product in
+                            ItemRow(path: $path, product: product)
+                        }
+                    }
+                }
+            }
+            Spacer()
         }
     }
 }
@@ -102,16 +70,6 @@ struct HeadView: View {
     var body: some View {
         Spacer().frame(height: 15)
         HStack {
-//            Button(action: {
-//
-//            }) {
-//                Image(systemName: "arrow.left")
-//                    .resizable()
-//                    .foregroundColor(.gray)
-//                    .aspectRatio(contentMode: .fit)
-//                    .frame(width: 20, height: 20)
-//                    .padding(.leading, 15)
-//            }
             HStack(spacing: 0) {
                 TextField("Tìm kiếm...", text: $searchText)
                     .padding([.leading], 10)
@@ -132,17 +90,15 @@ struct HeadView: View {
                 }
                 .padding(10)
             }
-//            .background(Color(.systemGray6))
             .cornerRadius(8)
             .overlay(
-               RoundedRectangle(cornerRadius: 6).stroke(.gray))
+                RoundedRectangle(cornerRadius: 6).stroke(.gray))
             .padding([.leading], 10)
             .padding(.horizontal, 25)
             Spacer()
         }
     }
 }
-
 
 struct ShoppingView_Previews: PreviewProvider {
     static var previews: some View {

@@ -13,52 +13,40 @@ struct ChooseAddressView: View {
     @State var showAddAddress = false
     @State var isSelected: Int = 0
     @State var value: Int = 0
-    @State var address = [ItemAddress(name: "Hien", phone: "01243242343", address: "213 chau tinh tri", contries: "Thanh xuan, Ha noi, Viet nam"), ItemAddress(name: "Hien", phone: "01243242343", address: "213 chau tinh tri", contries: "Thanh xuan, Ha noi, Viet nam"), ItemAddress(name: "Hien", phone: "01243242343", address: "213 chau tinh tri", contries: "Thanh xuan, Ha noi, Viet nam")]
+    @State var address = [ItemAddress(name: " Nguyễn Thị Thanh Hiền", phone: "01243242343", address: "213 chau tinh tri", contries: "Thanh xuan, Ha noi, Viet nam"), ItemAddress(name: "Nguyễn Thị Thanh Hiền", phone: "01243242343", address: "213 chau tinh tri", contries: "Thanh xuan, Ha noi, Viet nam"), ItemAddress(name: "Nguyễn Thị Thanh Hiền", phone: "01243242343", address: "213 chau tinh tri", contries: "Thanh xuan, Ha noi, Viet nam")]
     
-   
+    
     
     var body: some View {
-        ZStack {
-            Color("E1E2E7")
-                .edgesIgnoringSafeArea(.all)
-            VStack(alignment: .leading, spacing: 0) {
-                Spacer().frame(height: 20)
-                HStack(spacing: 0) {
-                    Button(action: {
-                        self.presentationMode.wrappedValue.dismiss()
-                    }) {
-                        Image(systemName: "arrow.left")
-                            .resizable()
-                            .foregroundColor(.black)
-                            .frame(width: 18, height: 18)
-                            .padding(.leading, 25)
-                    }
-                    Text("Địa chỉ của tôi")
-                        .font(.system(size: 24))
-                        .fontWeight(.medium)
-                        .padding(.leading, 15)
-                    Spacer()
-                    Button(action: {
-                        self.showAddAddress = true
-                    }) {
-                        Image(systemName: "plus")
-                            .resizable()
-                            .foregroundColor(.black)
-                            .frame(width: 18, height: 18)
-                            .padding(.trailing, 25)
-                    }
+        VStack(alignment: .leading, spacing: 0) {
+            Spacer().frame(height: 20)
+            HStack(spacing: 0) {
+                Button(action: {
+                    self.presentationMode.wrappedValue.dismiss()
+                }) {
+                    Image(systemName: "arrow.left")
+                        .resizable()
+                        .foregroundColor(.black)
+                        .frame(width: 18, height: 18)
+                        .padding(.leading, 25)
                 }
-                Spacer().frame(height: 30)
-                RadioAddressGroup(items: address , selection: 0) {
-                    address.append(ItemAddress(name: "Hien", phone: "01243242343", address: "213 chau tinh tri", contries: "Thanh xuan, Ha noi, Viet nam"))
-                }
-                
+                Text("Địa chỉ của tôi")
+                    .font(.system(size: 24))
+                    .fontWeight(.medium)
+                    .padding(.leading, 15)
                 Spacer()
+                //                    }
             }
-            .navigationBarBackButtonHidden(true)
-            .navigationDestination(isPresented: $showAddAddress) {
-                AddAddressView(path: $path)
+            Spacer().frame(height: 30)
+            RadioAddressGroup(items: address , selection: 0) {
+                //                    address.append(ItemAddress(name: "Hien", phone: "01243242343", address: "213 chau tinh tri", contries: "Thanh xuan, Ha noi, Viet nam")
+                self.showAddAddress = true
             }
+            Spacer()
+        }
+        .navigationBarBackButtonHidden(true)
+        .navigationDestination(isPresented: $showAddAddress) {
+            AddAddressView(path: $path)
         }
     }
 }

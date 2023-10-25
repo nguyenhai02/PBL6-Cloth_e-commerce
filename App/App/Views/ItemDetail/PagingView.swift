@@ -31,12 +31,11 @@ struct PagingView<Content>: View where Content: View {
                         self.content()
                             .frame(width: geometry.size.width, height: geometry.size.height)
 //                            .frame(width: geometry.size.width, height: 1000)
-                            .aspectRatio(contentMode: .fit)
+                            .aspectRatio(contentMode: .fill)
 //                            .clipped()
                     }
                     .background(Color.white)
                 }
-                
                 .content.offset(x: self.offset(in: geometry), y: 0)
                 .frame(width: geometry.size.width, alignment: .leading)
                 .gesture(

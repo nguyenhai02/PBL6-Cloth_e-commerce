@@ -42,7 +42,6 @@ struct RegisterView: View {
                     TLSecureField(title: "Password", color: Color("002482"), imageURL: "password", text: $viewModel.password)
                     TLTextField(title: "Address", color: Color("002482"), imageURL: "address",  text: $viewModel.address)
                     TLTextField(title: "Phone", color: Color("002482"), imageURL: "phone", text: $viewModel.phone)
-                    
                     Spacer().frame(height: 35)
                     TLButton(title: "Sign up", background: Color("002482"), action: {
                         viewModel.Register()

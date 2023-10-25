@@ -12,6 +12,8 @@ class RegisterViewModel: ObservableObject {
     @Published var name = ""
     @Published var email = ""
     @Published var password = ""
+    @Published var gender = ""
+    @Published var image = ""
     @Published var address = ""
     @Published var phone = ""
     @Published var isRegistered: Bool = false
@@ -23,13 +25,12 @@ class RegisterViewModel: ObservableObject {
         }
         let plugin: PluginType = NetworkLoggerPlugin(configuration: .init(logOptions: .verbose))
         let provider = MoyaProvider<MyService>(plugins: [plugin])
-        provider.request(.register(name: name, email: email, password: password, address: address, phone: phone)) { result in
+        provider.request(.register(name: name, email: email, password: password, gender: gender, image: image,address: address, phone: phone)) { result in
             switch result {
             case let .success(moyaResponse):
                 do {
                     let filteredResponse = try moyaResponse.filterSuccessfulStatusCodes()
                     let token = try filteredResponse.map(TokenResponse.self)
-//                    print("data: \(token.token)")
                     UserDefaults.standard.set(token.token, forKey: Constanst.tokenKey)
                 }
                 catch {}
@@ -37,7 +38,7 @@ class RegisterViewModel: ObservableObject {
                 if statusCode == 200 {
                     self.isRegistered = true
                 } else {
-                    self.errorMessage = "Invalid email or password."
+                    self.errorMessage = "Email already exists."
                 }
             case let .failure(error):
                 print(error)
@@ -68,9 +69,9 @@ class RegisterViewModel: ObservableObject {
             return false
         }
         guard isValidPhone(phone: phone) else {
-               errorMessage = "Please enter a valid 10-digit phone number"
-               return false
-           }
+            errorMessage = "Please enter a valid 10-digit phone number"
+            return false
+        }
         return true
     }
 }

@@ -19,7 +19,7 @@ struct TLButton: View {
             ZStack {
                 RoundedRectangle(cornerRadius: 8)
                     .foregroundColor(background)
-                    .frame(height: 50)
+                    .frame(height: 45)
                 
                 Text(title)
                     .foregroundColor(.white)

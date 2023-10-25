@@ -24,7 +24,7 @@ struct TagBarView: View {
                             Image(systemName: "magnifyingglass")
                             Text("Tìm kiếm")
                         }.tag(1)
-                    FavoriteView(path: $path)
+                    NotificationView(path: $path)
                         .tabItem {
                             Image(systemName: "bell.fill")
                             Text("Thông báo")

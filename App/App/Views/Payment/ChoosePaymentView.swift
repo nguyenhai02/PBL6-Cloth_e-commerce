@@ -79,15 +79,12 @@ struct ChoosePaymentView: View {
                 .frame(width: UIScreen.main.bounds.width)
                 .background(isVnpayButtonSelected ? Color("EBF0FF") : Color.clear)
             }
-            
             Divider().background(Color("EBF0FF"))
-            
             Spacer()
         }
         .navigationBarBackButtonHidden(true)
     }
 }
-
 struct ChoosePaymentView_Previews: PreviewProvider {
     static var previews: some View {
         ChoosePaymentView(path: .constant(NavigationPath()))
