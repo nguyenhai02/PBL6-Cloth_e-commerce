@@ -9,9 +9,10 @@ import SwiftUI
 
 @main
 struct AppApp: App {
-    
+
     var body: some Scene {
         WindowGroup {
+//            ChooseAddressView(path: .constant(NavigationPath()))
                 SplashView()
 //            RegisterView()
 //            HomeView(categories: Categories(id: 1, name: "category", description: "ao nam", imageURL: "category"))

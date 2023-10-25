@@ -7,6 +7,16 @@
 
 import SwiftUI
 
+
+struct EditTextView: View {
+    var body: some View {
+        VStack {
+            TLTextField(title: "Email", color: .green.opacity(0.3), imageURL: "message", text: .constant(""))
+            CustomTextFile(title: "Name", text: "name")
+        }
+    }
+}
+
 struct TLTextField: View {
     let title: String
     let color: Color
@@ -40,8 +50,33 @@ struct TLTextField: View {
     }
 }
 
+struct CustomTextFile: View {
+    @State var title: String
+    @State var text: String
+    @FocusState var focused: Bool
+    var body: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            Text(title)
+                .font(.system(size: 13))
+//                .foregroundColor(Color("002482"))
+                .foregroundColor(.black.opacity(0.7))
+                .fontWeight(.medium)
+                .padding(.top, 5)
+            TextField("", text: $text)
+                .frame(height: 48)
+                .padding(.leading, 10)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 3)
+                        .stroke(focused ? Color("002482") : Color("E1E2E7"), lineWidth: 1))
+                .autocapitalization(UITextAutocapitalizationType.none)
+                .focused($focused)
+                .padding(.top, 6)
+        }
+        .padding(.horizontal, 30)
+    }
+}
 struct TLTextField_Previews: PreviewProvider {
     static var previews: some View {
-        TLTextField(title: "Email", color: .green.opacity(0.3), imageURL: "message", text: .constant(""))
+        EditTextView()
     }
 }

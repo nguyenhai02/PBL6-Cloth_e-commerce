@@ -12,9 +12,7 @@ struct HomeView: View {
     @State private var show = false
     @State private var showFavoriteView = false
     @Binding var path : NavigationPath
-    
     var body: some View {
-        print("stack \(path.count)")
         return VStack(alignment: .leading, spacing: 0) {
                 Spacer().frame(height: 7)
                 HStack {
@@ -90,9 +88,9 @@ struct HomeView: View {
                                 .padding(.top, 5)
                                 .padding(.leading, 10)
                             ScrollView(.horizontal, showsIndicators: false, content:  {
-                                HStack(spacing: 0) {
-                                    ForEach(viewModel.product, id: \.id) { product in
-                                        ItemRow(product: product)
+                                HStack(spacing: 15) {
+                                    ForEach(viewModel.products, id: \.id) { product in
+                                        ItemRow(path: $path, product: product)
                                     }
                                     .padding(.top, 15)
                                 }
@@ -104,9 +102,9 @@ struct HomeView: View {
                                 .padding(.top, 15)
                                 .padding(.leading, 10)
                             ScrollView(.horizontal, showsIndicators: false, content:  {
-                                HStack(spacing: 0) {
-                                    ForEach(viewModel.product, id: \.id) { product in
-                                        ItemRow(product: product)
+                                HStack(spacing: 15) {
+                                    ForEach(viewModel.products, id: \.id) { product in
+                                        ItemRow(path: $path, product: product)
                                     }
                                     .padding(.top, 15)
                                 }
@@ -119,9 +117,9 @@ struct HomeView: View {
                                 .padding(.top, 15)
                                 .padding(.leading, 10)
                             ScrollView(.horizontal, showsIndicators: false, content:  {
-                                HStack(spacing: 0) {
-                                    ForEach(viewModel.product, id: \.id) { product in
-                                        ItemRow(product: product)
+                                HStack(spacing: 15) {
+                                    ForEach(viewModel.products, id: \.id) { product in
+                                        ItemRow(path: $path, product: product)
                                     }
                                 }
                                 .padding(.top, 15)
@@ -139,7 +137,7 @@ struct HomeView: View {
 
 struct CategoriesItem: View {
     @ObservedObject var viewModel = HomeViewModel()
-    @State var show = false
+    @State var showView = false
     let categories: Categories
     var body: some View {
             VStack(spacing: 0) {
@@ -159,8 +157,8 @@ struct CategoriesItem: View {
                     .padding(.top, 8)
             }
             .onTapGesture {
-                self.show.toggle()
-            }
+                self.showView = true
+        }
     }
 }
 

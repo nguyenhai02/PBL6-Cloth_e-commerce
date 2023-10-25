@@ -60,7 +60,7 @@ struct SettingView: View {
                             .frame(width: 24, height: 24)
                         Text(item.tiltle)
                             .font(.system(size: 14))
-//                            .fontWeight(.medium)
+                        //                            .fontWeight(.medium)
                             .foregroundColor(.black)
                         Spacer()
                         Image("right")
@@ -68,29 +68,29 @@ struct SettingView: View {
                             .frame(width: 8, height: 14)
                             .padding(.trailing, 30)
                     }
-                   
+                    
                 }
                 .padding(.top, 30)
                 .padding(.leading, 28)
             }
-                Button(action: {
-                    viewModel.logOut()
-                    logout = true
-                    path.popToRoot()
-                }) {
-                    HStack {
-                        Image(systemName: "arrowshape.turn.up.left")
-                            .resizable()
-                            .foregroundColor(.black)
-                            .frame(width: 20, height: 20)
-                        Text("Logout")
-                            .font(.system(size: 14))
-                            .fontWeight(.medium)
-                            .foregroundColor(.black)
-                    }
+            Button(action: {
+                viewModel.logOut()
+                logout = true
+                path.popToRoot()
+            }) {
+                HStack {
+                    Image(systemName: "arrowshape.turn.up.left")
+                        .resizable()
+                        .foregroundColor(.black)
+                        .frame(width: 20, height: 20)
+                    Text("Logout")
+                        .font(.system(size: 14))
+                        .fontWeight(.medium)
+                        .foregroundColor(.black)
                 }
-                .padding(.top, 30)
-                .padding(.leading, 30)
+            }
+            .padding(.top, 30)
+            .padding(.leading, 30)
             Spacer()
         }
         .frame(maxWidth: .infinity, alignment: .leading)

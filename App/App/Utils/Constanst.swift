@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 class Constanst{
     static var tokenKey = "TOKEN"
     static var emailKey = "EMAIL_LOGIN"
