@@ -1,6 +1,7 @@
 package com.example.PBL6.controller;
 
 import com.example.PBL6.dto.user.AuthResponse;
+import com.example.PBL6.dto.user.UserEditProfileDto;
 import com.example.PBL6.dto.user.UserLoginDto;
 import com.example.PBL6.dto.user.UserRegisterDto;
 import com.example.PBL6.persistance.user.User;
@@ -42,17 +43,37 @@ public class UserController {
 
     @PostMapping("/login")
     public ResponseEntity<Object> authenticate(@RequestBody UserLoginDto userLoginDto) {
-        return ResponseEntity.ok(authService.login(userLoginDto));
+        AuthResponse authResponse =  authService.login(userLoginDto);
+        return ResponseEntity.ok(authResponse);
     }
 
     @GetMapping("/profile")
-    public ResponseEntity<User> getUserProfile(@RequestHeader(HttpHeaders.AUTHORIZATION) String token){
+    public ResponseEntity<Object> getUserProfile(@RequestHeader(HttpHeaders.AUTHORIZATION) String token){
         String email = JwtUtils.getUserEmailFromJwt(token);
         User user =  userService.getUserProfile(email).orElse(null);
         if(user != null) {
             return ResponseEntity.ok(user);
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Can't find user");
+        }
+    }
+
+    @PostMapping("/profile/edit")
+    public ResponseEntity<Object> editProfile(@RequestHeader(HttpHeaders.AUTHORIZATION) String token,
+                                            @RequestBody UserEditProfileDto userEditProfileDto) {
+        String email = JwtUtils.getUserEmailFromJwt(token);
+        User user =  userService.getUserProfile(email).orElse(null);
+        if(user != null) {
+            try {
+                User userUpdate = userService.editProfile(user.getId(), userEditProfileDto);
+                return ResponseEntity.ok(userUpdate);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Edit fail");
+            }
+
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Error");
         }
     }
 }

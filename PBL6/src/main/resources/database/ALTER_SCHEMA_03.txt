@@ -1,0 +1,4 @@
+-- ALTER TABLE USER --
+ALTER TABLE `clothes_store`.`users`
+CHANGE COLUMN `address` `address` VARCHAR(255) NULL ,
+CHANGE COLUMN `phone` `phone` VARCHAR(10) NULL ;
