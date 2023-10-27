@@ -40,7 +40,9 @@ public class UserServiceImpl implements UserService {
                 userEditProfileDto.getPhone(),
                 userEditProfileDto.getAvatar(),
                 userEditProfileDto.getGender().name());
-        return userRepository.getById(id);
+        System.out.println(userEditProfileDto);
+        Optional<User> user = userRepository.findById(id);
+        return user.orElseThrow(null);
 
     }
 }

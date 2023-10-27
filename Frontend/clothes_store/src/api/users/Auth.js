@@ -1,7 +1,7 @@
 import http from "../../helpers/http";
 
-const getToken = () => {
-  return localStorage.getItem("USER_KEY");
+export const getToken = () => {
+  return localStorage.getItem("token");
 };
 
 export const register = (authRequest) => {
@@ -12,8 +12,16 @@ export const login = (authRequest) => {
   return http.post("/user/login", authRequest);
 };
 
-export const getProfile = () => {
+export const getProfile = (token) => {
   return http.get("/user/profile", {
+    headers: {
+      Authorization: "Bearer " + token,
+    },
+  });
+};
+
+export const editProfile = (data) => {
+  return http.post("user/profile/edit", data, {
     headers: {
       Authorization: "Bearer " + getToken(),
     },
