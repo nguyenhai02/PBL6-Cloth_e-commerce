@@ -52,7 +52,7 @@ const HomePage = () => {
           textAlign: "center",
         }}
       >
-        Copyright © 2023 HipHip
+        Copyright © 2023 
       </Footer>
     </Layout>
   );

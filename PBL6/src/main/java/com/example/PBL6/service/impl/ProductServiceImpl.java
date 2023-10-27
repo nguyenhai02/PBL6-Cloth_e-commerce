@@ -53,6 +53,7 @@ public class ProductServiceImpl implements ProductService {
                     .description(productRequestDto.getDescription())
                     .price(productRequestDto.getPrice())
                     .discount(productRequestDto.getDiscount())
+                    .image(productRequestDto.getImageUrl())
                     .category(categoryRepository.getById(productRequestDto.getCategoryId()))
                     .createDate(LocalDateTime.now())
                     .updateDate(LocalDateTime.now())

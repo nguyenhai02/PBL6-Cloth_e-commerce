@@ -6,6 +6,7 @@ import com.example.PBL6.dto.user.AuthResponse;
 import com.example.PBL6.dto.user.UserLoginDto;
 import com.example.PBL6.dto.user.UserRegisterDto;
 import com.example.PBL6.persistance.user.User;
+import com.example.PBL6.persistance.user.UserGender;
 import com.example.PBL6.persistance.user.UserRole;
 import com.example.PBL6.repository.UserRepository;
 import com.example.PBL6.service.AuthService;

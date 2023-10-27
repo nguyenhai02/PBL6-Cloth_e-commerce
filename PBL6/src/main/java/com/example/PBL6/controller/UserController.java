@@ -63,6 +63,7 @@ public class UserController {
                                             @RequestBody UserEditProfileDto userEditProfileDto) {
         String email = JwtUtils.getUserEmailFromJwt(token);
         User user =  userService.getUserProfile(email).orElse(null);
+        System.out.println(userEditProfileDto);
         if(user != null) {
             try {
                 User userUpdate = userService.editProfile(user.getId(), userEditProfileDto);

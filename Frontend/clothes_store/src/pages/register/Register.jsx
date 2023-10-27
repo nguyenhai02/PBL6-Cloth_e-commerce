@@ -1,5 +1,9 @@
 import { Button, Checkbox, Col, Form, Input, Row, Select, Space } from "antd";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from 'react-redux';
+import { userRegister } from "../../stores/user/user-slice";
+import _ from 'lodash';
+
 const { Option } = Select;
 
 const formItemLayout = {
@@ -34,8 +38,22 @@ const tailFormItemLayout = {
 };
 const Register = () => {
   const [form] = Form.useForm();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const onFinish = (values) => {
-    console.log("Received values of form: ", values);
+    const { agreement, prefix, confirm, gender, ...filteredValues } = values;
+    const updatedValues = {
+      ...filteredValues,
+      gender: gender.toUpperCase(),
+    };
+
+    dispatch(userRegister(updatedValues))
+    .unwrap()
+      .then((response) => {
+        console.log(response);
+        navigate("/account/login");
+      });
+    console.log("Received values of form: ", updatedValues);
   };
   const prefixSelector = (
     <Form.Item name="prefix" noStyle>
@@ -141,7 +159,7 @@ const Register = () => {
           </Form.Item>
 
           <Form.Item
-            name="Username"
+            name="name"
             label="Username"
             rules={[
               {
@@ -163,12 +181,7 @@ const Register = () => {
               },
             ]}
           >
-            <Input
-              addonBefore={prefixSelector}
-              style={{
-                width: "100%",
-              }}
-            />
+            <Input />
           </Form.Item>
 
           <Form.Item
@@ -182,9 +195,9 @@ const Register = () => {
             ]}
           >
             <Select placeholder="select your gender">
-              <Option value="male">Male</Option>
-              <Option value="female">Female</Option>
-              <Option value="other">Other</Option>
+              <Option value="MALE">Male</Option>
+              <Option value="FEMALE">Female</Option>
+              <Option value="OTHER">Other</Option>
             </Select>
           </Form.Item>
           <Form.Item
