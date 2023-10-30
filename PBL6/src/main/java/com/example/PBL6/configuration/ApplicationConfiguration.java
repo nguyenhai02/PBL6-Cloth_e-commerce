@@ -54,7 +54,7 @@ public class ApplicationConfiguration {
     }
 
     @Bean
-    public ModelMapper getModelMapper() {
+    public ModelMapper modelMapper() {
         return new ModelMapper();
     }
 

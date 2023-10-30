@@ -8,7 +8,7 @@ import Introductions from "../../components/introductions/Introductions";
 import "./HomePage.scss";
 const HomePage = () => {
   useEffect(() => {
-    document.title = "MiniShop Clothings";
+    document.title = "Clothes Store";
   }, []);
 
   const {
@@ -52,7 +52,7 @@ const HomePage = () => {
           textAlign: "center",
         }}
       >
-        Copyright © 2023 
+        Copyright © 2023
       </Footer>
     </Layout>
   );

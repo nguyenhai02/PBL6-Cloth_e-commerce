@@ -24,7 +24,7 @@ public class ProductController {
     }
 
     @GetMapping("/all")
-    public Page<Product> getAllProducts(Pageable pageable) {
+    public Page<ProductResponseDto> getAllProducts(Pageable pageable) {
         return productService.getAllProducts(pageable);
     }
 
