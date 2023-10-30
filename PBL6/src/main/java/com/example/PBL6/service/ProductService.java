@@ -15,5 +15,5 @@ public interface ProductService {
 
     ProductResponseDto addProduct(ProductRequestDto productRequestDto);
 
-    Page<Product> getAllProducts(Pageable pageable);
+    Page<ProductResponseDto> getAllProducts(Pageable pageable);
 }

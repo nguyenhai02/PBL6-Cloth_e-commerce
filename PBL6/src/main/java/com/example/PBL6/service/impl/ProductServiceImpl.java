@@ -9,6 +9,7 @@ import com.example.PBL6.repository.ProductRepository;
 import com.example.PBL6.repository.ProductVariantRepository;
 import com.example.PBL6.service.ProductService;
 import jakarta.transaction.Transactional;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -28,6 +29,8 @@ public class ProductServiceImpl implements ProductService {
     private CategoryRepository categoryRepository;
     @Autowired
     private ProductVariantRepository productVariantRepository;
+    @Autowired
+    private ModelMapper modelMapper;
 
 
     @Override
@@ -36,8 +39,9 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Page<Product> getAllProducts(@PageableDefault(size = 4) Pageable pageable) {
-        return productRepository.findAll(pageable);
+    public Page<ProductResponseDto> getAllProducts(@PageableDefault(size = 4) Pageable pageable) {
+        Page<Product> productPage = productRepository.findAll(pageable);
+        return productPage.map(product -> modelMapper.map(product, ProductResponseDto.class));
     }
 
     @Transactional

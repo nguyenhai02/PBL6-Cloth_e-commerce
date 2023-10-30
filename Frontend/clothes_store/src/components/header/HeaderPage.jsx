@@ -4,13 +4,14 @@ import {
   ShoppingCartOutlined,
   UserOutlined,
 } from "@ant-design/icons";
-import { Drawer, Menu, Space } from "antd";
+import { Drawer, Image, Menu, Space } from "antd";
 import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import Cart from "../cart/Cart";
 import SearchForm from "../search/SearchForm";
 import User from "../user/User";
 import "./Header.scss";
+import logo from "../../assets/images/logo.png";
 import { useSelector } from "react-redux";
 const HeaderPage = () => {
   const { pathname } = useLocation();
@@ -104,7 +105,9 @@ const HeaderPage = () => {
   return (
     <header className={`header ${isScroll ? "header__black" : ""}`}>
       <Link to={"/"} className="logo">
-        <span>mini-shop</span>
+        <div className="box">
+          <img className="vector" alt="Vector" src={logo} />
+        </div>
       </Link>
       {isMobile ? (
         <>
