@@ -5,3 +5,6 @@ CHANGE COLUMN `phone` `phone` VARCHAR(10) NULL ;
 
 ALTER TABLE `clothes_store`.`users`
 CHANGE COLUMN `phone` `phone` VARCHAR(20) NULL DEFAULT NULL ;
+
+ALTER TABLE `clothes_store`.`users`
+CHANGE COLUMN `gender` `gender` VARCHAR(45) NULL ;
