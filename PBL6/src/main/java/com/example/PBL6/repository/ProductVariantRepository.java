@@ -9,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ProductVariantRepository extends JpaRepository<ProductVariant, Integer> {
@@ -50,4 +51,7 @@ public interface ProductVariantRepository extends JpaRepository<ProductVariant, 
 
     @Query
     List<ProductVariant> getAllByProduct(Product product);
+
+    @Query
+    Optional<ProductVariant> getProductVariantByProductAndColorAndSize(Product product, String color, String size);
 }

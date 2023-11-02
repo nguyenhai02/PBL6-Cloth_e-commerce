@@ -12,4 +12,7 @@ import java.util.Optional;
 public interface ProductRepository extends JpaRepository<Product, Integer>  {
     @Query
     Optional<Product> findProductByName(String name);
+
+    @Query
+    Product getById(Integer id);
 }
