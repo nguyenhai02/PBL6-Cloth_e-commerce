@@ -4,8 +4,8 @@ import http from "../../helpers/http";
 //   return http.get("/products/category/tops");
 // };
 export const getAllProducts = () => {
-  return http.get("/products/category/tops");
+  return http.get("/product/all");
 };
 export const getDetailProduct = (id) => {
-  return http.get(`/products/${id}`);
+  return http.get(`/product/detail/${id}`);
 };

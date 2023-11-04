@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/user")
@@ -50,9 +51,9 @@ public class UserController {
     @GetMapping("/profile")
     public ResponseEntity<Object> getUserProfile(@RequestHeader(HttpHeaders.AUTHORIZATION) String token){
         String email = JwtUtils.getUserEmailFromJwt(token);
-        User user =  userService.getUserProfile(email).orElse(null);
-        if(user != null) {
-            return ResponseEntity.ok(user);
+        Optional<User> user =  userService.getUserProfile(email);
+        if(user.isPresent()) {
+            return ResponseEntity.ok(user.get());
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Can't find user");
         }

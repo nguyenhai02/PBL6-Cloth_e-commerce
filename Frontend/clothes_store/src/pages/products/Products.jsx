@@ -5,14 +5,14 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Product from "../../components/product/Product";
 import SideBar from "../../components/sidebar/SideMenu";
-import { productsAction } from "../../stores/products/product-slice";
+import { getAllProduct } from "../../stores/products/product-slice";
 import LoadingPage from "../loading/LoadingPage";
 const Products = (props) => {
   const dispatch = useDispatch();
   const { products, loading } = useSelector((state) => state.products);
   const [productSort, setProductSort] = useState([]);
   useEffect(() => {
-    dispatch(productsAction.getAllProduct());
+    dispatch(getAllProduct());
   }, [dispatch]);
   useEffect(() => {
     setProductSort(products);

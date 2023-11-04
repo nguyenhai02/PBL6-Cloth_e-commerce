@@ -17,6 +17,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -91,6 +92,23 @@ public class ProductServiceImpl implements ProductService {
         List<ProductVariant> productVariants = productVariantRepository.getAllByProduct(productResponseDto.getProduct());
         productResponseDto.setProductVariants(productVariants);
 
+        return productResponseDto;
+    }
+
+    @Override
+    public ProductResponseDto getDetailProduct(Integer id) {
+        Optional<Product> product = productRepository.findById(id);
+        List<ProductVariant> productVariants;
+        if(product.isPresent()) {
+            productVariants = productVariantRepository.getAllByProduct(product.get());
+        } else {
+            return null;
+        }
+        ProductResponseDto productResponseDto = new ProductResponseDto()
+                .builder()
+                .product(product.get())
+                .productVariants(productVariants)
+                .build();
         return productResponseDto;
     }
 }
