@@ -14,7 +14,7 @@ const Product = (props) => {
   const detailHandler = (id) => {
     navigate(`/products/${id}`);
   };
-  const product = props?.product;
+  const product = props?.product.product;
   return (
     <Col xs={12} md={8}>
       <Space
@@ -32,7 +32,7 @@ const Product = (props) => {
         <Space className="" style={{ position: "relative", width: 243 }}>
           <Image
             width={243}
-            src={product?.images[product?.images.length - 1]}
+            src={product?.image}
             preview={false}
             className="product__image"
             style={{ objectFit: "contain" }}
@@ -41,7 +41,7 @@ const Product = (props) => {
         </Space>
 
         <Space className="product__infor" direction="vertical" align="center">
-          <Text className="product__title font-Mont">{product?.title}</Text>
+          <Text className="product__title font-Mont">{product?.name}</Text>
           <Text className="product__price font-Mont" strong>
             {product?.price}$
           </Text>
