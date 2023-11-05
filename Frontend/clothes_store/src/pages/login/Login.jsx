@@ -2,7 +2,7 @@ import React from "react";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { Button, Checkbox, Col, Form, Input, Row, Space } from "antd";
 import { Link, useNavigate } from "react-router-dom";
-import { useDispatch } from 'react-redux';
+import { useDispatch } from "react-redux";
 import { userLogin } from "../../stores/user/user-slice";
 import "./Login.scss";
 const Login = () => {
@@ -10,7 +10,7 @@ const Login = () => {
   const navigate = useNavigate();
   const onFinish = (values) => {
     dispatch(userLogin(values))
-    .unwrap()
+      .unwrap()
       .then((response) => {
         console.log(response);
         navigate("/");

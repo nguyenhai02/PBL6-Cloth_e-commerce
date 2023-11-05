@@ -76,12 +76,12 @@ const HeaderPage = () => {
       href: "/",
     },
     {
-      label: "TOPS",
-      href: "/collections/TOPS",
+      label: "SHIRTS",
+      href: "/collections/shirt",
     },
     {
-      label: "BOTTOMS",
-      href: "/collections/BOTTOMS",
+      label: "PANTS",
+      href: "/collections/pants",
     },
     {
       label: "ACCESSORIES",

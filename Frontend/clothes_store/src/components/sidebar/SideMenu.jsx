@@ -14,18 +14,18 @@ function getItem(label, key, icon, children, type) {
 }
 const items = [
   getItem("CLOTHES", "collections", <SkinOutlined />, [
-    getItem("TOPS", "TOPS"),
-    getItem("BOTTOMS", "BOTTOMS"),
-    getItem("ACCESSORIES", "Accessories"),
+    getItem("SHIRT", "shirt"),
+    getItem("PANT", "pants"),
+    getItem("ACCESSORIES", "accessories"),
   ]),
-  getItem("SMART DEVICE", "smart-devices", <MobileOutlined />, [
-    getItem("PHONES", "PHONES"),
-    getItem("LAPTOPS", "LAPTOPS"),
-    getItem("Submenu", "sub3", null, [
-      getItem("Option 7", "7"),
-      getItem("Option 8", "8"),
-    ]),
-  ]),
+  // getItem("SMART DEVICE", "smart-devices", <MobileOutlined />, [
+  //   getItem("PHONES", "PHONES"),
+  //   getItem("LAPTOPS", "LAPTOPS"),
+  //   getItem("Submenu", "sub3", null, [
+  //     getItem("Option 7", "7"),
+  //     getItem("Option 8", "8"),
+  //   ]),
+  // ]),
   {
     type: "divider",
   },

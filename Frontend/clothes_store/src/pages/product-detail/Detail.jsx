@@ -1,4 +1,8 @@
-import { MinusOutlined, PlusOutlined } from "@ant-design/icons";
+import {
+  CheckCircleFilled,
+  MinusOutlined,
+  PlusOutlined,
+} from "@ant-design/icons";
 import { Col, Form, Image, InputNumber, Row, Space } from "antd";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
@@ -9,13 +13,17 @@ import { addToCart } from "../../stores/cart/cart-slice";
 const Detail = (props) => {
   const { idProduct } = useParams();
   const [productCurrent, setProductCurrent] = useState();
-  const [mainImage, setMainImage] = useState();
-  const [size, setSize] = useState("S");
+  // const [mainImage, setMainImage] = useState();
+  const [size, setSize] = useState("");
+  const [color, setColor] = useState("");
 
-  const [selectedSize, setSelectedSize] = useState("S");
+  const [selectedSize, setSelectedSize] = useState("");
+  const [selectedColor, setSelectedColor] = useState("");
   const standardSizeOrder = ["XS", "S", "M", "L", "XL", "XXL"];
 
   const [availableSizes, setAvailableSizes] = useState();
+  const [availableColors, setAvailableColors] = useState();
+
   const [quantity, setQuantity] = useState(1);
   const [form] = Form.useForm();
   const dispatch = useDispatch();
@@ -32,14 +40,19 @@ const Detail = (props) => {
       !productCurrent.productVariants
     ) {
       setAvailableSizes([]);
+      setAvailableColors([]);
     } else {
-      setAvailableSizes(
-        productCurrent.productVariants
-          .filter((variant) => variant.quantity > 0)
-          .map((variant) => variant.size)
+      const variants = productCurrent.productVariants.filter(
+        (variant) => variant.quantity > 0
       );
+      setAvailableSizes(variants.map((variant) => variant.size));
+      setAvailableColors(variants.map((variant) => variant.color));
     }
   }, [productDetail, productCurrent]);
+
+  useEffect(() => {
+    console.log(color);
+  }, [color]);
 
   const onSizeSelectHandler = (e, selectedSize) => {
     const newSelectedSize = e.target.innerHTML.toString();
@@ -47,10 +60,17 @@ const Detail = (props) => {
     setSelectedSize(newSelectedSize);
   };
 
+  const onColorSelectHandler = (e, selectedColor) => {
+    const newSelectedColor = e.target.innerHTML.toString();
+    setColor(newSelectedColor);
+    setSelectedColor(newSelectedColor);
+  };
+
   const addToCartHandler = () => {
     const item = {
       ...productCurrent,
       size: size,
+      color: color,
       quantity: quantity,
     };
     dispatch(addToCart(item));
@@ -78,6 +98,9 @@ const Detail = (props) => {
   const isSizeAvailable = (size) => {
     return Array.isArray(availableSizes) && availableSizes.includes(size);
   };
+  const isColorAvailable = (color) => {
+    return Array.isArray(availableColors) && availableColors.includes(color);
+  };
 
   const renderSizeOptions = (productVariants, onSizeSelectHandler) => {
     const uniqueSizes =
@@ -85,7 +108,7 @@ const Detail = (props) => {
         ? Array.from(
             new Set(
               productVariants
-                .filter((variant) => variant.quantity > 0)
+                .filter((variant) => variant.quantity >= 0)
                 .map((variant) => variant.size)
             )
           )
@@ -113,6 +136,41 @@ const Detail = (props) => {
           >
             {size}
           </div>
+        ))) ||
+      []
+    );
+  };
+  const renderColorOptions = (productVariants, onColorSelectHandler) => {
+    const uniqueColors =
+      productVariants?.length > 0
+        ? Array.from(
+            new Set(
+              productVariants
+                .filter((variant) => variant.quantity > 0)
+                .map((variant) => variant.color)
+            )
+          )
+        : [];
+
+    return (
+      (uniqueColors?.length > 0 &&
+        uniqueColors.map((color, index) => (
+          <button
+            key={index}
+            className={`color__option ${
+              isColorAvailable(color) ? "" : "out-of-stock"
+            } ${color === selectedColor ? "active" : ""}`}
+            onClick={(e) => onColorSelectHandler(e, color)}
+            style={{ backgroundColor: color, color: color }}
+          >
+            {/* {color === selectedColor && (
+              <CheckCircleFilled className="color-icon" />
+            )} */}
+            {selectedColor === color && (
+              <CheckCircleFilled className="color-icon" />
+            )}
+            {color}
+          </button>
         ))) ||
       []
     );
@@ -156,7 +214,14 @@ const Detail = (props) => {
               onSizeSelectHandler(e, size)
             )}
           </Space>
-
+          <div>Color:</div>
+          <Space className="product__color border-bot-dashed">
+            {renderColorOptions(
+              productCurrent?.productVariants,
+              onColorSelectHandler
+            )}
+            <div>Color: {color.toUpperCase()}</div>
+          </Space>
           <div>Quantity:</div>
           <Space.Compact className="product__quantity border-bot-dashed" block>
             <Form form={form}>
