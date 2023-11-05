@@ -9,6 +9,7 @@ import Products from "../pages/products/Products";
 import Register from "../pages/register/Register";
 import CheckOut from "../components/checkout/CheckOut";
 import User from "../components/user/User";
+import AdminPage from "../pages/admin/AdminPage";
 const routers = createBrowserRouter([
   {
     path: "/",
@@ -17,6 +18,10 @@ const routers = createBrowserRouter([
   {
     path: "*",
     element: <LoadingPage />,
+  },
+  {
+    path: "/admin",
+    element: <AdminPage />,
   },
   {
     path: "/checkouts",
@@ -70,17 +75,17 @@ const routers = createBrowserRouter([
     element: <CollectionsLayout />,
     children: [
       {
-        path: "TOPS",
+        path: "shirt",
         element: <Products />,
 
         index: true,
       },
       {
-        path: "BOTTOMS",
+        path: "pants",
         element: <Products />,
       },
       {
-        path: "Accessories",
+        path: "accessories",
         element: <Products />,
       },
     ],

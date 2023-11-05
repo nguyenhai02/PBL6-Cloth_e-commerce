@@ -70,6 +70,11 @@
     margin-bottom: 16px;
   }
 
+  &__color {
+    padding-bottom: 8px;
+    margin-bottom: 16px;
+  }
+
   &__quantity {
     padding-bottom: 8px;
     margin-bottom: 16px;
@@ -107,6 +112,32 @@
     border: 1px solid #000;
     color: #fff;
     cursor: pointer;
+  }
+}
+
+.color__option {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  position: relative;
+  overflow: hidden;
+  font-size: 200px;
+  font-weight: 900;
+
+  &:hover {
+    cursor: pointer;
+  }
+
+  .color-icon {
+    opacity: 1;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  &.active {
+    opacity: 1;
   }
 }
 

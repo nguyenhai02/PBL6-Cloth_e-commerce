@@ -41,6 +41,7 @@ public class CartServiceImpl implements CartService {
         for(CartItem cartItem : cartItems) {
             CartItemDetail cartItemDetail = new CartItemDetail()
                     .builder()
+                    .id(cartItem.getId())
                     .size(cartItem.getProductVariant().getSize())
                     .color(cartItem.getProductVariant().getColor())
                     .image(cartItem.getProductVariant().getProduct().getImage())
