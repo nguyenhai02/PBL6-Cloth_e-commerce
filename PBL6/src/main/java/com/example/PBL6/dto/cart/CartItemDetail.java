@@ -13,6 +13,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class CartItemDetail {
     private Integer id;
+    private Integer productId;
     private String productName;
     private String image;
     private String color;
