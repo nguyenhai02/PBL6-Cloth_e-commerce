@@ -12,4 +12,6 @@ public interface CartService {
     List<CartItemDetail> getAllCartItems(User user);
 
     CartResponseDto addToCart(User user, CartRequestDto cartRequestDto);
+    CartResponseDto deleteCartItem(User user, Integer id);
+    CartResponseDto deleteAllCartItems(User user);
 }

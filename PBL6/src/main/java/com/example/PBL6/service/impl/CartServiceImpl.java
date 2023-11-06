@@ -8,10 +8,7 @@ import com.example.PBL6.persistance.cart.CartItem;
 import com.example.PBL6.persistance.product.Product;
 import com.example.PBL6.persistance.product.ProductVariant;
 import com.example.PBL6.persistance.user.User;
-import com.example.PBL6.repository.CartItemRepository;
-import com.example.PBL6.repository.CartRepository;
-import com.example.PBL6.repository.ProductRepository;
-import com.example.PBL6.repository.ProductVariantRepository;
+import com.example.PBL6.repository.*;
 import com.example.PBL6.service.CartService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +29,8 @@ public class CartServiceImpl implements CartService {
     private ProductRepository productRepository;
     @Autowired
     private ProductVariantRepository productVariantRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     @Override
     public List<CartItemDetail> getAllCartItems(User user) {
@@ -42,6 +41,7 @@ public class CartServiceImpl implements CartService {
             CartItemDetail cartItemDetail = new CartItemDetail()
                     .builder()
                     .id(cartItem.getId())
+                    .productId(cartItem.getProductVariant().getProduct().getId())
                     .size(cartItem.getProductVariant().getSize())
                     .color(cartItem.getProductVariant().getColor())
                     .image(cartItem.getProductVariant().getProduct().getImage())
@@ -109,6 +109,18 @@ public class CartServiceImpl implements CartService {
             }
         }
     }
+    @Override
+    @Transactional
+    public CartResponseDto deleteCartItem(User user, Integer id) {
+        cartItemRepository.deleteById(id);
+        return new CartResponseDto("Xóa thành công");
+    }
 
-
+    @Override
+    @Transactional
+    public CartResponseDto deleteAllCartItems(User user) {
+        Cart cart = cartRepository.getCartByUser(user);
+        cartItemRepository.deleteAllByCart(cart);
+        return new CartResponseDto("Xóa toàn bộ giỏ hàng thành công");
+    }
 }

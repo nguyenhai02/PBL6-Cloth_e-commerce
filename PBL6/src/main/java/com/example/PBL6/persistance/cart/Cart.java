@@ -5,10 +5,7 @@ import com.example.PBL6.persistance.user.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -19,6 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @Table(name = "carts")
+@ToString
 public class Cart {
     @Id
     @Column(name = "id", nullable = false)

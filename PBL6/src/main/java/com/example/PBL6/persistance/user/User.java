@@ -17,6 +17,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @Table(name = "users")
+@ToString
 public class User implements UserDetails {
 
     @Id
@@ -53,6 +54,7 @@ public class User implements UserDetails {
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
+    @ToString.Exclude
     private Cart cart;
 
     @Override
