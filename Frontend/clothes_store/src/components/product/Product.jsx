@@ -43,7 +43,7 @@ const Product = (props) => {
         <Space className="product__infor" direction="vertical" align="center">
           <Text className="product__title font-Mont">{product?.name}</Text>
           <Text className="product__price font-Mont" strong>
-            {product?.price}$
+            {product?.price} VNĐ
           </Text>
         </Space>
       </Space>

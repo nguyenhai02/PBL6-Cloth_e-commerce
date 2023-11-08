@@ -24,7 +24,7 @@ public class CartController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/")
+    @GetMapping
     public ResponseEntity<Object> getAllCartItem(@RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
         User user =  userService.getUserProfile(JwtUtils.getUserEmailFromJwt(token)).orElse(null);
         if(user != null) {

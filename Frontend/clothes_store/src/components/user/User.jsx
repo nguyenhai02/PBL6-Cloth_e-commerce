@@ -87,7 +87,7 @@ const User = (props) => {
   };
 
   return (
-    <Space className="infor">
+    <Space className="infor" style={{ borderRadius: 10 }}>
       {isLogin ? (
         <p className="infor__title">User Information</p>
       ) : (
