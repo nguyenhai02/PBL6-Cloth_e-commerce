@@ -9,4 +9,4 @@
 ## Profile
 ![image](https://github.com/nguyenhai02/PBL6-Cloth_e-commerce/assets/92006635/9d27c46f-7bb7-4a1c-910a-1011ac079ddd)
 ## Payment
-![image](https://github.com/nguyenhai02/PBL6-Cloth_e-commerce/assets/92006635/15207e31-b829-460e-b17e-12392e2b9952)
+![image](https://github.com/nguyenhai02/PBL6-Cloth_e-commerce/assets/92006635/fc83816d-4f07-4e6a-b02a-169870915fba)
