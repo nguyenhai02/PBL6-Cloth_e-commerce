@@ -8,96 +8,120 @@
 import SwiftUI
 import PhotosUI
 
-import SwiftUI
-import PhotosUI
-
 struct ProfileView: View {
     @ObservedObject var viewModel = ProfileViewModel()
     @ObservedObject var pickerImageViewModel = PhotoPickerViewModel()
-    @Environment(\.presentationMode) var presentationMode
+    
     @Binding var path: NavigationPath
+    @State private var selectedGender: Int = 0
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            Spacer().frame(height: 15)
+            Spacer().frame(height: 12)
             HStack {
                 Button(action: {
-                    self.presentationMode.wrappedValue.dismiss()
+                    path.removeLast()
                 }) {
-                    Image("left")
-                        .padding(.leading, 15)
+                    Image(systemName: "arrow.left")
+                        .resizable()
+                        .foregroundColor(.black)
+                        .frame(width: 18, height: 18)
+                        .padding(.leading, 25)
                 }
-                Text("Your Account")
-                    .font(.system(size: 22))
-                    .foregroundColor(Color("002482"))
+                Text("Xem hồ sơ")
+                    .font(.system(size: 20))
+                    .fontWeight(.medium)
                     .padding(.leading, 15)
-                    .padding(.bottom, 15)
             }
-            Divider().background(Color("E1E2E7"))
-            Button(action: {
-            }) {
-                VStack() {
-                    ZStack() {
-                        if let image = pickerImageViewModel.selectedImage {
-                            Image(uiImage: image)
-                                .resizable()
-                                .frame(width: 100, height: 100)
-                                .clipShape(Circle())
-                        } else {
-                            Image("product")
-                                .resizable()
-                                .frame(width: 90, height: 90)
-                                .clipShape(Circle())
+            Spacer().frame(height: 30)
+            Divider().background(Color("E1E2E7").opacity(0.7)).shadow(radius: 1)
+            VStack(alignment: .center, spacing: 0) {
+                Spacer().frame(height: 25)
+                Button(action: {
+                    viewModel.showProfile()
+                }) {
+                    PhotosPicker(selection: $pickerImageViewModel.imageSelection, matching: .images) {
+                        VStack() {
+                            ZStack() {
+                                if let image = pickerImageViewModel.selectedImage {
+                                    Image(uiImage: image)
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fit)
+                                        .scaledToFill()
+                                        .frame(width: 100, height: 100)
+                                        .clipShape(Circle())
                             
+                                } else {
+                                    Image(uiImage: viewModel.image ?? UIImage())
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fill)
+                                        .frame(width: 100, height: 100)
+                                        .clipShape(Circle())
+                                    
+                                }
+                            }
+                            //                            }
+                            Text("Edit photo")
                         }
                     }
-                    PhotosPicker(selection: $pickerImageViewModel.imageSelection, matching: .images) {
-                        Text("Choose Image")
-                    }
                 }
+                .padding(.bottom, 25)
+                Divider().background(Color("E1E2E7"))
             }
-//            .frame(minWidth: .infinity, alignment: .center)
-            .padding(.top, 30)
-            .padding(.leading, 140)
-            .padding(.bottom, 20)
-            Divider().background(Color("E1E2E7"))
-//            Spacer().frame(height: 10)
-            profileItem(icon: "person", title: "Name", value: viewModel.profile?.name ?? "")
-            //            profileItem(icon: "gender", title: "Gender", value: viewModel.profile?.gender ?? "")
-            profileItem(icon: "email", title: "Email", value: viewModel.profile?.email ?? "")
-            profileItem(icon: "smartphone", title: "Phone", value: viewModel.profile?.phone ?? "")
-            profileItem(icon: "changePassword", title: "Change password", value: "")
+            .background(Color("EBF0FF1"))
+            VStack(spacing: 0) {
+                profileItem(icon: "name", title: "Tên", value: (viewModel.profile?.name ?? "")) {
+                    path.append("EditNameView")
+                }
+                profileItem(icon: "smartphone", title: "Số điện thoai", value: viewModel.profile?.phone ?? "") {
+                    path.append("EditPhoneView")
+                }
+                profileItem(icon: "gender", title: "Giới tính", value: viewModel.profile?.gender ?? "") {
+                    path.append("EditGender")
+                }
+//                profileItem(icon: "changePassword", title: "Change password", value: "") {
+//                }
+            }
             Spacer()
         }
         .navigationBarBackButtonHidden(true)
+        .onAppear {
+            viewModel.showProfile()
+            if let image = pickerImageViewModel.selectedImage {}
+        }
     }
-    
-    private func profileItem(icon: String, title: String, value: String) -> some View {
+}
+
+func profileItem(icon: String, title: String, value: String, completed: @escaping () -> Void) -> some View {
+    VStack {
         HStack {
             Button(action: {
-                // Action
+                completed()
             }) {
                 Image(icon)
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 22, height: 22)
                 Text(title)
-                    .font(.system(size: 16))
+                    .font(.system(size: 14))
                     .foregroundColor(Color("002482"))
-                    .padding(.leading, 10)
+                    .padding(.leading, 5)
                 Spacer()
                 Text(value)
-                    .font(.system(size: 15))
+                    .font(.system(size: 14))
                     .foregroundColor(.gray)
                     .padding(.trailing, 10)
                 Image("rightlight")
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 22, height: 22)
-                    .padding(.trailing, 20)
+                    .padding(.trailing, 12)
             }
+            .padding(.leading, 15)
+            .padding(.top, 20)
+            .padding(.bottom, 10)
         }
-        .padding([.top, .leading], 30)
+        Divider().background(Color("E1E2E7"))
     }
 }
 

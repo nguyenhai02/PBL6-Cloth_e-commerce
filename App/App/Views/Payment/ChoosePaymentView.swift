@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct ChoosePaymentView: View {
-    @Environment(\.presentationMode) var presentationMode
     @Binding var path: NavigationPath
     @State private var isMomoButtonSelected = false
     @State private var isVnpayButtonSelected = false
@@ -17,7 +16,7 @@ struct ChoosePaymentView: View {
             Spacer().frame(height: 30)
             HStack(spacing: 0) {
                 Button(action: {
-                    self.presentationMode.wrappedValue.dismiss()
+                    path.removeLast()
                 }) {
                     Image(systemName: "arrow.left")
                         .resizable()
@@ -31,19 +30,19 @@ struct ChoosePaymentView: View {
                     .padding(.leading, 15)
                 Spacer()
             }
-            Spacer().frame(height: 60)
+            Spacer().frame(height: 45)
 //            Divider().background(Color("EBF0FF"))
             Button(action: {
                 isMomoButtonSelected = true
                 isVnpayButtonSelected = false
             }) {
                 HStack {
-                    Image("momo")
+                    Image("vnpay")
                         .resizable()
                         .aspectRatio(contentMode: .fill)
                         .frame(width: 20, height: 20)
-                    Text("Momo")
-                        .font(.system(size: 14))
+                    Text("Vnpay")
+                        .font(.system(size: 15))
                         .foregroundColor(.black)
                         .fontWeight(.medium)
                         .padding(.leading, 10)
@@ -63,18 +62,18 @@ struct ChoosePaymentView: View {
                 isVnpayButtonSelected = true
             }) {
                 HStack {
-                    Image("vnpay")
+                    Image("money")
                         .resizable()
                         .aspectRatio(contentMode: .fill)
-                        .frame(width: 18, height: 18)
-                    Text("Vnpay")
-                        .font(.system(size: 14))
+                        .frame(width: 28, height: 28)
+                    Text("Thanh toán khi nhận hàng")
+                        .font(.system(size: 15))
                         .foregroundColor(.black)
                         .fontWeight(.medium)
                         .padding(.leading, 10)
                     Spacer()
                 }
-                .padding(.leading, 38)
+                .padding(.leading, 30)
                 .padding(.vertical, 18)
                 .frame(width: UIScreen.main.bounds.width)
                 .background(isVnpayButtonSelected ? Color("EBF0FF") : Color.clear)

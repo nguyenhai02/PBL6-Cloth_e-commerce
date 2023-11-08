@@ -11,7 +11,6 @@ struct AddAddressView: View {
     @ObservedObject var viewModel = AddressViewModel()
     @State var name: String = ""
     @State var text: String = ""
-    @Environment(\.presentationMode) var presentationMode
     @Binding var path: NavigationPath
     
     var body: some View {
@@ -19,7 +18,7 @@ struct AddAddressView: View {
             Spacer().frame(height: 20)
             HStack {
                 Button(action: {
-                    self.presentationMode.wrappedValue.dismiss()
+                    path.removeLast()
                 }) {
                     Image(systemName: "arrow.left")
                         .resizable()

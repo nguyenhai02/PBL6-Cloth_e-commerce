@@ -8,13 +8,12 @@
 import SwiftUI
 
 struct FavoriteView: View {
-    @Environment(\.presentationMode) var presentationMode
     @Binding var path: NavigationPath
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             HStack {
                 Button(action: {
-                    self.presentationMode.wrappedValue.dismiss()
+                    path.removeLast()
                 }) {
                     Image(systemName: "arrow.left")
                         .resizable()

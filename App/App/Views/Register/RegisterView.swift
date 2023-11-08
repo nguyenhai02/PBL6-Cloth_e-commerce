@@ -10,7 +10,6 @@ import SwiftUI
 struct RegisterView: View {
     @ObservedObject var viewModel = RegisterViewModel()
     @Binding var path : NavigationPath
-    @State var showLoggin = false
     
     var body: some View {
             VStack(alignment: .leading, spacing: 0) {
@@ -44,7 +43,13 @@ struct RegisterView: View {
                     TLTextField(title: "Phone", color: Color("002482"), imageURL: "phone", text: $viewModel.phone)
                     Spacer().frame(height: 35)
                     TLButton(title: "Sign up", background: Color("002482"), action: {
-                        viewModel.Register()
+                        viewModel.Register(completed: { isRegister in
+                            if isRegister {
+                                path.append("TagBarView")
+                            } else {
+                                path.append("LoginView")
+                            }
+                        })
                     })
                 }
                 .padding([.leading, .trailing], 30)
@@ -52,7 +57,7 @@ struct RegisterView: View {
                     Text("Already  have an account ?")
                         .foregroundColor(.gray)
                     Button(action: {
-                        self.showLoggin = true
+                        path.append("LoginView")
                     }) {
                         Text("Login")
                             .bold()
@@ -64,12 +69,6 @@ struct RegisterView: View {
                 Spacer()
             }
         .navigationBarBackButtonHidden()
-        .navigationDestination(isPresented: $viewModel.isRegistered){
-            TagBarView(path: $path)
-        }
-        .navigationDestination(isPresented: $showLoggin){
-            LoginView(path: $path)
-        }
     }
 }
 

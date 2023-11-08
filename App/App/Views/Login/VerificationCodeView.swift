@@ -49,14 +49,6 @@ struct VerificationCodeView: View {
                 Spacer()
             }
         .navigationBarBackButtonHidden()
-//        .navigationBarItems(leading: Button(action: {
-//            self.presentationMode.wrappedValue.dismiss()
-//        }) {
-//            HStack {
-//                Image(systemName: "arrow.left")
-//                    .foregroundColor(.gray)
-//            }
-//        })
     }
 }
 

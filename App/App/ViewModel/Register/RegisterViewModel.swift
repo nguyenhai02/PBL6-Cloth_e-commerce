@@ -16,10 +16,10 @@ class RegisterViewModel: ObservableObject {
     @Published var image = ""
     @Published var address = ""
     @Published var phone = ""
-    @Published var isRegistered: Bool = false
+    @Published var isRegister = false
     @Published var errorMessage = ""
     
-    func Register() {
+    func Register(completed: @escaping (Bool) -> Void) {
         guard invalid() else {
             return
         }
@@ -28,15 +28,20 @@ class RegisterViewModel: ObservableObject {
         provider.request(.register(name: name, email: email, password: password, gender: gender, image: image,address: address, phone: phone)) { result in
             switch result {
             case let .success(moyaResponse):
+                print("token la token token")
                 do {
                     let filteredResponse = try moyaResponse.filterSuccessfulStatusCodes()
                     let token = try filteredResponse.map(TokenResponse.self)
+                    print("token la token token")
+                    print("token: \(token)")
+                    print(self.name)
                     UserDefaults.standard.set(token.token, forKey: Constanst.tokenKey)
                 }
                 catch {}
                 let statusCode = moyaResponse.statusCode
                 if statusCode == 200 {
-                    self.isRegistered = true
+                    self.isRegister = true
+                    completed(self.isRegister)
                 } else {
                     self.errorMessage = "Email already exists."
                 }

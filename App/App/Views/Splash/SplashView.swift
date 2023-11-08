@@ -8,6 +8,12 @@
 import SwiftUI
 
 struct SplashView: View {
+//    static func == (lhs: SplashView, rhs: SplashView) -> Bool {
+//        return true
+//    }
+//    func hash(into hasher: inout Hasher) {
+//
+//    }
     @ObservedObject var viewModel = SplashViewModel()
     @State var path = NavigationPath()
     
@@ -20,12 +26,17 @@ struct SplashView: View {
                     .frame(width: 150, height: 150)
             }
             .navigationBarBackButtonHidden(true)
-            .navigationDestination(isPresented: $viewModel.isLoggIned){
-                    TagBarView(path: $path)
+            .navigationDestination(for: String.self){ name in
+                getScreen(id: name, path: $path )
+            }
+        }.onAppear {
+            viewModel.checkLogin { isLogined in
+                if(isLogined){
+                    path.append("TagBarView")
+                } else {
+                    path.append("LoginView")
                 }
-            .navigationDestination(isPresented: $viewModel.isNonLoggIned){
-                    LoginView(path: $path)
-                }
+            }
         }
     }
 }
@@ -37,3 +48,5 @@ struct SplashView_Previews: PreviewProvider {
         SplashView(path: NavigationPath())
     }
 }
+
+

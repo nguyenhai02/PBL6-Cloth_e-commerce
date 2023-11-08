@@ -83,6 +83,7 @@ struct RadioAddressGroup: View {
                 index in
                 RadioButtonRow(index: index, item: self.items[index], isSelected: .constant(self.selection==index), action: { i in
                     print(i)
+//                   print( items[index])
                     self.selection = i
                 })
             }

@@ -11,15 +11,17 @@ struct Profile: Decodable {
     var id: Int
     var name: String
     var email: String
-    var address: String
+    var gender: String?
+    var avatar: String?
+    var address: String?
     var phone: String
     var role: String
     var enabled: Bool
+    var accountNonExpired: Bool = true
+    var accountNonLocked: Bool = true
+    var credentialsNonExpired: Bool = true
     var username: String
     var authorities: [Authorities] = []
-    var accountNonExpired: Bool = false
-    var accountNonLocked: Bool = false
-    var credentialsNonExpired: Bool = false
 }
 
 struct Authorities: Decodable{

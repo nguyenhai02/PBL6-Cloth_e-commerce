@@ -6,7 +6,7 @@
 //
 
 struct ResponseData: Decodable {
-    let content: [Product]
+    let content: [ProductDetail]
     let pageable: Pageable
     let last: Bool
     let totalPages, totalElements: Int
@@ -15,6 +15,11 @@ struct ResponseData: Decodable {
     let sort: Sort
     let numberOfElements: Int
     let empty: Bool
+}
+
+struct ProductDetail: Decodable {
+    let product: Product
+    var productVariants: [ProductVariant]
 }
 
 struct Product: Decodable {
@@ -29,6 +34,12 @@ struct Product: Decodable {
 struct Categories: Decodable {
     let id: Int
     let name, description, createDate, updateDate: String
+}
+struct ProductVariant: Decodable {
+    let id: Int
+    var color: String
+    var size: String
+    var quantity: Int
 }
 
 struct Pageable: Decodable {

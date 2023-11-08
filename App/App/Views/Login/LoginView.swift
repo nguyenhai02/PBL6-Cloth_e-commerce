@@ -10,8 +10,6 @@ import SwiftUI
 struct LoginView: View {
     @ObservedObject var viewModel = LoginViewModel()
     @Binding var path : NavigationPath
-    @State var showingForgotPassword = false
-    @State var showingRegister = false
     
     var body: some View {
         VStack(alignment: .leading,spacing: 0) {
@@ -49,7 +47,7 @@ struct LoginView: View {
                 
                 TLSecureField(title: "Password", color: Color("002482"),imageURL: "password", text: $viewModel.password)
                 Button(action: {
-                    self.showingForgotPassword = true
+                    path.append("ForgotPasswordView")
                 }) {
                     Text("Forgot Password ?")
                         .foregroundColor(Color("002482"))
@@ -60,7 +58,9 @@ struct LoginView: View {
                 }
                 Spacer().frame(height: 20)
                 TLButton(title: "Login", background:  Color("002482"), action: {
-                    viewModel.login()
+                    viewModel.login(completed: { 
+                        path.append("TagBarView")
+                    })
                 })
                 Spacer().frame(height: 20)
                 HStack {
@@ -116,7 +116,7 @@ struct LoginView: View {
                     Text("Don’t have an account ?")
                         .foregroundColor(.gray)
                     Button(action: {
-                        self.showingRegister = true
+                        path.append("RegisterView")
                     }) {
                         Text("Register Now")
                             .bold()
@@ -130,16 +130,7 @@ struct LoginView: View {
             
             Spacer()
         }
-        .navigationDestination(isPresented: $viewModel.isLoggIned){
-            TagBarView(path: $path)
-        }
         .navigationBarBackButtonHidden(true)
-        .navigationDestination(isPresented: $showingForgotPassword, destination: {
-            ForgotPasswordView(path: $path)
-        })
-        .navigationDestination(isPresented: $showingRegister, destination: {
-            RegisterView(path: $path)
-        })
     }
 }
 
