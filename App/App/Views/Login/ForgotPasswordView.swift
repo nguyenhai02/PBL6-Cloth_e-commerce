@@ -9,7 +9,6 @@ import SwiftUI
 
 struct ForgotPasswordView: View {
     @ObservedObject var viewModel = ForgotPasswordViewModel()
-    @Environment(\.presentationMode) var presentationMode
     @Binding var path: NavigationPath
     var body: some View {
             VStack(alignment: .leading, spacing: 0) {
@@ -42,7 +41,7 @@ struct ForgotPasswordView: View {
             }
         .navigationBarBackButtonHidden()
         .navigationBarItems(leading: Button(action: {
-            self.presentationMode.wrappedValue.dismiss()
+            path.removeLast()
         }) {
             HStack {
                 Image(systemName: "arrow.left")

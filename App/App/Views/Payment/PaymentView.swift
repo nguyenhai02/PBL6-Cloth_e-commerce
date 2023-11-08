@@ -6,18 +6,26 @@
 //
 
 import SwiftUI
+import Kingfisher
 
-struct PaymentView: View {
-    @Environment(\.presentationMode) var presentationMode
+struct PaymentView: View, Hashable{
+    static func == (lhs: PaymentView, rhs: PaymentView) -> Bool {
+        return true
+    }
+    func hash(into hasher: inout Hasher) {
+    }
+    
     @Binding var path: NavigationPath
-    let item: ItemAddress
-    let product: Product
+//     let productDetail: ProductDetail
+    @ObservedObject var homeViewModel: HomeViewModel
+    @ObservedObject var cartViewModel: CartViewModel
+    let viewModel: PaymentViewModel = PaymentViewModel()
     var body: some View {
         VStack(spacing: 0) {
             Spacer().frame(height: 18)
             HStack {
                 Button(action: {
-                    self.presentationMode.wrappedValue.dismiss()
+                    path.removeLast()
                 }) {
                     Image(systemName: "arrow.left")
                         .resizable()
@@ -39,7 +47,7 @@ struct PaymentView: View {
             ScrollView {
                 Spacer().frame(height: 12)
                 Button(action: {
-                    
+                    path.append("ChooseAddressView")
                 }) {
                     HStack {
                         VStack {
@@ -54,7 +62,7 @@ struct PaymentView: View {
                                 .foregroundColor(.black)
                                 .font(.system(size: 15))
                             HStack(spacing: 0) {
-                                Text(item.name)
+                                Text(viewModel.item.contries)
                                     .foregroundColor(.black)
                                     .font(.system(size: 14))
                                     .lineLimit(1)
@@ -62,17 +70,17 @@ struct PaymentView: View {
                                     .frame(width: 1, height: 14)
                                     .foregroundColor(.black)
                                     .padding(.leading, 8)
-                                Text(item.phone)
+                                Text(viewModel.item.phone)
                                     .font(.system(size: 14))
                                     .foregroundColor(.black)
                                     .padding(.leading, 6)
                                     .lineLimit(1)
                             }
                             .padding(.top, 8)
-                            Text(item.address)
+                            Text(viewModel.item.address)
                                 .font(.system(size: 14))
                                 .foregroundColor(.black)
-                            Text(item.contries)
+                            Text(viewModel.item.contries)
                                 .font(.system(size: 14))
                                 .foregroundColor(.black)
                         }
@@ -86,21 +94,22 @@ struct PaymentView: View {
                 //                Divider().background(.black).shadow(radius: 10)
                 Spacer().frame(height: 25)
                 HStack {
-                    Image("xinh")
+                    KFImage(URL(string: homeViewModel.productDetail?.product.image ?? ""))
                         .resizable()
+                        .frame(width: 100, height: 110)
+                        .scaledToFit()
                         .aspectRatio(contentMode: .fit)
-                        .frame(width: 100, height: 100)
                     VStack(alignment: .leading, spacing: 0) {
-                        Text(product.name)
+                        Text(homeViewModel.productDetail?.product.name ?? "")
                             .font(.system(size: 17))
                             .foregroundColor(.black)
                             .padding(.top, 10)
                         HStack(spacing: 0) {
-                            Text("đ\((product.price) - ((product.price) * (product.discount) / 100))")
+                            Text("đ\((homeViewModel.productDetail?.product.price ?? 0) - ((homeViewModel.productDetail?.product.price ?? 0) * (homeViewModel.productDetail?.product.discount ?? 0) / 100))")
                                 .font(.system(size: 16))
                                 .foregroundColor(.gray)
                             Spacer()
-                            Text("x1")
+                            Text("x\(cartViewModel.quantity)")
                                 .font(.system(size: 16))
                                 .foregroundColor(.gray)
                                 .padding(.trailing, 15)
@@ -121,7 +130,7 @@ struct PaymentView: View {
                         .font(.system(size: 16))
                         .foregroundColor(.black)
                     Spacer()
-                    Text("đ200000")
+                    Text("\(((homeViewModel.productDetail?.product.price ?? 0) - ((homeViewModel.productDetail?.product.price ?? 0) * (homeViewModel.productDetail?.product.discount ?? 0) / 100)) * (cartViewModel.quantity))")
                         .font(.system(size: 16))
                         .fontWeight(.medium)
                         .foregroundColor(.red)
@@ -131,14 +140,14 @@ struct PaymentView: View {
                 Spacer().frame(height: 20)
                 Divider().background(Color("E1E2E7"))
                 Button(action: {
-                    
+                    path.append("ChoosePaymentView")
                 }) {
                     HStack {
                         Text("Phương phức thanh toán")
                             .font(.system(size: 16))
                             .foregroundColor(.black)
                         Spacer()
-                        Text("Momo")
+                        Text("Thanh toán khi nhận hàng")
                             .font(.system(size: 16))
                             .foregroundColor(.black)
                         Image(systemName: "greaterthan")
@@ -163,10 +172,10 @@ struct PaymentView: View {
                         Text("Tổng thanh toán")
                             .font(.system(size: 14))
                             .foregroundColor(.black)
-                        Text("đ128000")
+                        Text("\(((homeViewModel.productDetail?.product.price ?? 0) - ((homeViewModel.productDetail?.product.price ?? 0) * (homeViewModel.productDetail?.product.discount ?? 0) / 100)) * (cartViewModel.quantity))")
                             .font(.system(size: 14))
                             .foregroundColor(.red)
-                            .fontWeight(.bold)
+                            .fontWeight(.medium)
                             .padding(.top, 8)
                     }
                 }
@@ -174,7 +183,7 @@ struct PaymentView: View {
                 .padding(.leading, 100)
                 Spacer()
                 Button(action: {
-                    
+                    path.append("MyOrdersView")
                 }) {
                     Text("Đặt Hàng")
                         .font(.system(size: 15))
@@ -190,8 +199,11 @@ struct PaymentView: View {
     }
 }
 
+
 struct PaymentView_Previews: PreviewProvider {
     static var previews: some View {
-        PaymentView(path: .constant(NavigationPath()), item: ItemAddress(name: "Nguyen thi Thanh Hien", phone: "01243242343", address: "213 chau tinh tri", contries: "Thanh xuan, Ha noi, Viet nam"), product: Product(id: 1, name: "Quần áo là quần áo là quần áo", description: "Green printed woven fit and flare dress, has a notched lapel collar and sleevesless.", price: 10, discount: 10, createDate: "1/1/2023", updateDate: "1/2/2023", category: Categories(id: 3, name: "Quần", description: "Quần jeans nam nữ", createDate: "2023-10-21T00:55:48", updateDate: "2023-10-21T00:55:48")))
+        let product = Product(id: 1, name: "Quần áo là quần áo là quần áo", description: "Green printed woven fit and flare dress, has a notched lapel collar and sleevesless.", price: 10, discount: 10, createDate: "1/1/2023", updateDate: "1/2/2023", category: Categories(id: 3, name: "Quần", description: "Quần jeans nam nữ", createDate: "2023-10-21T00:55:48", updateDate: "2023-10-21T00:55:48"))
+        let productVariants = [ProductVariant(id: 1, color: "red", size: "M", quantity: 40)]
+        PaymentView(path: .constant(NavigationPath()), homeViewModel: HomeViewModel(), cartViewModel: CartViewModel())
     }
 }

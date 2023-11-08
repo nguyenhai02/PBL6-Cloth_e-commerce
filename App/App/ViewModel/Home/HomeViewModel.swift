@@ -10,11 +10,16 @@ import Moya
 
 class HomeViewModel: ObservableObject {
     @Published var categories: [Categories] = []
-    @Published var products: [Product] = []
-    @Published var categoryProduct: [Product] = []
+    @Published var products: [ProductDetail] = []
+//    @Published var products: [Product] = []
+    @Published var categoryProduct: [ProductDetail] = []
+    @Published var categoryProductByName: [ProductDetail] = []
+    @Published var productVariants: [ProductVariant] = []
     @Published var categoryId = 0
-    @Published var image: UIImage?
-    var product: Product = Product(id: 0, name: "", description: "", price: 0, discount: 0, createDate: "", updateDate: "", category: Categories(id: 0, name: "", description: "", createDate: "", updateDate: ""))
+    @Published var idProductVariant = 0
+    @Published var id: Int = 0
+    var quantity: Int = 0
+    var productDetail: ProductDetail? = nil
     
     
     init() {
@@ -22,31 +27,30 @@ class HomeViewModel: ObservableObject {
         showProduct()
     }
     
-    func loadImage(from urlString: String, oncompleted: @escaping () -> Void) {
-        if let url = URL(string: urlString) {
-            DispatchQueue.global().async {
-                if let data = try? Data(contentsOf: url) {
-                    print("urlString")
-                    print(urlString)
-                    if let image = UIImage(data: data) {
-                        DispatchQueue.main.async {
-                        oncompleted: do {
-                            self.image = image
-                            }
-                        }
-                    } else {
-                        // Xử lý trường hợp không thể tạo hình ảnh từ dữ liệu
-                    }
-                } else {
-                    // Xử lý trường hợp không thể tải dữ liệu từ URL
-                }
+    func getProductDetail() {
+        let provider = MoyaProvider<MyService>()
+        provider.request(.getItemDetail(id: id)) { result in
+            switch result {
+            case let .success(moyaResponse):
+                do{
+                    print(self.id)
+                    let filteredReponse = try moyaResponse.filterSuccessfulStatusCodes()
+                    print("hihi")
+                    let productDetail = try filteredReponse.map(ProductDetail.self)
+                    self.productDetail = productDetail
+                    print(self.productDetail)
+                } catch { print("product2")}
+            case let .failure(error):
+                print(error)
             }
         }
     }
+    
     func showProduct() {
         let provider = MoyaProvider<MyService>()
         let sort = "price,asc"
-        provider.request(.showProduct(page: 0, size: 10, sort: sort)) { result in
+//            .showProduct(page: 0, size: 10, sort: sort)
+        provider.request(.showProduct) { result in
             switch result {
             case let .success(moyaResponse):
                 do {
@@ -54,8 +58,7 @@ class HomeViewModel: ObservableObject {
                     let responseData = try filteredResponse.map(ResponseData.self)
                     print("responseData.content")
                     self.products = responseData.content
-                    //                    print(self.product)
-                    print(responseData.content) // in ra dữ liệu đã được map từ JSON
+//                    print(responseData.content)
                 } catch {
                     print("Error in processing product data: \(error)")
                 }
@@ -84,7 +87,29 @@ class HomeViewModel: ObservableObject {
     func showCategoryProduct(categoryId: Int) {
         let sort = "price,asc"
         let provider = MoyaProvider<MyService>()
-        provider.request(.showProduct(page: 0, size: 10, sort: sort)) { result in
+        provider.request(.showProduct) { result in
+            switch result {
+            case let .success(moyaResponse):
+                do {
+                    let filteredResponse = try moyaResponse.filterSuccessfulStatusCodes()
+                    let responseData = try filteredResponse.map(ResponseData.self)
+                    self.categoryProduct = responseData.content.filter{$0.product.category.id == categoryId}
+                    print("categoryProduct")
+                    print(self.categoryProduct)
+                    //                    print(responseData.content) // in ra dữ liệu đã được map từ JSON
+                } catch {
+                    print("Error in processing product data: \(error)")
+                }
+            case let .failure(error):
+                print(error)
+            }
+        }
+    }
+    
+    func searchByName(text: String) {
+        let sort = "price,asc"
+        let provider = MoyaProvider<MyService>()
+        provider.request(.showProduct) { result in
             switch result {
             case let .success(moyaResponse):
                 print("producthiproducthi2")
@@ -92,10 +117,8 @@ class HomeViewModel: ObservableObject {
                     let filteredResponse = try moyaResponse.filterSuccessfulStatusCodes()
                     let responseData = try filteredResponse.map(ResponseData.self)
                     print("responseData.content")
-                    self.categoryProduct = responseData.content.filter { product in
-                        return product.category.id  == categoryId
-                    }
-                    print(self.categoryProduct)
+                    self.categoryProductByName = responseData.content.filter{$0.product.name.contains(text)}
+                    print(self.categoryProductByName)
                     print("self.categoryProduct")
                     //                    print(responseData.content) // in ra dữ liệu đã được map từ JSON
                 } catch {

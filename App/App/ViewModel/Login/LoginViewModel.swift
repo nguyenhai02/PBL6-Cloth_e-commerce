@@ -14,9 +14,8 @@ class LoginViewModel: ObservableObject {
     @Published var isLoggedIn = false
     @Published var errorMessage = ""
     @Published var emailError = ""
-    @Published var isLoggIned: Bool = false
     
-    func login() {
+    func login(completed: @escaping () -> Void) {
         guard invalid() else {
             return
         }
@@ -27,15 +26,14 @@ class LoginViewModel: ObservableObject {
             case let .success(moyaResponse):
                 do {
                     let filteredResponse = try moyaResponse.filterSuccessfulStatusCodes()
-                    let token = try filteredResponse.map(TokenResponse.self) // user is of type User
-//                    print("data: \(token.token)")
+                    let token = try filteredResponse.map(TokenResponse.self)
                     UserDefaults.standard.set(token.token, forKey: Constanst.tokenKey)
                     UserDefaults.standard.set(self?.email ?? "", forKey: Constanst.emailKey)
                 }
                 catch {}
                 let statusCode = moyaResponse.statusCode
                 if statusCode == 200 {
-                    self?.isLoggIned = true
+                    completed()
                 } else {
                     self?.errorMessage = "Invalid email or password."
                 }

@@ -6,25 +6,21 @@
 //
 
 import SwiftUI
+import Kingfisher
 
 struct SettingView: View {
     @ObservedObject var viewModel = ProfileViewModel()
     @State private var logout = false
-    @State var showMyOrder = false
-    @State var showAddress = false
-    @State var showWishlist = false
-    @State var showPayment = false
-    
     @Binding var path : NavigationPath
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             Spacer().frame(height: 40)
             HStack {
-                Image("product")
+                KFImage(URL(string: viewModel.profile?.avatar ?? ""))
                     .resizable()
-                    .clipShape(Circle())
                     .frame(width: 57, height: 57)
+                    .clipShape(Circle())
                 VStack(alignment: .leading, spacing: 0) {
                     Text(viewModel.profile?.name ?? "")
                         .font(.system(size: 20))
@@ -42,13 +38,13 @@ struct SettingView: View {
                 Button(action: {
                     switch(item.id){
                     case 1:
-                        showMyOrder.toggle()
+                        path.append("MyOrdersView")
                         break
                     case 2:
-                        showAddress.toggle()
+                        path.append("ChooseAddressView")
                         break
                     case 3:
-                        showPayment.toggle()
+                        path.append("ChoosePaymentView")
                     default:
                         return
                     }
@@ -75,8 +71,8 @@ struct SettingView: View {
             }
             Button(action: {
                 viewModel.logOut()
-                logout = true
-                path.popToRoot()
+                path.removeLast(path.count)
+                path = NavigationPath()
             }) {
                 HStack {
                     Image(systemName: "arrowshape.turn.up.left")
@@ -95,17 +91,8 @@ struct SettingView: View {
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .navigationBarBackButtonHidden(true)
-        .navigationDestination(isPresented: $logout) {
-            LoginView(path: $path)
-        }
-        .navigationDestination(isPresented: $showAddress) {
-            ChooseAddressView(path: $path)
-        }
-        .navigationDestination(isPresented: $showWishlist) {
-            FavoriteView(path: $path)
-        }
-        .navigationDestination(isPresented: $showPayment) {
-            ChoosePaymentView(path: $path)
+        .onAppear {
+            viewModel.showProfile()
         }
     }
 }
@@ -113,13 +100,7 @@ struct SettingView: View {
 struct SettingView_Previews: PreviewProvider {
     static var previews: some View {
         let  viewModel = ProfileViewModel()
-        viewModel.profile = Profile(id: 1, name: "Hien", email: "Hien@gmail.com", address: "DN", phone: "0582435722", role: "user", enabled: false, username: "Hien@gmail.com")
+        viewModel.profile = Profile(id: 1, name: "Hien", email: "Hien@gmail.com", avatar: "", address: "DN", phone: "0582435722", role: "user", enabled: false, username: "Hien@gmail.com")
         return SettingView(viewModel: viewModel, path: .constant(NavigationPath()))
-    }
-}
-
-extension NavigationPath{
-    mutating func popToRoot() {
-        self = NavigationPath()
     }
 }

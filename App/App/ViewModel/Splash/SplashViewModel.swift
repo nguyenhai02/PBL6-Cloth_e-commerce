@@ -8,19 +8,10 @@
 import Foundation
 
 class SplashViewModel: ObservableObject {
-    @Published var isLoggIned: Bool = false
-    @Published var isNonLoggIned: Bool = false
     
-    init() {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2, execute: { [weak self] in
-            self?.checkLogin()
-        })
-    }
-    
-    func checkLogin(){
+    func checkLogin(completed: (Bool) -> Void){
         let token = UserDefaults.standard.string(forKey: Constanst.tokenKey) ?? ""
-        isLoggIned = !token.isEmpty
-        isNonLoggIned = token.isEmpty
+        completed(!token.isEmpty)
     }
     
 }

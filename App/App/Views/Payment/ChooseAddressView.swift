@@ -8,13 +8,10 @@
 import SwiftUI
 
 struct ChooseAddressView: View {
-    @Environment(\.presentationMode) var presentationMode
     @Binding var path: NavigationPath
-    @State var showAddAddress = false
     @State var isSelected: Int = 0
     @State var value: Int = 0
     @State var address = [ItemAddress(name: " Nguyễn Thị Thanh Hiền", phone: "01243242343", address: "213 chau tinh tri", contries: "Thanh xuan, Ha noi, Viet nam"), ItemAddress(name: "Nguyễn Thị Thanh Hiền", phone: "01243242343", address: "213 chau tinh tri", contries: "Thanh xuan, Ha noi, Viet nam"), ItemAddress(name: "Nguyễn Thị Thanh Hiền", phone: "01243242343", address: "213 chau tinh tri", contries: "Thanh xuan, Ha noi, Viet nam")]
-    
     
     
     var body: some View {
@@ -22,7 +19,7 @@ struct ChooseAddressView: View {
             Spacer().frame(height: 20)
             HStack(spacing: 0) {
                 Button(action: {
-                    self.presentationMode.wrappedValue.dismiss()
+                    path.removeLast()
                 }) {
                     Image(systemName: "arrow.left")
                         .resizable()
@@ -39,15 +36,13 @@ struct ChooseAddressView: View {
             }
             Spacer().frame(height: 30)
             RadioAddressGroup(items: address , selection: 0) {
+                print(address)
                 //                    address.append(ItemAddress(name: "Hien", phone: "01243242343", address: "213 chau tinh tri", contries: "Thanh xuan, Ha noi, Viet nam")
-                self.showAddAddress = true
+                path.append("AddAddressView")
             }
             Spacer()
         }
         .navigationBarBackButtonHidden(true)
-        .navigationDestination(isPresented: $showAddAddress) {
-            AddAddressView(path: $path)
-        }
     }
 }
 

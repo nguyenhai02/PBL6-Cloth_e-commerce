@@ -21,7 +21,7 @@ class CategoryProductViewModel {
     func showCategoryProduct(categoryId: Int) {
         let sort = "price,asc"
         let provider = MoyaProvider<MyService>()
-        provider.request(.showProduct(page: 0, size: 5, sort: sort)) { result in
+        provider.request(.showProduct) { result in
             switch result {
             case let .success(moyaResponse):
                 print("producthiproducthi2")
@@ -29,7 +29,8 @@ class CategoryProductViewModel {
                     let filteredResponse = try moyaResponse.filterSuccessfulStatusCodes()
                     let responseData = try filteredResponse.map(ResponseData.self)
                     print("responseData.content")
-                    self.categoryProduct = responseData.content.filter { product in
+                    self.product = responseData.content.map {$0.product}
+                    self.categoryProduct = self.product.filter { product in
                         return product.category.id  == categoryId
                     }
                     print(self.product)
