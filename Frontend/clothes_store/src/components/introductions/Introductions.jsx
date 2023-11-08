@@ -38,9 +38,7 @@ const Introductions = () => {
         <div className="introductions__title">LIÊN HỆ CHÚNG TÔI</div>
         <div className="introductions__content">
           E-Mail:{" "}
-          <a href="mailto:nguyenhungit0312@gmail.com">
-            nguyenhai@gmail.com
-          </a>
+          <a href="mailto:nguyenhungit0312@gmail.com">nguyenhai@gmail.com</a>
         </div>
       </Col>
     </Row>

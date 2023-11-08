@@ -1,4 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk } from "@reduxjs/toolkit";
+import { getAllCartItems } from "../../api/carts";
 
 const loadCartFromLocalStorage = () => {
   const cartData = localStorage.getItem("cart");
@@ -7,9 +9,19 @@ const loadCartFromLocalStorage = () => {
   }
   return initialState;
 };
+
+export const _getAllCartItems = createAsyncThunk(
+  "getAllCartItems",
+  async () => {
+    const response = await getAllCartItems();
+    return response;
+  }
+);
+
 const initialState = {
-  items: [],
-  totalAmount: 0,
+  cartItems: [],
+  loading: false,
+  errorr: null,
 };
 const cartSlice = createSlice({
   name: "cart",
