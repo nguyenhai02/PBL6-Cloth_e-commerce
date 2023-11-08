@@ -26,6 +26,8 @@ func getScreen(id: String, path: Binding<NavigationPath>) -> some View{
         AddAddressView(path: path)
 //    case "PaymentView":
 //        PaymentView(path: path,)
+    case "ForgotPasswordView":
+        ForgotPasswordView(path: path)
     case "RegisterView":
         RegisterView(path: path)
     case "EditNameView":
