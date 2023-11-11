@@ -157,7 +157,8 @@ const HeaderPage = () => {
             {renderDrawerContent(drawerItem)}
           </Drawer>
         )}
-        <span className="quantity">({items.length})</span>
+        {/* <span className="quantity">({items.length})</span> */}
+        <span className="quantity">3</span>
         {isMobile && (
           <MenuOutlined className="menu-icon" onClick={handleMenuClick} />
         )}
