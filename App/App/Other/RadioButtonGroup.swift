@@ -9,7 +9,7 @@ import SwiftUI
 
 struct RadioButtonRow: View {
     var index: Int
-    var item: ItemAddress
+    var item: Address
     @Binding var isSelected: Bool
     var action: (_ index:Int) -> Void
     
@@ -51,11 +51,11 @@ struct RadioButtonRow: View {
                     }
                 }
                 .padding(.top, 20)
-                Text(item.address)
+                Text(item.street)
                     .font(.system(size: 14))
                     .foregroundColor(.gray)
                     .padding(.top, 5)
-                Text(item.contries)
+                Text("\(item.district) \(item.ward) \(item.city)")
                     .font(.system(size: 14))
                     .foregroundColor(.gray)
                     .padding(.top, 5)
@@ -73,7 +73,7 @@ struct RadioButtonRow: View {
 
 struct RadioAddressGroup: View {
     
-    var items: [ItemAddress]
+    var items: [Address]
     @State var selection:Int
     var onAddAddress: () -> Void
     
@@ -108,7 +108,7 @@ struct RadioAddressGroup: View {
 
 struct RadioGroup_Previews: PreviewProvider {
     static var previews: some View {
-        RadioAddressGroup(items: [ItemAddress(name: "Nguyễn Thị Thanh Hiền", phone: "01243242343", address: "213 chau tinh tri", contries: "Thanh xuan, Ha noi, Viet nam"), ItemAddress(name: "Nguỹen Thị Thanh Hiên", phone: "01243242343", address: "213 chau tinh tri", contries: "Thanh xuan, Ha noi, Viet nam"), ItemAddress(name: "Hien", phone: "01243242343", address: "213 chau tinh tri", contries: "Thanh xuan, Ha noi, Viet nam")], selection: 0, onAddAddress: {
+        RadioAddressGroup(items: [Address(name: "Hien", phone: "0572435622", street: "Khanh toan", city: "Da Nang", ward: "hai chau", district: "Hoa cuong")], selection: 0, onAddAddress: {
             
         })
     }

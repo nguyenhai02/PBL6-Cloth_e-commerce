@@ -48,7 +48,7 @@ struct EditNameView: View {
                     .overlay(
                         RoundedRectangle(cornerRadius: 0).stroke(Color.gray.opacity(0.1), lineWidth: 1)
                     ).shadow(radius: 2)
-                    HStack() {
+                HStack() {
                         TextField("", text: $viewModel.name)
                             .font(.system(size: 17))
                             .foregroundColor(.black)

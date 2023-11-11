@@ -12,6 +12,7 @@ struct ItemRow: View {
     @EnvironmentObject var dataStore: DataStore
     @ObservedObject var loadImageviewModel = LoadImage()
     @ObservedObject var viewModel = HomeViewModel()
+    @ObservedObject var  favoriteViewModel = FavouriteViewModel()
     @Binding var path: NavigationPath
     var product: ProductDetail
     var body: some View {
@@ -26,7 +27,8 @@ struct ItemRow: View {
                
                 .overlay (
                     Button(action: {
-                        print("action")
+                        favoriteViewModel.id =  product.product.id
+                        favoriteViewModel.addFavouriteProduct()
                     }) {
                         Image(systemName: "heart")
                         //                        Image(systemName: product.isFavorite == true ? "heart.fill" : "heart")

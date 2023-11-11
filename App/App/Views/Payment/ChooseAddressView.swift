@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct ChooseAddressView: View {
+    @ObservedObject var viewModel = AddressViewModel()
     @Binding var path: NavigationPath
     @State var isSelected: Int = 0
     @State var value: Int = 0
@@ -35,7 +36,7 @@ struct ChooseAddressView: View {
                 //                    }
             }
             Spacer().frame(height: 30)
-            RadioAddressGroup(items: address , selection: 0) {
+            RadioAddressGroup(items: viewModel.savedAddessed , selection: 0) {
                 print(address)
                 //                    address.append(ItemAddress(name: "Hien", phone: "01243242343", address: "213 chau tinh tri", contries: "Thanh xuan, Ha noi, Viet nam")
                 path.append("AddAddressView")
@@ -43,6 +44,9 @@ struct ChooseAddressView: View {
             Spacer()
         }
         .navigationBarBackButtonHidden(true)
+        .onAppear {
+            viewModel.getAddress()
+        }
     }
 }
 

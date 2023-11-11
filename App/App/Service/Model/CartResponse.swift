@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Cart: Decodable {
+struct Cart: Decodable, Hashable {
 //    var idProduct: String = UUID().uuidString
     let id: Int
     let productId: Int

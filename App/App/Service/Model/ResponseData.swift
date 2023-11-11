@@ -22,7 +22,7 @@ struct ProductDetail: Decodable {
     var productVariants: [ProductVariant]
 }
 
-struct Product: Decodable {
+struct Product: Decodable, Hashable {
     let id: Int
     let name, description: String
     let price, discount: Int
@@ -31,7 +31,7 @@ struct Product: Decodable {
     let category: Categories
 }
 
-struct Categories: Decodable {
+struct Categories: Decodable, Hashable {
     let id: Int
     let name, description, createDate, updateDate: String
 }

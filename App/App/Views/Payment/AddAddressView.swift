@@ -14,64 +14,117 @@ struct AddAddressView: View {
     @Binding var path: NavigationPath
     
     var body: some View {
-        VStack(alignment: .leading)  {
-            Spacer().frame(height: 20)
-            HStack {
-                Button(action: {
-                    path.removeLast()
-                }) {
-                    Image(systemName: "arrow.left")
-                        .resizable()
-                        .foregroundColor(.black)
-                        .frame(width: 18, height: 18)
-                        .padding(.leading, 25)
+        ZStack {
+            Color("F9F9F9")
+                .edgesIgnoringSafeArea(.all)
+            VStack(alignment: .leading)  {
+                HStack {
+                    Button(action: {
+                        path.removeLast()
+                    }) {
+                        Image(systemName: "arrow.left")
+                            .resizable()
+                            .foregroundColor(.black)
+                            .frame(width: 18, height: 18)
+                            .padding(.leading, 25)
+                    }
+                    Text("Sửa tên")
+                        .font(.system(size: 20))
+                        .fontWeight(.medium)
+                        .padding(.leading, 15)
+                    Spacer()
                 }
-                Text("Địa chỉ mới")
-                    .font(.system(size: 20))
-                    .fontWeight(.medium)
-                    .padding(.leading, 15)
+                Spacer().frame(height: 18)
+                Divider().background(Color.gray.opacity(0.1))
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 0).stroke(Color.gray.opacity(0.1), lineWidth: 1)
+                    ).shadow(radius: 2)
+                VStack(alignment: .leading) {
+                    HStack {
+                        Text("Liên hệ")
+                            .font(.system(size: 14))
+                            .foregroundColor(.black.opacity(0.6))
+                            .padding(.leading, 15)
+                            .padding(.top, 5)
+                        Spacer()
+                        Text(viewModel.errorMessage)
+                            .font(.system(size: 12))
+                            .foregroundColor(.red)
+                        Spacer()
+                    }
+                    TextFielCustom(title: "Họ và tên", text: $viewModel.name)
+                    TextFielCustom(title: "Số điện thoai", text: $viewModel.phone)
+                    Text("Địa chỉ")
+                        .font(.system(size: 14))
+                        .foregroundColor(.black.opacity(0.6))
+                        .padding(.leading, 15)
+                        .padding(.top, 5)
+                    ZStack(alignment: .trailing) {
+                        HStack {
+                        if viewModel.city == "" {
+                            TextFielCustom(title: "Tỉnh/Thành phố,Quận/Huyện,Phường/Xã ", text: $viewModel.city)
+                        } else {
+                            Text("\(viewModel.ward), \(viewModel.district), \(viewModel.city)" )
+                                .font(.system(size: 15))
+                                .foregroundColor(.black)
+                                .padding()
+                        }
+                            Spacer()
+                            Button(action: {
+                                path.append(ProvinceView(path: $path, viewModel: viewModel))
+                            }) {
+                                Image("rightlight")
+                            }
+                            .padding(.trailing, 15)
+                        }
+                    }
+                    .background(.white)
+                    TextFielCustom(title: "Tên đường, Toà nhà, Số nhà", text: $viewModel.street)
+                    TLButton(title: "Hoàn thành", background: Color("002482")) {
+                        viewModel.saveAddress(Address(name: viewModel.name, phone: viewModel.phone, street: viewModel.street, city: viewModel.city, ward: viewModel.ward, district: viewModel.district))
+                    print("ADD")
+                        print(Address(name: viewModel.name, phone: viewModel.phone, street: viewModel.street, city: viewModel.city, ward: viewModel.ward, district: viewModel.district))
+                    }
+                    .padding(.top, 40)
+                    .padding(.horizontal, 10)
+                }
                 Spacer()
             }
-            Spacer().frame(height: 40)
-            CustomTextFile(title: "Họ và tên", text: viewModel.name)
-            CustomTextFile(title: "Số điện thoại", text: viewModel.phone)
-            CustomTextFile(title: "Địa chỉ đường phố", text: viewModel.street)
-            CustomTextFile(title: "Tỉnh/Thành phố", text: viewModel.city)
-            CustomTextFile(title: "Quận/Huyện", text: viewModel.district)
-            HStack(spacing: 20) {
-                Button(action: {
-                    // action
-                }) {
-                    Text("Delete")
-                        .font(.system(size: 12))
-                        .foregroundColor(.red)
-                        .fontWeight(.medium)
-                        .padding(10)
-                        .frame(width: 160, height: 40)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 8).stroke(.red))
-                }
-                Button(action: {
-                    // action
-                }) {
-                    Text("Add Address")
-                        .font(.system(size: 12))
-                        .foregroundColor(.white)
-                        .fontWeight(.medium)
-                        .padding(10)
-                        .frame(width: 160, height: 40)
-                }
-                .background(Color("002482"))
-                .cornerRadius(8)
-            }
-            
-            .padding(.horizontal, 35)
-            .padding(.top, 30)
-            Spacer()
         }
         .navigationBarBackButtonHidden(true)
+        .navigationDestination(for: ProvinceView.self)  { _ in
+            ProvinceView(path: $path, viewModel: viewModel)
+        }
+        .onAppear {
+            viewModel.getAddressFromURL()
+        }
     }
 }
+struct TextFielCustom: View {
+    let title: String
+    @Binding var text: String
+    var body: some View {
+        HStack() {
+            TextField(title, text: $text)
+                    .font(.system(size: 15))
+                    .foregroundColor(.black)
+                Spacer()
+                if !text.isEmpty {
+                    Button(action: {
+                        text = ""
+                    }) {
+                        Image(systemName: "xmark.circle.fill")
+                            .foregroundColor(.gray)
+                            .padding(.trailing, 14)
+                    }
+                }
+            }
+            .padding()
+            .background(.white)
+    }
+}
+
+    
 struct AddAddressView_Previews: PreviewProvider {
     static var previews: some View {
         AddAddressView(path: .constant(NavigationPath()))

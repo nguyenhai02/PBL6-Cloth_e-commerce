@@ -1,69 +1,57 @@
 //
-//  CartViewModel.swift
+//  FavouriteModel.swift
 //  App
 //
-//  Created by Thanh Hien on 02/11/2023.
+//  Created by Thanh Hien on 09/11/2023.
 //
 
 import Foundation
 import Moya
-import Kingfisher
 
-
-class CartViewModel: ObservableObject {
-    @Published var productId = 0
-    @Published var quantity = 1
-    @Published var color = ""
-    @Published var size = ""
-    @Published var id = 1
-    @Published var image: UIImage?
-    @Published var urlImage: String?
-    @Published var cartItems: [Cart] = []
+class FavouriteViewModel: ObservableObject {
+    @Published var FavouriteItems : [Favourite] = []
+    @Published var id: Int = 0
+    @Published var idProduct: Int = 0
     
-    func addCart(completed: @escaping () -> Void) {
+    init() {
+        getFavouriteProduct()
+    }
+    func addFavouriteProduct() {
         let token = UserDefaults.standard.string(forKey: Constanst.tokenKey) ?? ""
         let tokenPlugin = AccessTokenPlugin{_ in token }
         let plugin: PluginType = NetworkLoggerPlugin(configuration: .init(logOptions: .verbose))
         let provider = MoyaProvider<MyService>(plugins: [tokenPlugin, plugin])
-        provider.request(.addCart(productId: productId, quantity: quantity, color: color, size: size)) { [self] result in
+        provider.request(.addFavouriteProduct(id: id)) {result in
             switch result {
             case let .success(moyaResponse):
-                do {
-                    let filteredResponse = try moyaResponse.filterSuccessfulStatusCodes()
-                    let message = try filteredResponse.map(AddCartReponse.self)
-                    print(message)
-                    completed()
-                    self.cartItems = []
-                    self.getCartItems()
-                } catch {}
-                print(self.productId, self.quantity, self.color, self.size)
+                    print(" thêm yêu thích hàng  thành công")
             case let .failure(error):
                 print(error)
-                print(" thêm giỏ hàng k thành công")
+                print(" thêm yêu thích hàng k thành công")
             }
         }
     }
     
-    func getCartItems() {
-        print("####### getCartItems")
+    func getFavouriteProduct() {
         let token = UserDefaults.standard.string(forKey: Constanst.tokenKey) ?? ""
         let tokenPlugin = AccessTokenPlugin{_ in token }
         let plugin: PluginType = NetworkLoggerPlugin(configuration: .init(logOptions: .verbose))
         let provider = MoyaProvider<MyService>(plugins: [tokenPlugin, plugin])
-        provider.request(.getCartItems) { [self] result in
+        provider.request(.getFavouriteProduct) { result in
             switch result {
-            case let .success(moyaResponse):
+            case  let .success(moyaResponse):
                 do {
                     let filteredResponse = try moyaResponse.filterSuccessfulStatusCodes()
-                    let cart = try filteredResponse.map([Cart].self)
-                    self.cartItems = cart
-                    print(cart)
+                    let favouriteItem = try filteredResponse.map([Favourite].self)
+                    self.FavouriteItems = favouriteItem
+                    print("FavouriteItems")
+                    print(self.FavouriteItems)
                 } catch {
-                    self.cartItems = []
+                    self.FavouriteItems = []
                 }
             case let .failure(error):
                 print(error)
-                print("get cart item error")
+                print(" get yêu thích hàng k thành công")
             }
             
         }
@@ -74,10 +62,10 @@ class CartViewModel: ObservableObject {
         let tokenPlugin = AccessTokenPlugin{_ in token }
         let plugin: PluginType = NetworkLoggerPlugin(configuration: .init(logOptions: .verbose))
         let provider = MoyaProvider<MyService>(plugins: [tokenPlugin, plugin])
-        provider.request(.deleteCartItem(id: id)) {result in
+        provider.request(.deleteFavouriteProduct(id: idProduct)) {result in
             switch result {
             case .success(_):
-                    self.getCartItems()
+                    self.getFavouriteProduct()
                 print("Xoas thanhf coong")
             case let .failure(error):
                 print(error)
@@ -85,4 +73,5 @@ class CartViewModel: ObservableObject {
             }
         }
     }
+    
 }

@@ -17,6 +17,7 @@ struct ItemDetailView: View, Hashable {
     @ObservedObject var viewModel = HomeViewModel()
     @ObservedObject var loadImageViewModel = LoadImage()
     @ObservedObject var cartModel = CartViewModel()
+    @ObservedObject var favouriteModel = FavouriteViewModel()
     @Binding var path: NavigationPath
     @State var index = 0
     @State var show = false
@@ -45,7 +46,8 @@ struct ItemDetailView: View, Hashable {
                     .frame(maxWidth: .infinity, alignment: .leading)
                     Spacer()
                     Button(action: {
-                        // action
+                        favouriteModel.id = viewModel.productDetail?.product.id ?? 0
+                        favouriteModel.addFavouriteProduct()
                     }) {
                         Image(systemName: "heart")
                             .resizable()
@@ -146,8 +148,7 @@ struct ItemDetailView: View, Hashable {
                     .sheet(isPresented: $showAddCart) {
                         ProductSelectionView(viewModel: cartModel, homeViewModel: viewModel, title: "Thêm vào giỏ hàng") {
                             self.showAddCart = false
-                            cartModel.addCart() {
-                            }
+                            cartModel.addCart() {}
                         }
                         .presentationDetents([.fraction(0.6)])
                     }

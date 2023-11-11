@@ -19,6 +19,19 @@ struct SettingView: View {
             HStack {
                 KFImage(URL(string: viewModel.profile?.avatar ?? ""))
                     .resizable()
+                    .cacheOriginalImage()
+                    .onSuccess { r in
+                        print("suc: \(r)")
+                    }
+                    .onFailure { e in
+                        print("err: \(e)")
+                    }
+                    .placeholder {                                            ProgressView().frame(width: 100, height: 100)
+                            .border(Color.blue)
+                    }
+                    .fade(duration: 1)
+                    .forceTransition(true)
+                    .resizable()
                     .frame(width: 57, height: 57)
                     .clipShape(Circle())
                 VStack(alignment: .leading, spacing: 0) {
