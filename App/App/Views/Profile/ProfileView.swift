@@ -7,6 +7,7 @@
 
 import SwiftUI
 import PhotosUI
+import Kingfisher
 
 struct ProfileView: View {
     @ObservedObject var viewModel = ProfileViewModel()
@@ -50,13 +51,28 @@ struct ProfileView: View {
                                         .scaledToFill()
                                         .frame(width: 100, height: 100)
                                         .clipShape(Circle())
-                            
+                                    
                                 } else {
-                                    Image(uiImage: viewModel.image ?? UIImage())
+                                    KFImage(URL(string: viewModel.profile?.avatar ?? ""))
+                                        .cacheOriginalImage()
+                                        .onSuccess { r in
+                                            print("suc: \(r)")
+                                        }
+                                        .onFailure { e in
+                                            print("err: \(e)")
+                                        }
+                                        .placeholder {                                            ProgressView().frame(width: 100, height: 100)
+                                                .border(Color.blue)
+                                        }
                                         .resizable()
-                                        .aspectRatio(contentMode: .fill)
                                         .frame(width: 100, height: 100)
-                                        .clipShape(Circle())
+                                        .cornerRadius(50)
+                                        .shadow(radius: 5)
+                                    //                                    Image(uiImage: viewModel.image ?? UIImage())
+                                    //                                        .resizable()
+                                    //                                        .aspectRatio(contentMode: .fill)
+                                    //                                        .frame(width: 100, height: 100)
+                                    //                                        .clipShape(Circle())
                                     
                                 }
                             }
@@ -79,8 +95,8 @@ struct ProfileView: View {
                 profileItem(icon: "gender", title: "Giới tính", value: viewModel.profile?.gender ?? "") {
                     path.append("EditGender")
                 }
-//                profileItem(icon: "changePassword", title: "Change password", value: "") {
-//                }
+                //                profileItem(icon: "changePassword", title: "Change password", value: "") {
+                //                }
             }
             Spacer()
         }

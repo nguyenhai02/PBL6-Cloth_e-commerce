@@ -6,8 +6,10 @@
 //
 
 import SwiftUI
+import Kingfisher
 
 struct FavoriteView: View {
+    @ObservedObject var viewModel = FavouriteViewModel()
     @Binding var path: NavigationPath
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -31,19 +33,19 @@ struct FavoriteView: View {
             }
             Spacer().frame(height: 20)
             ScrollView {
-                ForEach(1..<10) { _ in
+                ForEach(viewModel.FavouriteItems, id: \.self) { favouriteItem in
                     Button(action: {
-                        
+                        path.append(ItemDetailView(path: $path, productId: favouriteItem.id))
                     }) {
                         HStack {
-                            Image("product")
+                            KFImage(URL(string: favouriteItem.image ?? ""))
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
                                 .frame(width: 72, height: 78)
                                 .padding(.top, 10)
                                 .padding(.leading, 20)
                             VStack(alignment: .leading, spacing: 0) {
-                                Text("Wine Halter Bow Skater Dress")
+                                Text(favouriteItem.name)
                                     .bold()
                                     .font(.system(size: 14))
                                     .foregroundColor(Color("002482"))
@@ -53,24 +55,29 @@ struct FavoriteView: View {
                                     .foregroundColor(.gray)
                                     .padding(.top, 5)
                                 HStack {
-                                    Text("VND: 100000")
+                                    Text("đ\((favouriteItem.price ) - ((favouriteItem.price ) * (favouriteItem.discount ) / 100))")
                                         .font(.system(size: 10))
                                         .foregroundColor(.black)
-                                    Text("80000")
+                                    Text("VND: \(favouriteItem.price )")
                                         .font(.system(size: 10))
                                         .foregroundColor(.black)
-                                    Text("\(20)% OFF")
+                                        .strikethrough()
+                                    Text("\(favouriteItem.discount )% OFF")
                                         .font(.system(size: 10))
                                         .foregroundColor(.red)
-                                }
+                                    }
                                 .padding(.top, 5)
                             }
                             .padding(.leading, 15)
                         }
+                        .navigationDestination(for: ItemDetailView.self) {_ in
+                            ItemDetailView(path: $path, productId: favouriteItem.id)
+                        }
                         Spacer()
                         VStack {
                             Button(action: {
-                                
+                                viewModel.idProduct = favouriteItem.id
+                                viewModel.deleteCartItems()
                             }) {
                                 Image(systemName: "multiply")
                                     .foregroundColor(.gray)

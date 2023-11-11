@@ -20,6 +20,9 @@ enum MyService {
     case getCartItems
     case getItemDetail(id: Int)
     case deleteCartItem(id: Int)
+    case addFavouriteProduct(id: Int)
+    case getFavouriteProduct
+    case deleteFavouriteProduct(id: Int)
 }
 
 extension MyService: TargetType, AccessTokenAuthorizable {
@@ -41,34 +44,39 @@ extension MyService: TargetType, AccessTokenAuthorizable {
         case .addCart(_,_,_,_):
             return "/cart/add"
         case .getCartItems:
-            return "/cart/"
-//        case .get
+            return "/cart"
         case .getItemDetail(let id):
             return "/product/detail/\(id)"
         case .deleteCartItem(let id):
             return "/cart/delete/\(id)"
+        case .addFavouriteProduct(let id):
+            return "/favouriteProduct/add/\(id)"
+        case .getFavouriteProduct:
+            return "/favouriteProduct"
+        case .deleteFavouriteProduct(id: let id):
+            return "/favouriteProduct/delete/\(id)"
         }
     }
     var method: Moya.Method {
         switch self {
-        case .showCategories, .showProfile, .showProduct, .getCartItems, .getItemDetail:
+        case .showCategories, .showProfile, .showProduct, .getCartItems, .getItemDetail, .getFavouriteProduct:
             return .get
-        case .register, .login, .updateProfile, .addCart:
+        case .register, .login, .updateProfile, .addCart, .addFavouriteProduct:
             return .post
-        case .deleteCartItem:
+        case .deleteCartItem, .deleteFavouriteProduct:
             return .delete
         }
     }
     var task: Task {
         switch self {
-        case .showCategories, .showProfile, .getCartItems, .showProduct, .getItemDetail, .deleteCartItem:
+        case .showCategories, .showProfile, .getCartItems, .showProduct, .getItemDetail, .deleteCartItem, .addFavouriteProduct, .getFavouriteProduct, .deleteFavouriteProduct:
             return .requestPlain
         case .register(name: let name, email: let email, password: let password, gender: let gender, image: let image, address: let address, phone: let phone):
             return .requestParameters(parameters: ["name": name, "email": email, "password": password, "address": address, "phone": phone], encoding: JSONEncoding.default)
         case .login(let email, let password):
             return .requestParameters(parameters: ["email": email, "password": password], encoding: JSONEncoding.default)
-//        case .showProduct(page: let page, size: let size, sort: let sort):
-//            return .requestParameters(parameters: ["page": page, "size": size, "sort": sort], encoding: URLEncoding.default)
+            //        case .showProduct(page: let page, size: let size, sort: let sort):
+            //            return .requestParameters(parameters: ["page": page, "size": size, "sort": sort], encoding: URLEncoding.default)
         case .updateProfile(name: let name, address: let address, phone: let phone, gender: let gender, avatar: let avatar):
             return .requestParameters(parameters: ["name": name, "address": address, "phone": phone, "gender": gender, "avatar": avatar], encoding: JSONEncoding.default)
         case .addCart(productId: let productId, quantity: let quantity, color: let color, size: let size):
@@ -82,7 +90,7 @@ extension MyService: TargetType, AccessTokenAuthorizable {
     
     var authorizationType: AuthorizationType? {
         switch self{
-        case .showProfile, .updateProfile, .addCart, .getCartItems, .getCartItems, .deleteCartItem:
+        case .showProfile, .updateProfile, .addCart, .getCartItems, .getCartItems, .deleteCartItem, .addFavouriteProduct, .getFavouriteProduct, .deleteFavouriteProduct:
             return .bearer
         default:
             return nil

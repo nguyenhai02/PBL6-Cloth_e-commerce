@@ -28,7 +28,7 @@ struct CartView: View {
                     .padding([.top, .leading], 20)
                 Spacer().frame(height: 10)
                 ScrollView {
-                    ForEach(viewModel.cartItems, id: \.id) { cartItem in
+                    ForEach(viewModel.cartItems, id: \.self) { cartItem in
                         CartItem(viewModel: viewModel, path: $path, product: productDetail, cartItem: cartItem)
                     }
                     .onAppear {
