@@ -1,7 +1,7 @@
 package com.example.PBL6.service.impl;
 
-import com.example.PBL6.dto.cart.CartResponseDto;
 import com.example.PBL6.dto.product.FaProductRespDto;
+import com.example.PBL6.dto.product.FaProductRespMesDto;
 import com.example.PBL6.dto.product.ProductRequestDto;
 import com.example.PBL6.dto.product.ProductResponseDto;
 import com.example.PBL6.persistance.product.FavouriteProduct;
@@ -120,21 +120,25 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> getFavouriteProducts(User user) {
+    public List<FaProductRespDto> getFavouriteProducts(User user) {
         List<FavouriteProduct> favouriteProducts = favouriteProductRepository.getFavouriteProductsByUser(user);
         if (favouriteProducts.size() > 0) {
-            List<Product> products = new ArrayList<>();
+            List<FaProductRespDto> faProductRespDtos = new ArrayList<>();
             for (FavouriteProduct favouriteProduct : favouriteProducts) {
-                products.add(favouriteProduct.getProduct());
+                FaProductRespDto faProductRespDto = new FaProductRespDto().builder()
+                        .product(favouriteProduct.getProduct())
+                        .id(favouriteProduct.getId())
+                        .build();
+                faProductRespDtos.add(faProductRespDto);
             }
-            return products;
+            return faProductRespDtos;
         }
         return null;
     }
 
     @Override
     @Transactional
-    public FaProductRespDto addFavouriteProduct(User user, Integer id) {
+    public FaProductRespMesDto addFavouriteProduct(User user, Integer id) {
         boolean check = favouriteProductRepository.existsFavouriteProductByUserAndProduct(user,
                 productRepository.getById(id));
         if(check != true) {
@@ -143,24 +147,24 @@ public class ProductServiceImpl implements ProductService {
                     .user(user)
                     .build();
             FavouriteProduct favouriteProductSave = favouriteProductRepository.save(favouriteProduct);
-            return favouriteProductSave != null ? new FaProductRespDto("Thêm sản phẩm yêu thích thành công") :
-                    new FaProductRespDto("Thêm sản phẩm yêu thích thất bại");
+            return favouriteProductSave != null ? new FaProductRespMesDto("Thêm sản phẩm yêu thích thành công") :
+                    new FaProductRespMesDto("Thêm sản phẩm yêu thích thất bại");
         } else {
-            return new FaProductRespDto("Sản phẩm đã tồn tại trong mục sản phẩm yêu thích");
+            return new FaProductRespMesDto("Sản phẩm đã tồn tại trong mục sản phẩm yêu thích");
         }
     }
 
     @Override
     @Transactional
-    public FaProductRespDto deleteFavouriteProduct(User user, Integer id) {
+    public FaProductRespMesDto deleteFavouriteProduct(User user, Integer id) {
         favouriteProductRepository.deleteById(id);
-        return new FaProductRespDto("Xóa thành công");
+        return new FaProductRespMesDto("Xóa thành công");
     }
 
     @Override
     @Transactional
-    public FaProductRespDto deleteAllFavouriteProducts(User user) {
+    public FaProductRespMesDto deleteAllFavouriteProducts(User user) {
         favouriteProductRepository.deleteAllByUser(user);
-        return new FaProductRespDto("Xóa toàn bộ thành công");
+        return new FaProductRespMesDto("Xóa toàn bộ thành công");
     }
 }

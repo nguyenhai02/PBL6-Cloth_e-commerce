@@ -1,6 +1,7 @@
 package com.example.PBL6.service;
 
 import com.example.PBL6.dto.product.FaProductRespDto;
+import com.example.PBL6.dto.product.FaProductRespMesDto;
 import com.example.PBL6.dto.product.ProductRequestDto;
 import com.example.PBL6.dto.product.ProductResponseDto;
 import com.example.PBL6.persistance.product.Product;
@@ -21,12 +22,12 @@ public interface ProductService {
 
     ProductResponseDto getDetailProduct(Integer id);
 
-    FaProductRespDto addFavouriteProduct(User user, Integer id);
+    FaProductRespMesDto addFavouriteProduct(User user, Integer id);
 
-    List<Product> getFavouriteProducts(User user);
+    List<FaProductRespDto> getFavouriteProducts(User user);
 
-    FaProductRespDto deleteFavouriteProduct(User user, Integer id);
+    FaProductRespMesDto deleteFavouriteProduct(User user, Integer id);
 
-    FaProductRespDto deleteAllFavouriteProducts(User user);
+    FaProductRespMesDto deleteAllFavouriteProducts(User user);
 
 }

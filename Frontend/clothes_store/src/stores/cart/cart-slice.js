@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { getAllCartItems } from "../../api/carts";
+import { getAllCartItems, addCartItem } from "../../api/carts";
 
 const loadCartFromLocalStorage = () => {
   const cartData = localStorage.getItem("cart");
@@ -10,7 +10,7 @@ const loadCartFromLocalStorage = () => {
   return initialState;
 };
 
-export const _getAllCartItems = createAsyncThunk(
+export const getAllCartItemsAsync = createAsyncThunk(
   "getAllCartItems",
   async () => {
     const response = await getAllCartItems();
@@ -18,10 +18,18 @@ export const _getAllCartItems = createAsyncThunk(
   }
 );
 
+export const addCartItemAsync = createAsyncThunk(
+  "getCartItem",
+  async (cartItem) => {
+    const response = await addCartItem(cartItem);
+    return response;
+  }
+);
+
 const initialState = {
   cartItems: [],
   loading: false,
-  errorr: null,
+  error: null,
 };
 const cartSlice = createSlice({
   name: "cart",
@@ -73,7 +81,33 @@ const cartSlice = createSlice({
       }
     },
   },
-  extraReducers: [],
+  extraReducers: (builder) => {
+    builder
+      .addCase(getAllCartItemsAsync.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getAllCartItemsAsync.fulfilled, (state, action) => {
+        state.loading = false;
+        state.cartItems = action.payload.content;
+      })
+      .addCase(getAllCartItemsAsync.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
+      .addCase(addCartItemAsync.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(addCartItemAsync.fulfilled, (state, action) => {
+        state.loading = false;
+        state.cartItems = action.payload.content;
+      })
+      .addCase(addCartItemAsync.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      });
+  },
 });
 const cartMiddleware = (store) => (next) => (action) => {
   const result = next(action); // Thực hiện action và lấy kết quả

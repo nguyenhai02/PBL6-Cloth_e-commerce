@@ -1,7 +1,7 @@
 package com.example.PBL6.controller;
 
-import com.example.PBL6.dto.cart.CartResponseDto;
 import com.example.PBL6.dto.product.FaProductRespDto;
+import com.example.PBL6.dto.product.FaProductRespMesDto;
 import com.example.PBL6.persistance.product.Product;
 import com.example.PBL6.persistance.user.User;
 import com.example.PBL6.service.ProductService;
@@ -23,11 +23,11 @@ public class FaProductController {
     public ResponseEntity<Object> getAllFavouriteProducts() {
         User user = AuthenticationUtils.getUserFromSecurityContext();
         if(user != null) {
-            List<Product> products = productService.getFavouriteProducts(user);
-            if(products == null) {
+            List<FaProductRespDto> faProductRespDtos = productService.getFavouriteProducts(user);
+            if(faProductRespDtos == null) {
                 return ResponseEntity.ok("Không có sản phẩm yêu thích nào");
             } else {
-                return ResponseEntity.ok(products);
+                return ResponseEntity.ok(faProductRespDtos);
             }
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
@@ -38,8 +38,8 @@ public class FaProductController {
     public ResponseEntity<Object> addFavouriteProduct(@PathVariable("id") Integer id) {
         User user = AuthenticationUtils.getUserFromSecurityContext();
         if(user != null) {
-            FaProductRespDto faProductRespDto = productService.addFavouriteProduct(user, id);
-            return ResponseEntity.ok(faProductRespDto);
+            FaProductRespMesDto faProductRespMesDto = productService.addFavouriteProduct(user, id);
+            return ResponseEntity.ok(faProductRespMesDto);
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
@@ -49,8 +49,8 @@ public class FaProductController {
     public ResponseEntity<Object> deleteFavouriteProduct(@PathVariable("id") Integer id) {
         User user = AuthenticationUtils.getUserFromSecurityContext();
         if(user != null) {
-            FaProductRespDto faProductRespDto = productService.deleteFavouriteProduct(user, id);
-            return ResponseEntity.ok(faProductRespDto);
+            FaProductRespMesDto faProductRespMesDto = productService.deleteFavouriteProduct(user, id);
+            return ResponseEntity.ok(faProductRespMesDto);
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
@@ -60,8 +60,8 @@ public class FaProductController {
     public ResponseEntity<Object> deleteFavouriteProduct() {
         User user = AuthenticationUtils.getUserFromSecurityContext();
         if(user != null) {
-            FaProductRespDto faProductRespDto = productService.deleteAllFavouriteProducts(user);
-            return ResponseEntity.ok(faProductRespDto);
+            FaProductRespMesDto faProductRespMesDto = productService.deleteAllFavouriteProducts(user);
+            return ResponseEntity.ok(faProductRespMesDto);
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
