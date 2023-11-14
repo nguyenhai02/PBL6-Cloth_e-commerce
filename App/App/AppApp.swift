@@ -6,18 +6,20 @@
 //
 
 import SwiftUI
-import Firebase
 import FirebaseCore
+import FirebaseFirestore
+import FirebaseAuth
 
 @main
 struct AppApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
-
+    @State var path = NavigationPath()
     var body: some Scene {
         let dataStore = DataStore()
         WindowGroup {
-            SplashView()
-                .environmentObject(dataStore)
+            NavigationStack(path: $path){
+                TransferMoneyView(path: $path)
+            }
         }
     }
 }
