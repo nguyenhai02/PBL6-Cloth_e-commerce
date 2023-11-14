@@ -34,14 +34,12 @@ func getScreen(id: String, path: Binding<NavigationPath>) -> some View{
         EditNameView(path: path)
     case "EditPhoneView":
         EditPhoneView(path: path)
-    case "ChooseAddressView":
-        ChooseAddressView(path: path)
-    case "ChoosePaymentView":
-        ChoosePaymentView(path: path)
     case "EditGender":
         EditGender(path: path)
     case "MyOrdersView":
         MyOrdersView(path: path)
+    case "TransferMoneyView":
+        TransferMoneyView(path: path)
     default:
         Text("screen is developing")
     }
