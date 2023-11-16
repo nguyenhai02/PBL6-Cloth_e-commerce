@@ -11,13 +11,11 @@ import FirebaseCore
 @main
 struct AppApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
-    @State var path = NavigationPath()
     var body: some Scene {
         let dataStore = DataStore()
         WindowGroup {
-            NavigationStack(path: $path){
-                TransferMoneyView(path: $path)
-            }
+            SplashView()
+                .environmentObject(dataStore)
         }
     }
 }

@@ -40,7 +40,7 @@ struct CategoryProductView: View, Hashable{
             Spacer().frame(height: 50)
             ScrollView {
                 LazyVGrid(columns: columns, spacing: 15) {
-                    ForEach(viewModel.categoryProduct, id: \.product.id) {
+                    ForEach(viewModel.categoryProduct, id: \.self) {
                         productDetail in
                         ItemRow(path: $path, product: productDetail)
                     }

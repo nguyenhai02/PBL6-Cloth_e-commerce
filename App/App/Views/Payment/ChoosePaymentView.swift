@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ChoosePaymentView: View {
     @Binding var path: NavigationPath
-    @State private var isMomoButtonSelected = false
+    @State private var isMoneyButtonSelected = false
     @State private var isVnpayButtonSelected = false
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -33,8 +33,10 @@ struct ChoosePaymentView: View {
             Spacer().frame(height: 45)
 //            Divider().background(Color("EBF0FF"))
             Button(action: {
-                isMomoButtonSelected = true
+                isMoneyButtonSelected = true
                 isVnpayButtonSelected = false
+                path.append("TransferMoneyView")
+//                path.removeLast(2)
             }) {
                 HStack {
                     Image("vnpay")
@@ -53,12 +55,12 @@ struct ChoosePaymentView: View {
                 
                 .frame(width: UIScreen.main.bounds.width)
                 .overlay(RoundedRectangle(cornerRadius: 0).stroke(Color("EBF0FF")))
-                .background(isMomoButtonSelected ? Color("EBF0FF") : Color.clear)
+                .background(isMoneyButtonSelected ? Color("EBF0FF") : Color.clear)
               
             }
 //            Divider().background(Color("EBF0FF"))
             Button(action: {
-                isMomoButtonSelected = false
+                isMoneyButtonSelected = false
                 isVnpayButtonSelected = true
             }) {
                 HStack {

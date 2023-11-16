@@ -10,8 +10,9 @@ import SwiftUI
 struct RadioButtonRow: View {
     var index: Int
     var item: Address
-    @Binding var isSelected: Bool
+    @State var isSelected: Bool
     var action: (_ index:Int) -> Void
+    var editAction: (_ index:Int) -> Void
     
     var body: some View {
         return HStack {
@@ -42,7 +43,7 @@ struct RadioButtonRow: View {
                         .lineLimit(1)
                     Spacer()
                     Button(action: {
-                        
+                        editAction(index)
                     }) {
                         Text("sửa")
                             .font(.system(size: 16))
@@ -72,25 +73,38 @@ struct RadioButtonRow: View {
 }
 
 struct RadioAddressGroup: View {
-    
-    var items: [Address]
-    @State var selection:Int
-    var onAddAddress: () -> Void
+    @Binding var path: NavigationPath
+    @State var selection: Int
+    @ObservedObject var viewModel: AddressViewModel
+    @State var indexEditSelected = 0
+    var action: () -> Void
     
     var body: some View {
         VStack {
-            ForEach(0..<items.count, id:\.self) {
+            ForEach(0..<viewModel.savedAddessed.count, id:\.self) {
                 index in
-                RadioButtonRow(index: index, item: self.items[index], isSelected: .constant(self.selection==index), action: { i in
-                    print(i)
-//                   print( items[index])
-                    self.selection = i
-                })
+                RadioButtonRow(
+                    index: index,
+                    item: viewModel.savedAddessed[index],
+                    isSelected: false,
+                    action: { i in
+                        self.selection = i
+                        print(viewModel.savedAddessed[selection])
+                        viewModel.selectedAddress = viewModel.savedAddessed[selection]
+                        action()
+                    }, editAction: { index in
+                        self.indexEditSelected = index
+                        path.append(UpdateAddressView(viewModel: viewModel, path: $path, itemAddess:  viewModel.savedAddessed[index]))
+                    })
+                .navigationDestination(for: UpdateAddressView.self) {_ in
+                    VStack{
+                        UpdateAddressView(viewModel: viewModel, path: $path, itemAddess:  viewModel.savedAddessed[indexEditSelected], indexEdit: indexEditSelected)
+                    }
+                }
             }
             Spacer().frame(height: 30)
             Button(action: {
-                // actionon
-                onAddAddress()
+                path.append("AddAddressView")
             }, label: {
                 Image(systemName: "plus.circle")
                     .resizable()
@@ -108,8 +122,10 @@ struct RadioAddressGroup: View {
 
 struct RadioGroup_Previews: PreviewProvider {
     static var previews: some View {
-        RadioAddressGroup(items: [Address(name: "Hien", phone: "0572435622", street: "Khanh toan", city: "Da Nang", ward: "hai chau", district: "Hoa cuong")], selection: 0, onAddAddress: {
-            
-        })
+        RadioAddressGroup(path: .constant(NavigationPath()), selection: 0, viewModel: AddressViewModel(), action: {})
     }
 }
+//
+//RadioAddressGroup(path: .constant(NavigationPath()), items: [Address(name: "Hien", phone: "0572435622", street: "Khanh toan", city: "Da Nang", ward: "hai chau", district: "Hoa cuong")], selection: 0, onAddAddress: {
+//
+//}, viewModel: AddressViewModel())

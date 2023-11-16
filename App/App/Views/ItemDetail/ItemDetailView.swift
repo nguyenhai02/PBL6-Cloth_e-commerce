@@ -17,7 +17,8 @@ struct ItemDetailView: View, Hashable {
     @ObservedObject var viewModel = HomeViewModel()
     @ObservedObject var loadImageViewModel = LoadImage()
     @ObservedObject var cartModel = CartViewModel()
-    @ObservedObject var favouriteModel = FavouriteViewModel()
+    @ObservedObject var favouriteViewModel = FavouriteViewModel.instance
+    var addressViewModel = AddressViewModel.instance
     @Binding var path: NavigationPath
     @State var index = 0
     @State var show = false
@@ -46,13 +47,23 @@ struct ItemDetailView: View, Hashable {
                     .frame(maxWidth: .infinity, alignment: .leading)
                     Spacer()
                     Button(action: {
-                        favouriteModel.id = viewModel.productDetail?.product.id ?? 0
-                        favouriteModel.addFavouriteProduct()
+                        favouriteViewModel.id = viewModel.productDetail?.product.id ?? 0
+                        if favouriteViewModel.favouriteItems.first(where: {$0.product.id == viewModel.productDetail?.product.id}) == nil {
+                            favouriteViewModel.addFavouriteProduct()
+//                            favouriteViewModel.idFavourite = favouriteViewModel.favouriteItems.first(where: {($0.product.id == viewModel.productDetail?.product.id)})?.id ??
+                        } else {
+                            favouriteViewModel.deleteFavouirteItem()
+                        }
                     }) {
-                        Image(systemName: "heart")
+                        favouriteViewModel.favouriteItems.first(where: {$0.product.id == viewModel.productDetail?.product.id}) != nil ?
+                        Image(systemName: "heart.fill")
                             .resizable()
+                            .foregroundColor(.red)
                             .frame(width: 20, height: 20)
-                            .foregroundColor(Color("272727"))
+                        : Image(systemName:"heart")
+                            .resizable()
+                            .foregroundColor(.gray)
+                            .frame(width: 20, height: 20)
                     }
                     .padding(.trailing, 30)
                 }
@@ -64,8 +75,8 @@ struct ItemDetailView: View, Hashable {
                                     .resizable()
                                     .scaledToFill()
                                     .onAppear{
-                                            viewModel.id = viewModel.productDetail?.product.id ?? 0
-                                            viewModel.getProductDetail()
+                                        viewModel.id = viewModel.productDetail?.product.id ?? 0
+                                        viewModel.getProductDetail()
                                     }
                             }
                         }.frame(height: 450)
@@ -103,7 +114,7 @@ struct ItemDetailView: View, Hashable {
                         SelectSizeView(viewModel: viewModel, cartModel: cartModel) {
                             self.isNext = true
                         }
-                            .padding(.bottom, 10)
+                        .padding(.bottom, 10)
                         VStack(alignment: .leading, spacing: 0) {
                             Color.white
                             Text("Product Details")
@@ -162,8 +173,8 @@ struct ItemDetailView: View, Hashable {
                     .frame(width: 150, height: 42)
                     .sheet(isPresented: $show) {
                         ProductSelectionView(viewModel: cartModel, homeViewModel: viewModel, title: "Mua ngay") {
-//                            path.append(ItemDetailView(path: $path, productId: cartItem.productId))
-                            path.append(PaymentView(path: $path, homeViewModel: viewModel, cartViewModel: cartModel))
+                            //                            path.append(ItemDetailView(path: $path, productId: cartItem.productId))
+                            path.append(PaymentView(path: $path, homeViewModel: viewModel, cartViewModel: cartModel, addressViewModel: addressViewModel))
                             self.show = false
                         }
                         .presentationDetents([.fraction(0.6)])
@@ -175,7 +186,7 @@ struct ItemDetailView: View, Hashable {
             }
         }
         .navigationDestination(for: PaymentView.self) { product in
-            PaymentView(path: $path, homeViewModel: viewModel, cartViewModel: cartModel)
+            PaymentView(path: $path, homeViewModel: viewModel, cartViewModel: cartModel, addressViewModel: addressViewModel)
         }
         .navigationBarBackButtonHidden(true)
         .onAppear {

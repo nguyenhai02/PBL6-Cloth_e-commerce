@@ -44,7 +44,7 @@ struct DistrictView: View, Hashable {
                     .foregroundColor(.black.opacity(0.6))
                     .padding(.leading, 15)
                 Spacer().frame(height: 10)
-                List(viewModel.address.first(where: { p in
+                List(viewModel.addresses.first(where: { p in
                     p.name == viewModel.city
                 })?.districts ?? [], id: \.self) { district in
                     HStack {

@@ -12,6 +12,7 @@ struct AddAddressView: View {
     @State var name: String = ""
     @State var text: String = ""
     @Binding var path: NavigationPath
+    @State var showingAlert = false
     
     var body: some View {
         ZStack {
@@ -46,11 +47,10 @@ struct AddAddressView: View {
                             .foregroundColor(.black.opacity(0.6))
                             .padding(.leading, 15)
                             .padding(.top, 5)
-                        Spacer()
-                        Text(viewModel.errorMessage)
-                            .font(.system(size: 12))
-                            .foregroundColor(.red)
-                        Spacer()
+//                        Text(viewModel.errorMessage)
+//                            .font(.system(size: 12))
+//                            .foregroundColor(.red)
+//                        Spacer()
                     }
                     TextFielCustom(title: "Họ và tên", text: $viewModel.name)
                     TextFielCustom(title: "Số điện thoai", text: $viewModel.phone)
@@ -80,13 +80,23 @@ struct AddAddressView: View {
                     }
                     .background(.white)
                     TextFielCustom(title: "Tên đường, Toà nhà, Số nhà", text: $viewModel.street)
-                    TLButton(title: "Hoàn thành", background: Color("002482")) {
-                        viewModel.saveAddress(Address(name: viewModel.name, phone: viewModel.phone, street: viewModel.street, city: viewModel.city, ward: viewModel.ward, district: viewModel.district))
+                    TLButton(title: "Hoàn thành", background: Color("FF3300").opacity(0.8)) {
+                        viewModel.saveAddress(Address(name: viewModel.name, phone: viewModel.phone, street: viewModel.street, city: viewModel.city, ward: viewModel.ward, district: viewModel.district)) {
+                            path.removeLast()
+                        }
+                        if !viewModel.errorMessage.isEmpty {
+                            showingAlert = true
+                        }
                     print("ADD")
                         print(Address(name: viewModel.name, phone: viewModel.phone, street: viewModel.street, city: viewModel.city, ward: viewModel.ward, district: viewModel.district))
                     }
                     .padding(.top, 40)
                     .padding(.horizontal, 10)
+                    .alert(isPresented: $showingAlert) {
+                        Alert(title: Text("Error"), message: Text(viewModel.errorMessage), dismissButton: .default(Text("OK")))
+                    }
+                    .font(.system(size: 14))
+                    .fontWeight(.medium)
                 }
                 Spacer()
             }
