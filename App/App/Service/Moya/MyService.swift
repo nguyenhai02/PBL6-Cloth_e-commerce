@@ -14,7 +14,7 @@ enum MyService {
     case showCategories
     case showProfile
 //    case showProduct(page: Int, size: Int, sort: String)
-    case showProduct
+    case showProduct(sort: String?)
     case updateProfile(name: String?, address: String?, phone: String?, gender: String?, avatar: String?)
     case addCart(productId: Int, quantity: Int, color: String, size: String)
     case getCartItems
@@ -37,7 +37,7 @@ extension MyService: TargetType, AccessTokenAuthorizable {
             return "/category/all"
         case .showProfile:
             return "/user/profile"
-        case .showProduct:
+        case .showProduct(_):
             return "/product/all"
         case .updateProfile(_,_,_,_,_):
             return "/user/profile/edit"
@@ -69,16 +69,18 @@ extension MyService: TargetType, AccessTokenAuthorizable {
     }
     var task: Task {
         switch self {
-        case .showCategories, .showProfile, .getCartItems, .showProduct, .getItemDetail, .deleteCartItem, .addFavouriteProduct, .getFavouriteProduct, .deleteFavouriteProduct:
+        case .showCategories, .showProfile, .getCartItems, .getItemDetail, .deleteCartItem, .addFavouriteProduct, .getFavouriteProduct, .deleteFavouriteProduct:
             return .requestPlain
         case .register(name: let name, email: let email, password: let password, gender: let gender, image: let image, address: let address, phone: let phone):
             return .requestParameters(parameters: ["name": name, "email": email, "password": password, "address": address, "phone": phone], encoding: JSONEncoding.default)
         case .login(let email, let password):
             return .requestParameters(parameters: ["email": email, "password": password], encoding: JSONEncoding.default)
-            //        case .showProduct(page: let page, size: let size, sort: let sort):
-            //            return .requestParameters(parameters: ["page": page, "size": size, "sort": sort], encoding: URLEncoding.default)
+//                    case .showProduct(page: let page, size: let size, sort: let sort):
+//                        return .requestParameters(parameters: ["page": page, "size": size, "sort": sort], encoding: URLEncoding.default)
+        case .showProduct(sort: let sort):
+            return .requestParameters(parameters: ["sort": sort ?? ""], encoding: URLEncoding.default)
         case .updateProfile(name: let name, address: let address, phone: let phone, gender: let gender, avatar: let avatar):
-            return .requestParameters(parameters: ["name": name, "address": address, "phone": phone, "gender": gender, "avatar": avatar], encoding: JSONEncoding.default)
+            return .requestParameters(parameters: ["name": name, "address": address ?? "", "phone": phone, "gender": gender ?? "", "avatar": avatar], encoding: JSONEncoding.default)
         case .addCart(productId: let productId, quantity: let quantity, color: let color, size: let size):
             return .requestParameters(parameters: ["productId": productId, "quantity": quantity, "color": color, "size": size], encoding: JSONEncoding.default)
         }

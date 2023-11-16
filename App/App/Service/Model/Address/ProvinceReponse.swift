@@ -6,28 +6,29 @@
 //
 
 struct Province: Decodable, Hashable {
-    let name: String
-    let code: Int
-    let codename: String
-    let division_type: String
-    let phone_code: Int
-    let districts: [District]?
+    var name: String
+    var code: Int
+    var codename: String
+    var division_type: String
+    var phone_code: Int
+    var districts: [District]?
 }
 
+
 struct District: Decodable, Hashable {
-    let name: String
-    let code: Int
-    let codename: String
-    let division_type: String
-    let short_codename: String
-    let wards: [Ward]?
+    var name: String
+    var code: Int
+    var codename: String
+    var division_type: String
+    var short_codename: String
+    var wards: [Ward]?
 }
 
 struct Ward: Decodable, Hashable {
-    let name: String
-    let code: Int
-    let codename: String
-    let division_type: String
-    let short_codename: String
+    var name: String
+    var code: Int
+    var codename: String
+    var division_type: String
+    var short_codename: String
 }
 

@@ -75,7 +75,7 @@ struct HomeView: View {
                 Spacer().frame(height: 20)
                 ScrollView(.horizontal,showsIndicators: false, content:  {
                     HStack(spacing: 30) {
-                        ForEach(viewModel.categories, id: \.id) { categories in
+                        ForEach(viewModel.categories, id: \.self) { categories in
                             CategoriesItem(path: $path, viewModel: viewModel, categories: categories)
                         }
                     }
@@ -115,7 +115,7 @@ struct HomeView: View {
                             .padding(.leading, 10)
                         ScrollView(.horizontal, showsIndicators: false, content:  {
                             HStack(spacing: 15) {
-                                ForEach(viewModel.products, id: \.product.id) { productDetail in
+                                ForEach(viewModel.products, id: \.self) { productDetail in
                                     ItemRow(path: $path, product: productDetail)
                                 }
                                 .padding(.leading, 10)
@@ -130,7 +130,7 @@ struct HomeView: View {
                             .padding(.leading, 10)
                         ScrollView(.horizontal, showsIndicators: false, content:  {
                             HStack(spacing: 15) {
-                                ForEach(viewModel.products, id: \.product.id) { productDetail in
+                                ForEach(viewModel.products, id: \.self) { productDetail in
                                     ItemRow(path: $path, product: productDetail)
                                 }
                                 .padding(.leading, 10)
@@ -146,7 +146,7 @@ struct HomeView: View {
                             .padding(.leading, 10)
                         ScrollView(.horizontal, showsIndicators: false, content:  {
                             HStack(spacing: 15) {
-                                ForEach(viewModel.products, id: \.product.id) { productDetail in
+                                ForEach(viewModel.products, id: \.self) { productDetail in
                                     ItemRow(path: $path, product: productDetail)
                                 }
                             }

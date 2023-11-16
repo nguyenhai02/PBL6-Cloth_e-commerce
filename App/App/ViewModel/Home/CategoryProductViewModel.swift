@@ -12,6 +12,7 @@ class CategoryProductViewModel {
     @Published var product: [Product] = []
     @Published var categoryProduct: [Product] = []
     @Published var categoryId = 0
+    @Published var sort = ""
     
     
     
@@ -19,9 +20,9 @@ class CategoryProductViewModel {
         showCategoryProduct(categoryId: categoryId)
     }
     func showCategoryProduct(categoryId: Int) {
-        let sort = "price,asc"
+//        let sort = "price,asc"
         let provider = MoyaProvider<MyService>()
-        provider.request(.showProduct) { result in
+        provider.request(.showProduct(sort: sort)) { result in
             switch result {
             case let .success(moyaResponse):
                 print("producthiproducthi2")

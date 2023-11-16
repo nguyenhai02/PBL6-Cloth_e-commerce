@@ -17,7 +17,7 @@ struct ResponseData: Decodable {
     let empty: Bool
 }
 
-struct ProductDetail: Decodable {
+struct ProductDetail: Decodable, Hashable {
     let product: Product
     var productVariants: [ProductVariant]
 }
@@ -35,7 +35,7 @@ struct Categories: Decodable, Hashable {
     let id: Int
     let name, description, createDate, updateDate: String
 }
-struct ProductVariant: Decodable {
+struct ProductVariant: Decodable, Hashable {
     let id: Int
     var color: String
     var size: String

@@ -7,12 +7,16 @@
 
 import SwiftUI
 
-struct ChooseAddressView: View {
-    @ObservedObject var viewModel = AddressViewModel()
+struct ChooseAddressView: View, Hashable {
+    static func == (lhs: ChooseAddressView, rhs: ChooseAddressView) -> Bool {
+        return true
+    }
+    func hash(into hasher: inout Hasher) {}
+    
+    @ObservedObject var viewModel: AddressViewModel
     @Binding var path: NavigationPath
     @State var isSelected: Int = 0
     @State var value: Int = 0
-    @State var address = [ItemAddress(name: " Nguyễn Thị Thanh Hiền", phone: "01243242343", address: "213 chau tinh tri", contries: "Thanh xuan, Ha noi, Viet nam"), ItemAddress(name: "Nguyễn Thị Thanh Hiền", phone: "01243242343", address: "213 chau tinh tri", contries: "Thanh xuan, Ha noi, Viet nam"), ItemAddress(name: "Nguyễn Thị Thanh Hiền", phone: "01243242343", address: "213 chau tinh tri", contries: "Thanh xuan, Ha noi, Viet nam")]
     
     
     var body: some View {
@@ -36,10 +40,8 @@ struct ChooseAddressView: View {
                 //                    }
             }
             Spacer().frame(height: 30)
-            RadioAddressGroup(items: viewModel.savedAddessed , selection: 0) {
-                print(address)
-                //                    address.append(ItemAddress(name: "Hien", phone: "01243242343", address: "213 chau tinh tri", contries: "Thanh xuan, Ha noi, Viet nam")
-                path.append("AddAddressView")
+            RadioAddressGroup(path: $path, selection: 0, viewModel: viewModel) {
+                path.removeLast()
             }
             Spacer()
         }
@@ -52,6 +54,6 @@ struct ChooseAddressView: View {
 
 struct ChooseAddressView_Previews: PreviewProvider {
     static var previews: some View {
-        ChooseAddressView(path: .constant(NavigationPath()))
+        ChooseAddressView(viewModel: AddressViewModel(), path: .constant(NavigationPath()))
     }
 }

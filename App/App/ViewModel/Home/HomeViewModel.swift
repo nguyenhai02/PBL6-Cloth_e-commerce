@@ -18,6 +18,7 @@ class HomeViewModel: ObservableObject {
     @Published var categoryId = 0
     @Published var idProductVariant = 0
     @Published var id: Int = 0
+    @Published var sort = ""
     var quantity: Int = 0
     var productDetail: ProductDetail? = nil
     
@@ -38,7 +39,7 @@ class HomeViewModel: ObservableObject {
                     print("hihi")
                     let productDetail = try filteredReponse.map(ProductDetail.self)
                     self.productDetail = productDetail
-                    print(self.productDetail)
+//                    print(self.productDetail)
                 } catch { print("product2")}
             case let .failure(error):
                 print(error)
@@ -48,9 +49,8 @@ class HomeViewModel: ObservableObject {
     
     func showProduct() {
         let provider = MoyaProvider<MyService>()
-        let sort = "price,asc"
 //            .showProduct(page: 0, size: 10, sort: sort)
-        provider.request(.showProduct) { result in
+        provider.request(.showProduct(sort: sort)) { result in
             switch result {
             case let .success(moyaResponse):
                 do {
@@ -85,9 +85,8 @@ class HomeViewModel: ObservableObject {
     }
     
     func showCategoryProduct(categoryId: Int) {
-        let sort = "price,asc"
         let provider = MoyaProvider<MyService>()
-        provider.request(.showProduct) { result in
+        provider.request(.showProduct(sort: sort)) { result in
             switch result {
             case let .success(moyaResponse):
                 do {
@@ -107,9 +106,8 @@ class HomeViewModel: ObservableObject {
     }
     
     func searchByName(text: String) {
-        let sort = "price,asc"
         let provider = MoyaProvider<MyService>()
-        provider.request(.showProduct) { result in
+        provider.request(.showProduct(sort: sort)) { result in
             switch result {
             case let .success(moyaResponse):
                 print("producthiproducthi2")

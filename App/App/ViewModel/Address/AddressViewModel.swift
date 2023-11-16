@@ -16,24 +16,41 @@ class AddressViewModel: ObservableObject {
     @Published var ward: String = ""
     @Published var district: String = ""
     @Published var errorMessage: String = ""
-    @Published var address: [Province] = []
+    @Published var addresses: [Province] = []
     @Published var savedAddessed: [Address] = [] //[2]
-    
+    @Published var selectedAddress: Address? = nil
+    static var instance = AddressViewModel()
     init() {
         self.getAddress()
     }
-    func saveAddress(_ address: Address) {
+    func saveAddress(_ address: Address, completed: @escaping () -> Void) {
         guard invalid() else {
             return
         }
         var addresses = savedAddessed //[2]
         addresses.append(address) //[3]
         UserDefaults.standard.setEncodablesAsArrayOfDictionaries(addresses, for: Constanst.savedAddess) //[3]
-        print(addresses)
-        print("addresses")
+        completed()
     }
     func getAddress() {
         savedAddessed = UserDefaults.standard.getDecodablesFromArrayOfDictionaries(for:  Constanst.savedAddess)  ?? []
+    }
+    
+    func editAddress(indexEdit: Int, address: Address, completed: @escaping () -> Void) {
+        name = address.name
+        phone = address.phone
+        street = address.street
+        city = address.city
+        district = address.district
+        ward = address.ward
+        guard invalid() else {
+            return
+        }
+        savedAddessed.remove(at: indexEdit)
+        var addresses = savedAddessed //[2]
+        addresses.insert(address, at: indexEdit) //[3]
+        UserDefaults.standard.setEncodablesAsArrayOfDictionaries(addresses, for: Constanst.savedAddess) //[3]
+        completed()
     }
     
     func getAddressFromURL() {
@@ -44,7 +61,7 @@ class AddressViewModel: ObservableObject {
                 do {
                     let filteredResponse = try moyaResponse.filterSuccessfulStatusCodes()
                     let address = try filteredResponse.map([Province].self)
-                    self.address = address
+                    self.addresses = address
                     print(address)
                 } catch {print("Error mapping response: \(error)")}
                 print("Hien hihi")

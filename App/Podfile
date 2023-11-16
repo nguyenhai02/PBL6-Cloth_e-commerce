@@ -6,10 +6,10 @@ target 'App' do
   use_frameworks!
 
   # Pods for App
-	pod 'Moya', '~> 15.0'
-  pod 'FirebaseAuth'
-  pod 'FirebaseFirestore'
-  pod 'FirebaseStorage'
-  pod 'Kingfisher', '~> 6.3'
+  pod 'Moya', '~> 15.0'
+  pod 'Firebase/Core'
+  pod 'Firebase/Storage'
+  pod 'Kingfisher', '~> 7.0'
+
 
 end
