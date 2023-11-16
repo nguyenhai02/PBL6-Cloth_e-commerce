@@ -7,8 +7,6 @@
 
 import SwiftUI
 import FirebaseCore
-import FirebaseFirestore
-import FirebaseAuth
 
 @main
 struct AppApp: App {
@@ -28,6 +26,14 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
         FirebaseApp.configure()
+        return true
+    }
+    
+    func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([Any]?) -> Void) -> Bool {
+        if userActivity.activityType == NSUserActivityTypeBrowsingWeb {
+            //In ra URL mà người dùng đã truy cập
+            print(userActivity.webpageURL!)
+        }
         return true
     }
 }
