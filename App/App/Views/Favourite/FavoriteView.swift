@@ -9,7 +9,7 @@ import SwiftUI
 import Kingfisher
 
 struct FavoriteView: View {
-    @ObservedObject var viewModel = FavouriteViewModel()
+    @ObservedObject var viewModel = FavouriteViewModel.instance
     @Binding var path: NavigationPath
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -33,19 +33,19 @@ struct FavoriteView: View {
             }
             Spacer().frame(height: 20)
             ScrollView {
-                ForEach(viewModel.FavouriteItems, id: \.self) { favouriteItem in
+                ForEach(viewModel.favouriteItems, id: \.self) { favouriteItem in
                     Button(action: {
                         path.append(ItemDetailView(path: $path, productId: favouriteItem.id))
                     }) {
                         HStack {
-                            KFImage(URL(string: favouriteItem.image ?? ""))
+                            KFImage(URL(string: favouriteItem.product.image ?? ""))
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
                                 .frame(width: 72, height: 78)
                                 .padding(.top, 10)
                                 .padding(.leading, 20)
                             VStack(alignment: .leading, spacing: 0) {
-                                Text(favouriteItem.name)
+                                Text(favouriteItem.product.name)
                                     .bold()
                                     .font(.system(size: 14))
                                     .foregroundColor(Color("002482"))
@@ -55,14 +55,14 @@ struct FavoriteView: View {
                                     .foregroundColor(.gray)
                                     .padding(.top, 5)
                                 HStack {
-                                    Text("đ\((favouriteItem.price ) - ((favouriteItem.price ) * (favouriteItem.discount ) / 100))")
+                                    Text("đ\((favouriteItem.product.price ) - ((favouriteItem.product.price ) * (favouriteItem.product.discount ) / 100))")
                                         .font(.system(size: 10))
                                         .foregroundColor(.black)
-                                    Text("VND: \(favouriteItem.price )")
+                                    Text("VND: \(favouriteItem.product.price )")
                                         .font(.system(size: 10))
                                         .foregroundColor(.black)
                                         .strikethrough()
-                                    Text("\(favouriteItem.discount )% OFF")
+                                    Text("\(favouriteItem.product.discount )% OFF")
                                         .font(.system(size: 10))
                                         .foregroundColor(.red)
                                     }
@@ -76,18 +76,10 @@ struct FavoriteView: View {
                         Spacer()
                         VStack {
                             Button(action: {
-                                viewModel.idProduct = favouriteItem.id
-                                viewModel.deleteCartItems()
+                                viewModel.idFavourite = favouriteItem.id
+                                viewModel.deleteFavouirteItem()
                             }) {
                                 Image(systemName: "multiply")
-                                    .foregroundColor(.gray)
-                                    .frame(width: 30, height: 30)
-                            }
-                            .padding(.trailing, 10)
-                            
-                            Button(action: {
-                            }) {
-                                Image(systemName: "bag")
                                     .foregroundColor(.gray)
                                     .frame(width: 30, height: 30)
                             }
@@ -101,6 +93,9 @@ struct FavoriteView: View {
             Spacer()
         }
         .navigationBarBackButtonHidden(true)
+        .onAppear {
+            viewModel.getFavouriteProduct()
+        }
     }
 }
 

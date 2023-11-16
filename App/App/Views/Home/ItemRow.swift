@@ -12,27 +12,35 @@ struct ItemRow: View {
     @EnvironmentObject var dataStore: DataStore
     @ObservedObject var loadImageviewModel = LoadImage()
     @ObservedObject var viewModel = HomeViewModel()
-    @ObservedObject var  favoriteViewModel = FavouriteViewModel()
+    var  favouriteViewModel = FavouriteViewModel.instance
     @Binding var path: NavigationPath
     var product: ProductDetail
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             KFImage(URL(string: product.product.image ?? "https://i.pinimg.com/736x/c6/e5/65/c6e56503cfdd87da299f72dc416023d4.jpg"))
-//                    .frame(width: UIScreen.main.bounds.width / 2 - 35, height: 180)
-                    .setProcessor(ResizingImageProcessor(referenceSize: CGSize(width:  UIScreen.main.bounds.width / 2 - 35, height: 180)))
-                       .loadDiskFileSynchronously()
-                    .cornerRadius(8)
-                    .scaledToFill()
-                    .clipped()
-               
+            //                    .frame(width: UIScreen.main.bounds.width / 2 - 35, height: 180)
+                .setProcessor(ResizingImageProcessor(referenceSize: CGSize(width:  UIScreen.main.bounds.width / 2 - 35, height: 180)))
+                .loadDiskFileSynchronously()
+                .cornerRadius(8)
+                .scaledToFill()
+                .clipped()
+            
                 .overlay (
                     Button(action: {
-                        favoriteViewModel.id =  product.product.id
-                        favoriteViewModel.addFavouriteProduct()
+                        favouriteViewModel.id =  product.product.id
+                        if favouriteViewModel.favouriteItems.first(where: {$0.product.id == product.product.id}) == nil {
+//                            favouriteViewModel.idFavourite = favouriteViewModel.favouriteItems.first(where: {($0.product.id == product.product.id)})?.id ?? 0
+                            favouriteViewModel.addFavouriteProduct()
+                        } else {
+                            favouriteViewModel.deleteFavouirteItem()
+                        }
                     }) {
-                        Image(systemName: "heart")
-                        //                        Image(systemName: product.isFavorite == true ? "heart.fill" : "heart")
-                        //                            .foregroundColor(product.isFavorite == true ? .red : .gray)
+                        favouriteViewModel.favouriteItems.first(where: {$0.product.id == product.product.id}) != nil ?
+                        Image(systemName: "heart.fill")
+                            .foregroundColor(.red)
+                            .frame(width: 30, height: 30)
+                            .background(Color.white)
+                        : Image(systemName:"heart")
                             .foregroundColor(.gray)
                             .frame(width: 30, height: 30)
                             .background(Color.white)
@@ -98,9 +106,12 @@ struct ItemRow: View {
                 loadImageviewModel.loadImage(from: product.product.image ?? "https://i.pinimg.com/736x/c6/e5/65/c6e56503cfdd87da299f72dc416023d4.jpg") {
                     print("Hình ảnh đã được tải thành công")
                     if let imageURL = product.product.image {
-                               dataStore.imageURL = imageURL
-                           }
+                        dataStore.imageURL = imageURL
+                    }
                 }
+            }
+            .onAppear {
+                favouriteViewModel.getFavouriteProduct()
             }
     }
 }

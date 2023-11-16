@@ -45,7 +45,7 @@ struct ProvinceView: View, Hashable {
                     .foregroundColor(.black.opacity(0.6))
                     .padding(.leading, 15)
                 Spacer().frame(height: 10)
-                List(viewModel.address, id: \.code) { province in
+                List(viewModel.addresses, id: \.code) { province in
                     HStack {
                         Text(province.name)
                         Spacer()
@@ -56,7 +56,6 @@ struct ProvinceView: View, Hashable {
                     }
                     .contentShape(Rectangle())
                     .onTapGesture {
-                        
                             if selectedProvince?.code == province.code {
                                 selectedProvince = nil
                             } else {

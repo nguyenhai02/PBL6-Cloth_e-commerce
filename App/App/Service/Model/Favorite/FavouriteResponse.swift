@@ -9,12 +9,5 @@ import Foundation
 
 struct Favourite: Decodable, Hashable {
     let id: Int
-    let name: String
-    let description: String
-    let price: Int
-    let discount: Int
-    let image: String?
-    let createDate: String
-    let updateDate: String
-    let category: Categories
+    let product: Product
 }

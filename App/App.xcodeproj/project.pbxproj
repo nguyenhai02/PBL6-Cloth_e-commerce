@@ -19,6 +19,8 @@
 		24983B272AD923F5006D4228 /* TLSecureField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24983B262AD923F5006D4228 /* TLSecureField.swift */; };
 		249B747C2AF0BD4200690017 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 249B747B2AF0BD4200690017 /* GoogleService-Info.plist */; };
 		249B74812AF4009000690017 /* ConvertStringToColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 249B74802AF4009000690017 /* ConvertStringToColor.swift */; };
+		249F49742B03CDF000CA486A /* UpdateAddress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 249F49732B03CDF000CA486A /* UpdateAddress.swift */; };
+		249F49762B03D50700CA486A /* SideMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 249F49752B03D50700CA486A /* SideMenu.swift */; };
 		623C291844EC062862056ABF /* Pods_App.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9F4A2660E6AE40F998E1D10 /* Pods_App.framework */; };
 		98607C512B036D5600BAF0E8 /* AccessTokenResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98607C502B036D5600BAF0E8 /* AccessTokenResponse.swift */; };
 		987BDAE42B01CE1800D90960 /* MyService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 987BDAD22B01CE1800D90960 /* MyService.swift */; };
@@ -138,6 +140,8 @@
 		24983B262AD923F5006D4228 /* TLSecureField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TLSecureField.swift; sourceTree = "<group>"; };
 		249B747B2AF0BD4200690017 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		249B74802AF4009000690017 /* ConvertStringToColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConvertStringToColor.swift; sourceTree = "<group>"; };
+		249F49732B03CDF000CA486A /* UpdateAddress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateAddress.swift; sourceTree = "<group>"; };
+		249F49752B03D50700CA486A /* SideMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideMenu.swift; sourceTree = "<group>"; };
 		2F3F7AB3375B7556857444C0 /* Pods-App.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App.release.xcconfig"; path = "Target Support Files/Pods-App/Pods-App.release.xcconfig"; sourceTree = "<group>"; };
 		300F778E0EB2CF32BACA0EBC /* Pods-App.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App.debug.xcconfig"; path = "Target Support Files/Pods-App/Pods-App.debug.xcconfig"; sourceTree = "<group>"; };
 		98607C502B036D5600BAF0E8 /* AccessTokenResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessTokenResponse.swift; sourceTree = "<group>"; };
@@ -285,6 +289,7 @@
 				24630BC02AD69EA300191991 /* TLButton.swift */,
 				24983B262AD923F5006D4228 /* TLSecureField.swift */,
 				98F334952AE5664900B98B4B /* RadioButtonGroup.swift */,
+				249F49752B03D50700CA486A /* SideMenu.swift */,
 			);
 			path = Other;
 			sourceTree = "<group>";
@@ -556,6 +561,7 @@
 				987BDB2F2B01CE2700D90960 /* EditAddressView.swift */,
 				987BDB922B01DD6400D90960 /* TransferMoney */,
 				987BDB302B01CE2700D90960 /* Address */,
+				249F49732B03CDF000CA486A /* UpdateAddress.swift */,
 				987BDB342B01CE2700D90960 /* ChooseAddressView.swift */,
 				987BDB352B01CE2700D90960 /* AddAddressView.swift */,
 			);
@@ -927,6 +933,7 @@
 				987BDB162B01CE2000D90960 /* CartViewModel.swift in Sources */,
 				987BDAE92B01CE1800D90960 /* TokenResponse.swift in Sources */,
 				987BDBAB2B021CA200D90960 /* CoreConfigManager.swift in Sources */,
+				249F49742B03CDF000CA486A /* UpdateAddress.swift in Sources */,
 				987BDB182B01CE2000D90960 /* LoginViewModel.swift in Sources */,
 				987BDBE12B0223F200D90960 /* CardFormatter.swift in Sources */,
 				987BDBC02B021E5E00D90960 /* ProcessOrderParams.swift in Sources */,
@@ -959,6 +966,7 @@
 				987BDB142B01CE2000D90960 /* ProfileViewModel.swift in Sources */,
 				987BDB6E2B01CE2800D90960 /* ForgotPasswordView.swift in Sources */,
 				24983B272AD923F5006D4228 /* TLSecureField.swift in Sources */,
+				249F49762B03D50700CA486A /* SideMenu.swift in Sources */,
 				987BDB5E2B01CE2700D90960 /* ChooseAddressView.swift in Sources */,
 				987BDBC22B021EC900D90960 /* EnvironmentPaypal.swift in Sources */,
 				987BDB692B01CE2800D90960 /* FavoriteView.swift in Sources */,
