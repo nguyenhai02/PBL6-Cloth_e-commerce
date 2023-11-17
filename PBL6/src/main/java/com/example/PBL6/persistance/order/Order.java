@@ -1,20 +1,24 @@
-package com.example.PBL6.persistance;
+package com.example.PBL6.persistance.order;
 
+import com.example.PBL6.persistance.cart.CartItem;
+import com.example.PBL6.persistance.user.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
-@Setter
-@Getter
+@Entity
+@Builder
 @Table(name = "orders")
 @NoArgsConstructor
 @AllArgsConstructor
 public class Order {
-
     @Id
-    @Column(name = "orders")
+    @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
@@ -29,6 +33,10 @@ public class Order {
 
     @Column(name = "status")
     private String status;
+
+    @ManyToOne
+    @JoinColumn(name = "users_id", referencedColumnName = "id")
+    private User user;
 
 
 }

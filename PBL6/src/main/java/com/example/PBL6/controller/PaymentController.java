@@ -1,12 +1,25 @@
 package com.example.PBL6.controller;
 
 import com.example.PBL6.configuration.VNPayConfig;
+import com.example.PBL6.dto.cart.CartItemDetail;
+import com.example.PBL6.dto.order.OrderDto;
 import com.example.PBL6.dto.payment.PaymentCreateDto;
 import com.example.PBL6.dto.payment.PaymentResultDto;
 import com.example.PBL6.dto.product.FaProductRespDto;
+import com.example.PBL6.persistance.cart.CartItem;
+import com.example.PBL6.persistance.order.Order;
+import com.example.PBL6.persistance.order.OrderItem;
+import com.example.PBL6.persistance.product.ProductVariant;
 import com.example.PBL6.persistance.user.User;
+import com.example.PBL6.repository.OrderItemRepository;
+import com.example.PBL6.repository.OrderRepository;
+import com.example.PBL6.repository.ProductVariantRepository;
+import com.example.PBL6.service.CartService;
+import com.example.PBL6.service.OrderService;
 import com.example.PBL6.util.AuthenticationUtils;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,23 +29,31 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @RestController
 @RequestMapping("/payment")
 public class PaymentController {
+    @Autowired
+    private OrderService orderService;
+
+    private User user;
+
     @GetMapping("/createPayment")
-    public ResponseEntity<Object> createPayment(HttpServletRequest request) throws UnsupportedEncodingException {
-        User user = AuthenticationUtils.getUserFromSecurityContext();
-        if(user != null) {
-            long amount = 100000 * 100;
+    public ResponseEntity<Object> createPayment(HttpServletRequest request, @Param("amount") double amount) throws UnsupportedEncodingException {
+        user = AuthenticationUtils.getUserFromSecurityContext();
+        if (user != null) {
+            System.out.println("1: " + amount);
+            long amountAsLong = (long) (amount * 100);
+            System.out.println("2: " + amountAsLong);
             String vnp_TxnRef = VNPayConfig.getRandomNumber(8);
 
             Map<String, String> vnp_Params = new HashMap<>();
             vnp_Params.put("vnp_Version", VNPayConfig.vnp_Version);
             vnp_Params.put("vnp_Command", VNPayConfig.vnp_Command);
             vnp_Params.put("vnp_TmnCode", VNPayConfig.vnp_TmnCode);
-            vnp_Params.put("vnp_Amount", String.valueOf(amount));
+            vnp_Params.put("vnp_Amount", String.valueOf(amountAsLong));
             vnp_Params.put("vnp_CurrCode", VNPayConfig.moneyUnit);
             vnp_Params.put("vnp_BankCode", VNPayConfig.bank);
 
@@ -94,26 +115,35 @@ public class PaymentController {
     }
 
     @GetMapping("/paymentResult")
-    public ResponseEntity<Object> getPaymentResult(HttpServletRequest request, @RequestParam(value = "vnp_ResponseCode") String vnp_ResponseCode) {
-            String userAgent = request.getHeader("User-Agent");
-            PaymentResultDto paymentResultDto = new PaymentResultDto();
-            if (userAgent != null) {
-                if (vnp_ResponseCode.equals("00")) {
+    public ResponseEntity<Object> getPaymentResult(HttpServletRequest request,
+                                                   @RequestParam(value = "vnp_ResponseCode") String vnp_ResponseCode,
+                                                   @RequestParam(value = "vnp_Amount") Double amount) {
+        System.out.println(user);
+        String userAgent = request.getHeader("User-Agent");
+        PaymentResultDto paymentResultDto = new PaymentResultDto();
+        if (userAgent != null) {
+            if (vnp_ResponseCode.equals("00")) {
+                if (userAgent.contains("Mobile")) {
                     if (userAgent.contains("Mobile")) {
-                        // code cho mobile ở đây
-                    } else if (userAgent.contains("Mozilla")) {
                         HttpHeaders httpHeaders = new HttpHeaders();
-                        httpHeaders.add("location", "http://localhost:3000/");
+                        httpHeaders.add("location", "myapp://paymentResult?vnp_ResponseCode=00");
                         return new ResponseEntity<>(httpHeaders, HttpStatus.FOUND);
                     }
-                } else {
-                    paymentResultDto.setStatus("FAIL");
-                    paymentResultDto.setMessage("Thanh toán thất bại");
-                    ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(paymentResultDto);
+                } else if (userAgent.contains("Mozilla")) {
+                    HttpHeaders httpHeaders = new HttpHeaders();
+                    httpHeaders.add("location", "http://localhost:3000/");
+                    orderService.saveOrder(user, "VNPAY", amount, "COMPLETE");
+                    return new ResponseEntity<>(httpHeaders, HttpStatus.FOUND);
                 }
             } else {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+                paymentResultDto.setStatus("FAIL");
+                paymentResultDto.setMessage("Thanh toán thất bại");
+                ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(paymentResultDto);
             }
-            return ResponseEntity.ok(paymentResultDto);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        return ResponseEntity.ok(paymentResultDto);
     }
+
 }

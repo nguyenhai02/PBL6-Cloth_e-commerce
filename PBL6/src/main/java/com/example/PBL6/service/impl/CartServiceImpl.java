@@ -42,6 +42,7 @@ public class CartServiceImpl implements CartService {
                     .builder()
                     .id(cartItem.getId())
                     .productId(cartItem.getProductVariant().getProduct().getId())
+                    .productVariantId(cartItem.getProductVariant().getId())
                     .size(cartItem.getProductVariant().getSize())
                     .color(cartItem.getProductVariant().getColor())
                     .image(cartItem.getProductVariant().getProduct().getImage())
