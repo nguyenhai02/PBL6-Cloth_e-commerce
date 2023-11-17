@@ -127,6 +127,7 @@ public class PaymentController {
                     if (userAgent.contains("Mobile")) {
                         HttpHeaders httpHeaders = new HttpHeaders();
                         httpHeaders.add("location", "myapp://paymentResult?vnp_ResponseCode=00");
+                        orderService.saveOrder(user, "VNPAY", amount, "COMPLETE");
                         return new ResponseEntity<>(httpHeaders, HttpStatus.FOUND);
                     }
                 } else if (userAgent.contains("Mozilla")) {
