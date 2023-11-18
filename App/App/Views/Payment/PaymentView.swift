@@ -16,9 +16,11 @@ struct PaymentView: View, Hashable{
     }
     
     @Binding var path: NavigationPath
+//    @Environment(\.openURL) private var openURL
     @ObservedObject var homeViewModel: HomeViewModel
     @ObservedObject var cartViewModel: CartViewModel
     @ObservedObject var addressViewModel: AddressViewModel
+    @State var showAlert: Bool = false
     let viewModel: PaymentViewModel = PaymentViewModel()
     var body: some View {
         VStack(spacing: 0) {
@@ -208,7 +210,10 @@ struct PaymentView: View, Hashable{
                 .padding(.leading, 100)
                 Spacer()
                 Button(action: {
-                    path.append("MyOrdersView")
+                    viewModel.createPayment()
+                    self.showAlert = true
+                    print("viewModel.payment?.redirect_url")
+                    print(viewModel.payment?.redirect_url ?? "rong")
                 }) {
                     Text("Đặt Hàng")
                         .font(.system(size: 15))
@@ -221,6 +226,15 @@ struct PaymentView: View, Hashable{
             Spacer().frame(height: 8)
         }
         .navigationBarBackButtonHidden(true)
+        .alert(isPresented: $showAlert) {
+            Alert(title: Text("Order confirmation"), message: Text(""), dismissButton: .default(Text("OK")) {
+                if let url = URL(string: viewModel.payment?.redirect_url ?? "") {
+                    UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                    print("url")
+                }
+                path.append("MyOrdersView")
+            })
+        }
     }
 }
 

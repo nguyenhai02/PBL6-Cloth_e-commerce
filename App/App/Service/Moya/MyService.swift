@@ -23,6 +23,7 @@ enum MyService {
     case addFavouriteProduct(id: Int)
     case getFavouriteProduct
     case deleteFavouriteProduct(id: Int)
+    case createPayment
 }
 
 extension MyService: TargetType, AccessTokenAuthorizable {
@@ -55,11 +56,13 @@ extension MyService: TargetType, AccessTokenAuthorizable {
             return "/favouriteProduct"
         case .deleteFavouriteProduct(id: let id):
             return "/favouriteProduct/delete/\(id)"
+        case .createPayment:
+            return "/payment/createPayment"
         }
     }
     var method: Moya.Method {
         switch self {
-        case .showCategories, .showProfile, .showProduct, .getCartItems, .getItemDetail, .getFavouriteProduct:
+        case .showCategories, .showProfile, .showProduct, .getCartItems, .getItemDetail, .getFavouriteProduct, .createPayment:
             return .get
         case .register, .login, .updateProfile, .addCart, .addFavouriteProduct:
             return .post
@@ -69,7 +72,7 @@ extension MyService: TargetType, AccessTokenAuthorizable {
     }
     var task: Task {
         switch self {
-        case .showCategories, .showProfile, .getCartItems, .getItemDetail, .deleteCartItem, .addFavouriteProduct, .getFavouriteProduct, .deleteFavouriteProduct:
+        case .showCategories, .showProfile, .getCartItems, .getItemDetail, .deleteCartItem, .addFavouriteProduct, .getFavouriteProduct, .deleteFavouriteProduct, .createPayment:
             return .requestPlain
         case .register(name: let name, email: let email, password: let password, gender: let gender, image: let image, address: let address, phone: let phone):
             return .requestParameters(parameters: ["name": name, "email": email, "password": password, "address": address, "phone": phone], encoding: JSONEncoding.default)
@@ -92,7 +95,7 @@ extension MyService: TargetType, AccessTokenAuthorizable {
     
     var authorizationType: AuthorizationType? {
         switch self{
-        case .showProfile, .updateProfile, .addCart, .getCartItems, .getCartItems, .deleteCartItem, .addFavouriteProduct, .getFavouriteProduct, .deleteFavouriteProduct:
+        case .showProfile, .updateProfile, .addCart, .getCartItems, .getCartItems, .deleteCartItem, .addFavouriteProduct, .getFavouriteProduct, .deleteFavouriteProduct, .createPayment:
             return .bearer
         default:
             return nil

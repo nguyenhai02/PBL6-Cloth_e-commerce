@@ -162,8 +162,8 @@ struct ShoppingView: View {
                             }
                         }
                         .frame(width: 90, height: 50)
-                        .padding(.trailing, 5)
                         .background(Color.white)
+                        .padding(.trailing, 5)
                     }
 //                    .padding(.top, 20)
                     .padding(.leading, 10)

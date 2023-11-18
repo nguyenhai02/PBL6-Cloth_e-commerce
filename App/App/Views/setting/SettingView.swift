@@ -54,7 +54,7 @@ struct SettingView: View {
                         path.append("MyOrdersView")
                         break
                     case 2:
-                        path.append("ChooseAddressView")
+                        path.append(ChooseAddressView(viewModel: AddressViewModel(), path: $path))
                         break
                     case 3:
                         path.append("ChoosePaymentView")
@@ -81,6 +81,9 @@ struct SettingView: View {
                 }
                 .padding(.top, 30)
                 .padding(.leading, 28)
+                .navigationDestination(for: ChooseAddressView.self) {_ in
+                    ChooseAddressView(viewModel: AddressViewModel(), path: $path)
+                }
             }
             Button(action: {
                 viewModel.logOut()

@@ -18,7 +18,11 @@ class AddressViewModel: ObservableObject {
     @Published var errorMessage: String = ""
     @Published var addresses: [Province] = []
     @Published var savedAddessed: [Address] = [] //[2]
-    @Published var selectedAddress: Address? = nil
+    @Published var selectedAddress: Address?  = nil //[2]
+    @Published var nameCity: String = ""
+    @Published var cities: [Province] =  []
+    @Published var wards: [Ward] = []
+    @Published var districts: [District] = []
     static var instance = AddressViewModel()
     init() {
         self.getAddress()
@@ -35,7 +39,6 @@ class AddressViewModel: ObservableObject {
     func getAddress() {
         savedAddessed = UserDefaults.standard.getDecodablesFromArrayOfDictionaries(for:  Constanst.savedAddess)  ?? []
     }
-    
     func editAddress(indexEdit: Int, address: Address, completed: @escaping () -> Void) {
         name = address.name
         phone = address.phone
@@ -53,7 +56,12 @@ class AddressViewModel: ObservableObject {
         completed()
     }
     
-    func getAddressFromURL() {
+    func searchCity(name: String) {
+//        getAddressFromURL(complete: { addresses in
+            self.cities  = addresses.filter{$0.name.contains(name)}
+//        })
+    }
+    func getAddressFromURL(complete: @escaping ([Province]) -> Void) {
         let provider = MoyaProvider<ProvinceService>()
         provider.request(.getProvinces) { result in
             switch result {
@@ -62,6 +70,7 @@ class AddressViewModel: ObservableObject {
                     let filteredResponse = try moyaResponse.filterSuccessfulStatusCodes()
                     let address = try filteredResponse.map([Province].self)
                     self.addresses = address
+                    complete(address)
                     print(address)
                 } catch {print("Error mapping response: \(error)")}
                 print("Hien hihi")
