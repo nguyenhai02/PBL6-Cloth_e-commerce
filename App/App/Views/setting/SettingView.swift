@@ -17,7 +17,7 @@ struct SettingView: View {
         VStack(alignment: .leading, spacing: 0) {
             Spacer().frame(height: 40)
             HStack {
-                KFImage(URL(string: viewModel.profile?.avatar ?? ""))
+                KFImage(URL(string: viewModel.profile?.avatar ?? "https://i.pinimg.com/736x/c6/e5/65/c6e56503cfdd87da299f72dc416023d4.jpg"))
                     .resizable()
                     .cacheOriginalImage()
                     .onSuccess { r in
@@ -26,7 +26,8 @@ struct SettingView: View {
                     .onFailure { e in
                         print("err: \(e)")
                     }
-                    .placeholder {                                            ProgressView().frame(width: 100, height: 100)
+                    .placeholder {
+                        ProgressView().frame(width: 100, height: 100)
                             .border(Color.blue)
                     }
                     .fade(duration: 1)

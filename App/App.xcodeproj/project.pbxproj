@@ -22,6 +22,8 @@
 		249F49742B03CDF000CA486A /* UpdateAddress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 249F49732B03CDF000CA486A /* UpdateAddress.swift */; };
 		249F49762B03D50700CA486A /* SideMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 249F49752B03D50700CA486A /* SideMenu.swift */; };
 		249F497C2B0636B500CA486A /* PaymentResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 249F497B2B0636B500CA486A /* PaymentResponse.swift */; };
+		249F49802B08751100CA486A /* OrderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 249F497F2B08751100CA486A /* OrderViewModel.swift */; };
+		249F49832B08851700CA486A /* OrderResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 249F49822B08851700CA486A /* OrderResponse.swift */; };
 		623C291844EC062862056ABF /* Pods_App.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9F4A2660E6AE40F998E1D10 /* Pods_App.framework */; };
 		98607C512B036D5600BAF0E8 /* AccessTokenResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98607C502B036D5600BAF0E8 /* AccessTokenResponse.swift */; };
 		987BDAE42B01CE1800D90960 /* MyService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 987BDAD22B01CE1800D90960 /* MyService.swift */; };
@@ -144,6 +146,8 @@
 		249F49752B03D50700CA486A /* SideMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideMenu.swift; sourceTree = "<group>"; };
 		249F497B2B0636B500CA486A /* PaymentResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentResponse.swift; sourceTree = "<group>"; };
 		249F497D2B06618100CA486A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		249F497F2B08751100CA486A /* OrderViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderViewModel.swift; sourceTree = "<group>"; };
+		249F49822B08851700CA486A /* OrderResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderResponse.swift; sourceTree = "<group>"; };
 		2F3F7AB3375B7556857444C0 /* Pods-App.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App.release.xcconfig"; path = "Target Support Files/Pods-App/Pods-App.release.xcconfig"; sourceTree = "<group>"; };
 		300F778E0EB2CF32BACA0EBC /* Pods-App.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App.debug.xcconfig"; path = "Target Support Files/Pods-App/Pods-App.debug.xcconfig"; sourceTree = "<group>"; };
 		98607C502B036D5600BAF0E8 /* AccessTokenResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessTokenResponse.swift; sourceTree = "<group>"; };
@@ -348,6 +352,14 @@
 			path = Payment;
 			sourceTree = "<group>";
 		};
+		249F497E2B0874EE00CA486A /* Order */ = {
+			isa = PBXGroup;
+			children = (
+				249F497F2B08751100CA486A /* OrderViewModel.swift */,
+			);
+			path = Order;
+			sourceTree = "<group>";
+		};
 		987BDAD12B01CE1800D90960 /* Service */ = {
 			isa = PBXGroup;
 			children = (
@@ -393,6 +405,7 @@
 		987BDAF32B01CE2000D90960 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				249F497E2B0874EE00CA486A /* Order */,
 				987BDB912B01D6AB00D90960 /* Photo */,
 				987BDAF42B01CE2000D90960 /* Home */,
 				987BDAF72B01CE2000D90960 /* Splash */,
@@ -708,6 +721,7 @@
 			isa = PBXGroup;
 			children = (
 				987BDAE02B01CE1800D90960 /* FavouriteResponse.swift */,
+				249F49822B08851700CA486A /* OrderResponse.swift */,
 			);
 			path = Favorite;
 			sourceTree = "<group>";
@@ -930,6 +944,7 @@
 				987BDBD72B0220AF00D90960 /* CardOrderApproveView.swift in Sources */,
 				24630BBF2AD698D800191991 /* EditTextView.swift in Sources */,
 				987BDBD32B0220AF00D90960 /* CardApprovalResultView.swift in Sources */,
+				249F49832B08851700CA486A /* OrderResponse.swift in Sources */,
 				987BDB6A2B01CE2800D90960 /* SettingView.swift in Sources */,
 				987BDB5A2B01CE2700D90960 /* EditAddressView.swift in Sources */,
 				987BDB162B01CE2000D90960 /* CartViewModel.swift in Sources */,
@@ -949,6 +964,7 @@
 				987BDB622B01CE2700D90960 /* EditPhoneView.swift in Sources */,
 				987BDAE52B01CE1800D90960 /* LoadImage.swift in Sources */,
 				987BDB802B01D3F000D90960 /* DataStore.swift in Sources */,
+				249F49802B08751100CA486A /* OrderViewModel.swift in Sources */,
 				987BDB5B2B01CE2700D90960 /* ProvinceView.swift in Sources */,
 				987BDBA42B021AD600D90960 /* CardPaymentState.swift in Sources */,
 				987BDAEB2B01CE1800D90960 /* CartResponse.swift in Sources */,

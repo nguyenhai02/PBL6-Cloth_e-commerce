@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Profile: Decodable {
+struct Profile: Decodable, Hashable {
     var id: Int
     var name: String
     var email: String
@@ -24,6 +24,6 @@ struct Profile: Decodable {
     var authorities: [Authorities] = []
 }
 
-struct Authorities: Decodable{
+struct Authorities: Decodable, Hashable{
     var authority: String
 }
