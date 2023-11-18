@@ -10,10 +10,12 @@ import Kingfisher
 
 struct CartView: View {
     @ObservedObject var viewModel = CartViewModel()
+    @ObservedObject var orderModel = OrderViewModel()
     @Binding var path: NavigationPath
     @State var value = 0
     @State private var isOn = false
     let productDetail: ProductDetail
+    @State var displayedItems = 5
     var body: some View {
         ZStack {
             Color("CFCFCF").opacity(0.3)
@@ -27,13 +29,94 @@ struct CartView: View {
                     .foregroundColor(.black)
                     .padding([.top, .leading], 20)
                 Spacer().frame(height: 10)
-                ScrollView {
-                    ForEach(viewModel.cartItems, id: \.self) { cartItem in
-                        CartItem(viewModel: viewModel, path: $path, product: productDetail, cartItem: cartItem)
+                VStack(spacing: 0) {
+                    ScrollView {
+                        ForEach(viewModel.cartItems.prefix(displayedItems), id: \.self) { cartItem in
+                            CartItem(viewModel: viewModel, path: $path, product: productDetail, cartItem: cartItem)
+                        }
+                        if displayedItems < viewModel.cartItems.count {
+//                            Button(action: {
+//                                displayedItems += 5
+//                            }) {
+//                                Text("Xem Thêm")
+//                                    .foregroundColor(.blue)
+//                            }
+                            TLButton(title: "Xem Thêm", background: Color("FF3300")) {
+                                displayedItems += 5
+                            }
+                            .padding(.horizontal, 30)
+                            .padding(.vertical, 15)
+                        }
+                        VStack {
+                            HStack {
+                                Text("Item Total")
+                                    .font(.system(size: 14))
+                                    .foregroundColor(.gray)
+                                Spacer()
+                                Text("\(viewModel.cartItems.reduce(0, { $0 + Int($1.price) * $1.quantity })) VND")
+                                    .font(.system(size: 14))
+                                    .fontWeight(.medium)
+                                    .foregroundColor(.black)
+                            }
+                            .padding(.top, 10)
+                            .padding(.horizontal, 15)
+                            
+                            HStack {
+                                Text("Delivery Charges")
+                                    .font(.system(size: 14))
+                                    .foregroundColor(.gray)
+                                Spacer()
+                                Text("\(0)VND")
+                                    .font(.system(size: 14))
+                                    .fontWeight(.medium)
+                                    .foregroundColor(.black)
+                            }
+                            .padding(.top, 5)
+                            .padding(.horizontal, 15)
+                            
+                            HStack {
+                                Text("Discount")
+                                    .font(.system(size: 13))
+                                    .foregroundColor(.gray)
+                                Spacer()
+    //                            Text("-VND\(viewModel.cartItems.reduce(0, { $0 + ($1.price * $1.discount)/100}))")
+    //                                .font(.system(size: 14))
+    //                                .foregroundColor(.black)
+                            }
+                            .padding(.top, 5)
+                            .padding(.horizontal, 15)
+                            
+                          Divider()
+                                .padding(.vertical, 5)
+                            
+                            HStack {
+                                Text("Total Amount")
+                                    .font(.system(size: 13))
+                                    .foregroundColor(.gray)
+                                Spacer()
+    //                            Text("VND\(viewModel.cartItems.reduce(0, { $0 + ($1.price - ($1.price * $1.price)/100)}))")
+                                Text("\(viewModel.total)VND")
+                                    .font(.system(size: 13))
+                                    .fontWeight(.medium)
+                                    .foregroundColor(.black)
+                            }
+                            .padding(.horizontal, 15)
+                            .padding(.bottom, 5)
+                            TLButton(title: "Thanh Toán", background: Color("FF3300").opacity(0.7)) {
+                                viewModel.CreateCOD(amount: viewModel.total) {
+                                    path.append("MyOrdersView")
+                                }
+                                print(viewModel.total)
+                            }
+                            .padding(.horizontal, 25)
+                            .padding(.vertical, 15)
+                            Spacer()
+                        }
                     }
-                    .onAppear {
-                        viewModel.getCartItems()
-                    }
+                    .background(.white)
+                }
+                .onAppear {
+                    viewModel.getCartItems()
                 }
                 Spacer()
             }
@@ -80,10 +163,6 @@ struct CartItem: View {
                     }
                 }
                 .padding(.top, 15)
-                //                        Text("Wine Halter Bow")
-                //                            .font(.system(size: 14))
-                //                            .foregroundColor(.black)
-                //                            .padding(.top, 8)
                 HStack {
                     Text("Color:")
                         .font(.system(size: 14))
@@ -92,11 +171,21 @@ struct CartItem: View {
                         .font(.system(size: 14))
                         .foregroundColor(.black.opacity(0.7))
                     
-                    Text("Size:")  .font(.system(size: 14))
+                    Text("Size:")
+                        .font(.system(size: 14))
                         .foregroundColor(.gray)
                     Text(cartItem.size)
                         .font(.system(size: 14))
                         .foregroundColor(.black.opacity(0.7))
+                }
+                .padding(.top, 8)
+                HStack {
+                    Text("Price:")
+                        .font(.system(size: 14))
+                        .foregroundColor(.black)
+                    Text("\(Double(cartItem.price))")
+                        .font(.system(size: 14))
+                        .foregroundColor(Color("002482"))
                 }
                 .padding(.top, 8)
                 HStack(spacing: 0) {
@@ -158,7 +247,7 @@ struct CartItem: View {
         .background(Color.white)
         .cornerRadius(10)
         .padding(.horizontal, 20)
-        .padding(.top, 10)
+        .padding(.top, 8)
         .onAppear {
             viewModel.getCartItems()
         }

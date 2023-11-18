@@ -53,7 +53,7 @@ struct ProfileView: View {
                                         .clipShape(Circle())
                                     
                                 } else {
-                                    KFImage(URL(string: viewModel.profile?.avatar ?? ""))
+                                    KFImage(URL(string: viewModel.profile?.avatar ?? "https://i.pinimg.com/736x/c6/e5/65/c6e56503cfdd87da299f72dc416023d4.jpg"))
                                         .cacheOriginalImage()
                                         .onSuccess { r in
                                             print("suc: \(r)")
@@ -68,15 +68,9 @@ struct ProfileView: View {
                                         .frame(width: 100, height: 100)
                                         .cornerRadius(50)
                                         .shadow(radius: 5)
-                                    //                                    Image(uiImage: viewModel.image ?? UIImage())
-                                    //                                        .resizable()
-                                    //                                        .aspectRatio(contentMode: .fill)
-                                    //                                        .frame(width: 100, height: 100)
-                                    //                                        .clipShape(Circle())
                                     
                                 }
                             }
-                            //                            }
                             Text("Edit photo")
                         }
                     }

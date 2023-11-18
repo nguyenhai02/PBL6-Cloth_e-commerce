@@ -8,12 +8,35 @@
 import Foundation
 import CardPayments
 import CorePayments
+import Moya
 
 class PaymentViewModel: ObservableObject, CardDelegate{
+    @Published var payment: PaymentResponse? = nil
     let item: ItemAddress = ItemAddress(name: "Nguyen thi Thanh Hien", phone: "01243242343", address: "213 chau tinh tri", contries: "Thanh xuan, Ha noi, Viet nam")
     let product: Product = Product(id: 1, name: "Quần áo là quần áo là quần áo", description: "Green printed woven fit and flare dress, has a notched lapel collar and sleevesless.", price: 10, discount: 10, createDate: "1/1/2023", updateDate: "1/2/2023", category: Categories(id: 3, name: "Quần", description: "Quần jeans nam nữ", createDate: "2023-10-21T00:55:48", updateDate: "2023-10-21T00:55:48"))
     
+    func createPayment() {
+        let token = UserDefaults.standard.string(forKey: Constanst.tokenKey) ?? ""
+        let tokenPlugin = AccessTokenPlugin{_ in token }
+        let plugin: PluginType = NetworkLoggerPlugin(configuration: .init(logOptions: .verbose))
+        let provider = MoyaProvider<MyService>(plugins: [tokenPlugin, plugin])
+        provider.request(.createPayment) { result in
+            switch result {
+            case let .success(moyaResponse):
+                do {
+                    let filteredResponse = try moyaResponse.filterSuccessfulStatusCodes()
+                    let payment = try filteredResponse.map(PaymentResponse.self)
+                    self.payment = payment
+                    print(payment)
+                } catch { print("Bi catch ")}
+            case let .failure(error):
+                print(error)
+            }
+        }
+        
+    }
     
+    //Paypal
     @Published var state = CardPaymentState()
     
     let configManager = CoreConfigManager(domain: "Card Payments")

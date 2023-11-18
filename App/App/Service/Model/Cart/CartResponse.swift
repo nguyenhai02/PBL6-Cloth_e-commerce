@@ -15,6 +15,6 @@ struct Cart: Decodable, Hashable {
     let image: String?
     let color: String
     let size: String
-    let price: Double
+    var price: Double
     var quantity: Int
 }

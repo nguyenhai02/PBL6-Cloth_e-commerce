@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 struct MyOrdersView: View {
-    let arrOrder = OrderModel.all()
+    @ObservedObject var viewModel = OrderViewModel()
     @State private var selectorIndex = 0
     @Binding var path: NavigationPath
     
@@ -48,8 +48,9 @@ struct MyOrdersView: View {
                 if selectorIndex == 0 {
                     ScrollView(.vertical, showsIndicators: false, content: {
                         VStack(spacing: 10) {
-                            ForEach(self.arrOrder.filter { $0.status == "Delivered" }, id: \.id) { order in
+                            ForEach(viewModel.orders.filter { $0.status == "UN-COMPLETE" }, id: \.self) { order in
                                 OrderRow(order: order, selectorIndex: self.selectorIndex)
+//
                             }
                         }
                         .padding(.horizontal, 15)
@@ -57,54 +58,56 @@ struct MyOrdersView: View {
                 } else if selectorIndex == 1 {
                     ScrollView(.vertical, showsIndicators: false, content: {
                         VStack(spacing: 10) {
-                            ForEach(self.arrOrder.filter { $0.status == "Processing" }, id: \.id) { order in
-                                OrderRow(order: order, selectorIndex: self.selectorIndex)
-                            }
-                        }
-                        .padding(.horizontal, 15)
-                    })
-                } else {
-                    ScrollView(.vertical, showsIndicators: false, content: {
-                        VStack(spacing: 10) {
-                            ForEach(self.arrOrder.filter { $0.status == "Cancelled" }, id: \.id) { order in
+                            ForEach(viewModel.orders.filter { $0.status == "COMPLETE" }, id: \.self) { order in
                                 OrderRow(order: order, selectorIndex: self.selectorIndex)
                             }
                         }
                         .padding(.horizontal, 15)
                     })
                 }
+//                else {
+//                    ScrollView(.vertical, showsIndicators: false, content: {
+//                        VStack(spacing: 10) {
+//                            ForEach(self.arrOrder.filter { $0.status == "Cancelled" }, id: \.id) { order in
+//                                OrderRow(order: order, selectorIndex: self.selectorIndex)
+//                            }
+//                        }
+//                        .padding(.horizontal, 15)
+//                    })
+//                }
             }
             .navigationBarBackButtonHidden(true)
+            .onAppear {
+                viewModel.getAllOders()
+            }
     }
 }
 
 struct OrderRow: View {
-    
-    var order: OrderModel
+    var order: OrderResponse
     var selectorIndex = 0
-    
     var body: some View {
         VStack(alignment: .leading) {
             HStack {
-                Text("Order No: \(order.orderNumber)")
+                Text("Order No: \(order.id)")
                 Spacer()
                 Text(order.orderDate)
                     .foregroundColor(.gray)
             }.padding([.top], 2)
             
-            HStack() {
-                Text("Tracking No:")
-                    .foregroundColor(.gray)
-                Text(order.trackingId)
-            }.padding([.top], 2)
+//            HStack() {
+//                Text("Tracking No:")
+//                    .foregroundColor(.gray)
+//                Text(order.trackingId)
+//            }.padding([.top], 2)
             
             HStack {
-                Text("Quantity:")
-                Text("\(order.quantity)")
-                    .foregroundColor(.gray)
-                Spacer()
+//                Text("Quantity:")
+//                Text("\(order.quantity)")
+//                    .foregroundColor(.gray)
+//                Spacer()
                 Text("Total Amount:")
-                Text("\(order.totalAmount)")
+                Text("\(order.totalPrice)")
                     .foregroundColor(.gray)
             }.padding([.top], 2)
             

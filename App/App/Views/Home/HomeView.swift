@@ -39,19 +39,24 @@ struct HomeView: View {
                                         .frame(width: 35, height: 35)
                                         .cornerRadius(20)
                                         .padding(.leading, 20)
-//                        KFImage(URL(string:  url))
-//                            .resizable()
-//                            .aspectRatio(contentMode: .fit)
-//                            .scaledToFill()
-//                            .frame(width: 35, height: 35)
-//                            .cornerRadius(35)
-//                            .padding(.leading, 20)
-                    }else{
-                        Image(systemName: "heart")
-                            .resizable()
-                            .foregroundColor(.black)
-                            .frame(width: 20, height: 20)
-                            .padding(.trailing, 20)
+                    } else {
+                        KFImage(URL(string: "https://i.pinimg.com/736x/c6/e5/65/c6e56503cfdd87da299f72dc416023d4.jpg"))
+                                        .cacheOriginalImage()
+                                        .onSuccess { r in
+                                            print("suc: \(r)")
+                                        }
+                                        .onFailure { e in
+                                            print("err: \(e)")
+                                        }
+                                        .placeholder {                                            ProgressView().frame(width: 100, height: 100)
+                                                .border(Color.blue)
+                                        }
+                                        .fade(duration: 1)
+                                        .forceTransition(true)
+                                        .resizable()
+                                        .frame(width: 35, height: 35)
+                                        .cornerRadius(20)
+                                        .padding(.leading, 20)
                     }
                 }
                 Text(profileViewModel.profile?.name ?? "")

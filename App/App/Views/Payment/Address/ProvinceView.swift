@@ -16,6 +16,7 @@ struct ProvinceView: View, Hashable {
     @State var selectedProvince: Province? = nil
     @Binding var path: NavigationPath
     @ObservedObject var viewModel: AddressViewModel
+    @State var searchText: String = ""
     
     var body: some View {
         ZStack {
@@ -33,29 +34,60 @@ struct ProvinceView: View, Hashable {
                             .frame(width: 18, height: 18)
                             .padding(.leading, 25)
                     }
-                    Text("Chọn Tỉnh")
-                        .font(.system(size: 20))
-                        .fontWeight(.medium)
-                        .padding(.leading, 15)
+                    //                    Text("Chọn Tỉnh")
+                    //                        .font(.system(size: 20))
+                    //                        .fontWeight(.medium)
+                    //                        .padding(.leading, 15)
+                    HStack {
+                        TextField("Tìm kiếm...", text: $searchText)
+                            .padding([.leading], 10)
+                            .foregroundColor(.black)
+                        if !searchText.isEmpty {
+                            Button(action: {
+                                searchText = ""
+                            }) {
+                                Image(systemName: "xmark.circle.fill")
+                                    .foregroundColor(.gray)
+                            }
+                        }
+                        Button(action: {
+                            print("searchText")
+                            viewModel.searchCity(name: searchText)
+                            print(searchText)
+                            print(viewModel.cities)
+                        }) {
+                            Image(systemName: "magnifyingglass")
+                                .foregroundColor(.black.opacity(0.6))
+                        }
+                        .padding(10)
+                        
+                    }
+                    .frame(width: 300 , height: 40)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 6).stroke(Color.black.opacity(0.8).opacity(0.5))).shadow(radius: 0)
+                        .background(.white)
+                        .padding([.leading], 10)
+                        .padding(.trailing, 20)
                     Spacer()
                 }
-                Spacer().frame(height: 35)
+                Spacer().frame(height: 25)
                 Text("Tỉnh/ Thành phố")
                     .font(.system(size: 14))
                     .foregroundColor(.black.opacity(0.6))
                     .padding(.leading, 15)
                 Spacer().frame(height: 10)
-                List(viewModel.addresses, id: \.code) { province in
-                    HStack {
-                        Text(province.name)
-                        Spacer()
-                        if selectedProvince?.code == province.code {
-                            Image(systemName: "checkmark")
-                                .foregroundColor(.red)
+                if viewModel.cities == [] {
+                    List(viewModel.addresses, id: \.code) { province in
+                        HStack {
+                            Text(province.name)
+                            Spacer()
+                            if selectedProvince?.code == province.code {
+                                Image(systemName: "checkmark")
+                                    .foregroundColor(.red)
+                            }
                         }
-                    }
-                    .contentShape(Rectangle())
-                    .onTapGesture {
+                        .contentShape(Rectangle())
+                        .onTapGesture {
                             if selectedProvince?.code == province.code {
                                 selectedProvince = nil
                             } else {
@@ -64,18 +96,43 @@ struct ProvinceView: View, Hashable {
                                 path.append(DistrictView(path: $path, viewModel: viewModel))
                                 print( viewModel.city)
                             }
+                        }
                     }
-                }
-                .listStyle(.plain)
-                .background(.white)
+                    .listStyle(.plain)
+                    .background(.white)
+                } else {
+                    List(viewModel.cities, id: \.code) { province in
+                        HStack {
+                            Text(province.name)
+                            Spacer()
+                            if selectedProvince?.code == province.code {
+                                Image(systemName: "checkmark")
+                                    .foregroundColor(.red)
+                            }
+                        }
+                        .contentShape(Rectangle())
+                        .onTapGesture {
+                            if selectedProvince?.code == province.code {
+                                selectedProvince = nil
+                            } else {
+                                selectedProvince = province
+                                viewModel.city = province.name
+                                path.append(DistrictView(path: $path, viewModel: viewModel))
+                                print( viewModel.city)
+                            }
+                        }
+                    }
+                    .listStyle(.plain)
+                    .background(.white)
             }
         }
+    }
         .navigationBarBackButtonHidden(true)
         .navigationDestination(for: DistrictView.self) { _ in
             DistrictView(path: $path, viewModel: viewModel)
         }
         .onAppear {
-            viewModel.getAddressFromURL()
+            viewModel.getAddressFromURL() {_ in }
         }
     }
 }

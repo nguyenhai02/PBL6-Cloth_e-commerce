@@ -17,7 +17,7 @@ struct SettingView: View {
         VStack(alignment: .leading, spacing: 0) {
             Spacer().frame(height: 40)
             HStack {
-                KFImage(URL(string: viewModel.profile?.avatar ?? ""))
+                KFImage(URL(string: viewModel.profile?.avatar ?? "https://i.pinimg.com/736x/c6/e5/65/c6e56503cfdd87da299f72dc416023d4.jpg"))
                     .resizable()
                     .cacheOriginalImage()
                     .onSuccess { r in
@@ -26,7 +26,8 @@ struct SettingView: View {
                     .onFailure { e in
                         print("err: \(e)")
                     }
-                    .placeholder {                                            ProgressView().frame(width: 100, height: 100)
+                    .placeholder {
+                        ProgressView().frame(width: 100, height: 100)
                             .border(Color.blue)
                     }
                     .fade(duration: 1)
@@ -54,7 +55,7 @@ struct SettingView: View {
                         path.append("MyOrdersView")
                         break
                     case 2:
-                        path.append("ChooseAddressView")
+                        path.append(ChooseAddressView(viewModel: AddressViewModel(), path: $path))
                         break
                     case 3:
                         path.append("ChoosePaymentView")
@@ -81,6 +82,9 @@ struct SettingView: View {
                 }
                 .padding(.top, 30)
                 .padding(.leading, 28)
+                .navigationDestination(for: ChooseAddressView.self) {_ in
+                    ChooseAddressView(viewModel: AddressViewModel(), path: $path)
+                }
             }
             Button(action: {
                 viewModel.logOut()

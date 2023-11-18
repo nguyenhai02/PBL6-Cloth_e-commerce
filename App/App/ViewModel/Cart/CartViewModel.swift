@@ -19,7 +19,25 @@ class CartViewModel: ObservableObject {
     @Published var image: UIImage?
     @Published var urlImage: String?
     @Published var cartItems: [Cart] = []
+    @Published var total: Double = 0
     
+    func CreateCOD(amount: Double, completed: @escaping () -> Void) {
+        let token = UserDefaults.standard.string(forKey: Constanst.tokenKey) ?? ""
+        let tokenPlugin = AccessTokenPlugin{_ in token }
+        let plugin: PluginType = NetworkLoggerPlugin(configuration: .init(logOptions: .verbose))
+        let provider = MoyaProvider<MyService>(plugins: [tokenPlugin, plugin])
+        provider.request(.createCOD(amount: amount)) {result in
+            switch result {
+            case .success(_):
+                print("success")
+                self.deleteAllCartItems()
+                completed()
+            case let .failure(error):
+                print("failure: \(error.localizedDescription)")
+                
+            }
+        }
+    }
     func addCart(completed: @escaping () -> Void) {
         let token = UserDefaults.standard.string(forKey: Constanst.tokenKey) ?? ""
         let tokenPlugin = AccessTokenPlugin{_ in token }
@@ -57,6 +75,7 @@ class CartViewModel: ObservableObject {
                     let filteredResponse = try moyaResponse.filterSuccessfulStatusCodes()
                     let cart = try filteredResponse.map([Cart].self)
                     self.cartItems = cart
+                    self.total = Double(cartItems.reduce(0, { $0 + Int($1.price) * $1.quantity}))
                     print(cart)
                 } catch {
                     self.cartItems = []
@@ -75,6 +94,23 @@ class CartViewModel: ObservableObject {
         let plugin: PluginType = NetworkLoggerPlugin(configuration: .init(logOptions: .verbose))
         let provider = MoyaProvider<MyService>(plugins: [tokenPlugin, plugin])
         provider.request(.deleteCartItem(id: id)) {result in
+            switch result {
+            case .success(_):
+                    self.getCartItems()
+                print("Xoas thanhf coong")
+            case let .failure(error):
+                print(error)
+                print("Xoa k thanh cong")
+            }
+        }
+    }
+    
+    func deleteAllCartItems() {
+        let token = UserDefaults.standard.string(forKey: Constanst.tokenKey) ?? ""
+        let tokenPlugin = AccessTokenPlugin{_ in token }
+        let plugin: PluginType = NetworkLoggerPlugin(configuration: .init(logOptions: .verbose))
+        let provider = MoyaProvider<MyService>(plugins: [tokenPlugin, plugin])
+        provider.request(.deleteAllCartItem) {result in
             switch result {
             case .success(_):
                     self.getCartItems()

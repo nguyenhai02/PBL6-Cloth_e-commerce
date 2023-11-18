@@ -106,7 +106,7 @@ struct AddAddressView: View {
             ProvinceView(path: $path, viewModel: viewModel)
         }
         .onAppear {
-            viewModel.getAddressFromURL()
+            viewModel.getAddressFromURL() {_ in}
         }
     }
 }
