@@ -7,7 +7,12 @@
 
 import SwiftUI
 
-struct ChoosePaymentView: View {
+struct ChoosePaymentView: View, Hashable {
+    static func == (lhs: ChoosePaymentView, rhs: ChoosePaymentView) -> Bool {
+        return true
+    }
+    func hash(into hasher: inout Hasher) {}
+    @ObservedObject var viewModel: PaymentViewModel
     @Binding var path: NavigationPath
     @State private var isMoneyButtonSelected = false
     @State private var isVnpayButtonSelected = false
@@ -31,12 +36,13 @@ struct ChoosePaymentView: View {
                 Spacer()
             }
             Spacer().frame(height: 45)
-//            Divider().background(Color("EBF0FF"))
             Button(action: {
                 isMoneyButtonSelected = true
                 isVnpayButtonSelected = false
-                path.append("TransferMoneyView")
-//                path.removeLast(2)
+                viewModel.paymentMethod = Payment.vnpay
+                print(viewModel.paymentMethod)
+                path.removeLast()
+                //                path.append("TransferMoneyView")
             }) {
                 HStack {
                     Image("vnpay")
@@ -56,12 +62,13 @@ struct ChoosePaymentView: View {
                 .frame(width: UIScreen.main.bounds.width)
                 .overlay(RoundedRectangle(cornerRadius: 0).stroke(Color("EBF0FF")))
                 .background(isMoneyButtonSelected ? Color("EBF0FF") : Color.clear)
-              
+                
             }
-//            Divider().background(Color("EBF0FF"))
             Button(action: {
                 isMoneyButtonSelected = false
                 isVnpayButtonSelected = true
+                viewModel.paymentMethod = Payment.money
+                path.removeLast()
             }) {
                 HStack {
                     Image("money")
@@ -88,6 +95,6 @@ struct ChoosePaymentView: View {
 }
 struct ChoosePaymentView_Previews: PreviewProvider {
     static var previews: some View {
-        ChoosePaymentView(path: .constant(NavigationPath()))
+        ChoosePaymentView(viewModel: PaymentViewModel(), path: .constant(NavigationPath()))
     }
 }

@@ -10,6 +10,8 @@ target 'App' do
   pod 'Firebase/Core'
   pod 'Firebase/Storage'
   pod 'Kingfisher', '~> 7.0'
+  pod 'FLAnimatedImage'
+  pod 'lottie-ios'
 
 
 end

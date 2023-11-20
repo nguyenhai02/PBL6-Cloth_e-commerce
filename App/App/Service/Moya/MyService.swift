@@ -24,7 +24,7 @@ enum MyService {
     case addFavouriteProduct(id: Int)
     case getFavouriteProduct
     case deleteFavouriteProduct(id: Int)
-    case createPayment
+    case createPayment(amount: Double)
     case createCOD(amount: Double)
     case getAllOders
 }
@@ -61,7 +61,7 @@ extension MyService: TargetType, AccessTokenAuthorizable {
             return "/favouriteProduct"
         case .deleteFavouriteProduct(id: let id):
             return "/favouriteProduct/delete/\(id)"
-        case .createPayment:
+        case .createPayment(_):
             return "/payment/createPayment"
         case .displayAndArrangeProducts(_,_,_):
             return "/product/all"
@@ -83,7 +83,7 @@ extension MyService: TargetType, AccessTokenAuthorizable {
     }
     var task: Task {
         switch self {
-        case .showCategories, .showProfile, .getCartItems, .getItemDetail, .deleteCartItem, .addFavouriteProduct, .getFavouriteProduct, .deleteFavouriteProduct, .createPayment, .deleteAllCartItem, .getAllOders:
+        case .showCategories, .showProfile, .getCartItems, .getItemDetail, .deleteCartItem, .addFavouriteProduct, .getFavouriteProduct, .deleteFavouriteProduct, .deleteAllCartItem, .getAllOders:
             return .requestPlain
         case .register(name: let name, email: let email, password: let password, gender: let gender, image: let image, address: let address, phone: let phone):
             return .requestParameters(parameters: ["name": name, "email": email, "password": password, "address": address, "phone": phone], encoding: JSONEncoding.default)
@@ -99,6 +99,8 @@ extension MyService: TargetType, AccessTokenAuthorizable {
             return .requestParameters(parameters: ["productId": productId, "quantity": quantity, "color": color, "size": size], encoding: JSONEncoding.default)
         case .createCOD(amount: let amount):
             return .requestParameters(parameters: ["amount": amount ], encoding: JSONEncoding.default)
+        case .createPayment(amount: let amount):
+            return .requestParameters(parameters: ["amount": amount ], encoding: URLEncoding.default)
         }
     }
     

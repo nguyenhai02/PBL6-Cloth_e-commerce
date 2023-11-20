@@ -8,22 +8,14 @@
 import SwiftUI
 
 struct SplashView: View {
-//    static func == (lhs: SplashView, rhs: SplashView) -> Bool {
-//        return true
-//    }
-//    func hash(into hasher: inout Hasher) {
-//
-//    }
     @ObservedObject var viewModel = SplashViewModel()
     @State var path = NavigationPath()
     
     var body: some View {
         NavigationStack(path: $path){
             VStack {
-                Image("logo4")
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .frame(width: 150, height: 150)
+                LottieView(lottieFile: "splashAnimation")
+                    .frame(width: 200, height: 200)
             }
             .navigationBarBackButtonHidden(true)
             .navigationDestination(for: String.self){ name in

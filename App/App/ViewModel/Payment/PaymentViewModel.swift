@@ -10,17 +10,33 @@ import CardPayments
 import CorePayments
 import Moya
 
+enum Payment: String, CustomStringConvertible  {
+    case money
+    case vnpay
+    
+    var description: String {
+        switch self {
+        case .money:
+            return "Thanh Toán Khi nhận hàng"
+        case .vnpay:
+            return "Vnpay"
+        }
+    }
+}
+
 class PaymentViewModel: ObservableObject, CardDelegate{
     @Published var payment: PaymentResponse? = nil
-    let item: ItemAddress = ItemAddress(name: "Nguyen thi Thanh Hien", phone: "01243242343", address: "213 chau tinh tri", contries: "Thanh xuan, Ha noi, Viet nam")
-    let product: Product = Product(id: 1, name: "Quần áo là quần áo là quần áo", description: "Green printed woven fit and flare dress, has a notched lapel collar and sleevesless.", price: 10, discount: 10, createDate: "1/1/2023", updateDate: "1/2/2023", category: Categories(id: 3, name: "Quần", description: "Quần jeans nam nữ", createDate: "2023-10-21T00:55:48", updateDate: "2023-10-21T00:55:48"))
-    
+    @Published var amount: Double = 0
+    @Published var paymentMethod: Payment? = nil
+        let item: ItemAddress = ItemAddress(name: "Nguyen thi Thanh Hien", phone: "01243242343", address: "213 chau tinh tri", contries: "Thanh xuan, Ha noi, Viet nam")
+        let product: Product = Product(id: 1, name: "Quần áo là quần áo là quần áo", description: "Green printed woven fit and flare dress, has a notched lapel collar and sleevesless.", price: 10, discount: 10, createDate: "1/1/2023", updateDate: "1/2/2023", category: Categories(id: 3, name: "Quần", description: "Quần jeans nam nữ", createDate: "2023-10-21T00:55:48", updateDate: "2023-10-21T00:55:48"))
+    static var instance = PaymentViewModel()
     func createPayment() {
         let token = UserDefaults.standard.string(forKey: Constanst.tokenKey) ?? ""
         let tokenPlugin = AccessTokenPlugin{_ in token }
         let plugin: PluginType = NetworkLoggerPlugin(configuration: .init(logOptions: .verbose))
         let provider = MoyaProvider<MyService>(plugins: [tokenPlugin, plugin])
-        provider.request(.createPayment) { result in
+        provider.request(.createPayment(amount: amount)) { result in
             switch result {
             case let .success(moyaResponse):
                 do {
@@ -28,7 +44,7 @@ class PaymentViewModel: ObservableObject, CardDelegate{
                     let payment = try filteredResponse.map(PaymentResponse.self)
                     self.payment = payment
                     print(payment)
-                } catch { print("Bi catch ")}
+                } catch { print("\(error.localizedDescription)")}
             case let .failure(error):
                 print(error)
             }

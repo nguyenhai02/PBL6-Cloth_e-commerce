@@ -17,7 +17,7 @@ struct TagBarView: View {
                     HomeView(path: $path)
                         .tabItem {
                             Image(systemName: "house.fill")
-                            Text("Home")
+                            Text("Trang chủ")
                         }.tag(0)
                     ShoppingView(path: $path)
                         .tabItem {
@@ -32,12 +32,12 @@ struct TagBarView: View {
                     CartView(path: $path, productDetail: ProductDetail(product: Product(id: 1, name: "Quần áo là quần áo là quần áo", description: "Green printed woven fit and flare dress, has a notched lapel collar and sleevesless.", price: 10, discount: 10, createDate: "1/1/2023", updateDate: "1/2/2023", category: Categories(id: 3, name: "Quần", description: "Quần jeans nam nữ", createDate: "2023-10-21T00:55:48", updateDate: "2023-10-21T00:55:48")), productVariants: [ProductVariant(id: 1, color: "red", size: "M", quantity: 40)]))
                         .tabItem {
                             Image(systemName: "cart")
-                            Text("Cart")
+                            Text("Giỏ hàng")
                         }.tag(3)
                     SettingView(path: $path)
                         .tabItem {
                             Image(systemName: "person")
-                            Text("Setting")
+                            Text("Cài đặt")
                         }.tag(5)
                 }
             }
