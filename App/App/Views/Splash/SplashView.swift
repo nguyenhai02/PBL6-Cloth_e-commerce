@@ -8,8 +8,9 @@
 import SwiftUI
 
 struct SplashView: View {
-    @ObservedObject var viewModel = SplashViewModel()
+    @EnvironmentObject var viewModel : SplashViewModel
     @State var path = NavigationPath()
+    var onNavigateToSuccessScreen: (() -> Void)? = nil
     
     var body: some View {
         NavigationStack(path: $path){
@@ -28,6 +29,11 @@ struct SplashView: View {
                 } else {
                     path.append("LoginView")
                 }
+            }
+        }.onReceive(viewModel.$isPaymentSuccess){ _ in
+            print("############-> onReceive(viewModel.$isPaymentSuccess)")
+            if(viewModel.isPaymentSuccess){
+                path.append("SuccessView")
             }
         }
     }

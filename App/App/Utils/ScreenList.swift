@@ -34,6 +34,8 @@ func getScreen(id: String, path: Binding<NavigationPath>) -> some View{
         MyOrdersView(path: path)
     case "TransferMoneyView":
         TransferMoneyView(path: path)
+    case "SuccessView":
+        SuccessView(path: path)
     default:
         Text("screen is developing")
     }

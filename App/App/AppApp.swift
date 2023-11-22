@@ -11,64 +11,32 @@ import FirebaseCore
 @main
 struct AppApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
-//        @State var path = NavigationPath()
+    @State private var isDeepLinkSuccess = false
+    @ObservedObject var viewModel = SplashViewModel()
+    let dataStore = DataStore()
+    
     var body: some Scene {
-        let dataStore = DataStore()
         WindowGroup {
             SplashView()
+                .environmentObject(viewModel)
                 .environmentObject(dataStore)
-//                .onAppear{
-//                    delegate.onPaymentSuccess = {
-//                        path.append("MyOrdersView")
-//                }
-//            }
+                .onOpenURL(perform: { _ in
+                    print("###############->onOpenURL")
+                    viewModel.isPaymentSuccess = true
+                })
         }
     }
 }
 
 class AppDelegate: NSObject, UIApplicationDelegate {
-//    var onPaymentSuccess: (() -> Void)? = nil
-    //    @State var path = NavigationPath()
+    var onNavigateToSuccessScreen: (() -> Void)? = nil
+    
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
         FirebaseApp.configure()
         return true
     }
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
-        var schemes = [String]()
-        if let bundleURLTypes = Bundle.main.infoDictionary?["CFBundleURLTypes"] as? [NSDictionary] {
-            for bundleURLType in bundleURLTypes {
-                if let scheme = bundleURLType["CFBundleURLSchemes"] as? [String] {
-                    schemes += scheme
-                }
-            }
-        }
-        
-        schemes = schemes.map { $0.lowercased() }
-        
-        guard schemes.contains((url.scheme?.lowercased())!) else {
-            print("Unknown scheme")
-            return false
-        }
-        
-        guard let components = NSURLComponents(url: url, resolvingAgainstBaseURL: false),
-              let host = components.host,
-              let queryItems = components.queryItems else {
-            return false
-        }
-        
-        if host == "paymentResult" {
-            if let responseCode = queryItems.first(where: { $0.name == "vnp_ResponseCode" })?.value {
-                if responseCode == "00" {
-                    // Handle successful payment
-                    // Example: Show a notification or navigate to a specific screen
-//                                        path.append("MyOrdersView")
-                } else {
-                    // Handle unsuccessful payment
-                }
-            }
-        }
-        
         return true
     }
     
