@@ -33,6 +33,12 @@ struct FavoriteView: View {
             }
             Spacer().frame(height: 20)
             ScrollView {
+                if viewModel.favouriteItems == [] {
+                    HStack(alignment: .center) {
+                        LottieView(lottieFile: "favourite")
+                    }
+                    .frame(width: UIScreen.main.bounds.width, height: 300)
+                }
                 ForEach(viewModel.favouriteItems, id: \.self) { favouriteItem in
                     Button(action: {
                         path.append(ItemDetailView(path: $path, productId: favouriteItem.id))

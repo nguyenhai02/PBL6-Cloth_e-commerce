@@ -12,31 +12,35 @@ struct ItemRow: View {
     @EnvironmentObject var dataStore: DataStore
     @ObservedObject var loadImageviewModel = LoadImage()
     @ObservedObject var viewModel = HomeViewModel()
-    var  favouriteViewModel = FavouriteViewModel.instance
+    @ObservedObject var  favouriteViewModel = FavouriteViewModel.instance
     @Binding var path: NavigationPath
     var product: ProductDetail
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             KFImage(URL(string: product.product.image ?? "https://i.pinimg.com/736x/c6/e5/65/c6e56503cfdd87da299f72dc416023d4.jpg"))
-            //                    .frame(width: UIScreen.main.bounds.width / 2 - 35, height: 180)
                 .setProcessor(ResizingImageProcessor(referenceSize: CGSize(width:  UIScreen.main.bounds.width / 2 - 35, height: 180)))
                 .loadDiskFileSynchronously()
                 .cornerRadius(8)
                 .scaledToFill()
                 .clipped()
-            
                 .overlay (
                     Button(action: {
-                        favouriteViewModel.id =  product.product.id
-                        if favouriteViewModel.favouriteItems.first(where: {$0.product.id == product.product.id}) == nil {
-//                            favouriteViewModel.idFavourite = favouriteViewModel.favouriteItems.first(where: {($0.product.id == product.product.id)})?.id ?? 0
+                        let favouriteItem = favouriteViewModel.favouriteItems.first(where: { $0.product.id == product.product.id})
+                        if favouriteItem == nil {
+                            favouriteViewModel.id =  product.product.id
                             favouriteViewModel.addFavouriteProduct()
                         } else {
-                            favouriteViewModel.deleteFavouirteItem()
+                            if let id = favouriteItem?.id {
+                                favouriteViewModel.idFavourite = id
+                                favouriteViewModel.deleteFavouirteItem()
+                            }
                         }
                     }) {
-                        favouriteViewModel.favouriteItems.first(where: {$0.product.id == product.product.id}) != nil ?
-                        Image(systemName: "heart.fill")
+                        let isFavorite = favouriteViewModel.favouriteItems.contains(where: {
+                            $0.product.id == product.product.id
+                        })
+                        isFavorite ? Image(systemName: "heart.fill")
                             .foregroundColor(.red)
                             .frame(width: 30, height: 30)
                             .background(Color.white)
@@ -58,17 +62,10 @@ struct ItemRow: View {
                     .foregroundColor(Color("272727"))
                     .padding(.top, 9)
                     .padding([.horizontal], 10)
-                //                Text(product.brand)
-                //                    .font(.system(size: 12))
-                //                    .foregroundColor(.gray)
-                //                    .padding(.leading, 5)
                 HStack {
                     Text("đ\((product.product.price) - ((product.product.price) * (product.product.discount) / 100))")
                         .font(.system(size: 12))
                         .foregroundColor(.red)
-                    //                    Text("đ\(product.price)")
-                    //                        .font(.system(size: 10))
-                    //                        .strikethrough()
                     Text("\(product.product.discount)% OFF")
                         .font(.system(size: 11))
                         .foregroundColor(Color("002482"))
@@ -86,7 +83,6 @@ struct ItemRow: View {
                 .padding(.top, 5)
                 .padding(.bottom, 10)
                 .padding([.horizontal], 10)
-                //                    Text("\(productDetail.product.category.id)")
             }
             .padding([.horizontal], 5)
         }
@@ -103,15 +99,13 @@ struct ItemRow: View {
             .onAppear {
                 viewModel.id =  product.product.id
                 viewModel.getProductDetail()
+                favouriteViewModel.getFavouriteProduct()
                 loadImageviewModel.loadImage(from: product.product.image ?? "https://i.pinimg.com/736x/c6/e5/65/c6e56503cfdd87da299f72dc416023d4.jpg") {
                     print("Hình ảnh đã được tải thành công")
                     if let imageURL = product.product.image {
                         dataStore.imageURL = imageURL
                     }
                 }
-            }
-            .onAppear {
-                favouriteViewModel.getFavouriteProduct()
             }
     }
 }

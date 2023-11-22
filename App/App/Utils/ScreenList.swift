@@ -20,8 +20,6 @@ func getScreen(id: String, path: Binding<NavigationPath>) -> some View{
         ProfileView(path: path)
     case "AddAddressView":
         AddAddressView(path: path)
-    case "ChoosePaymentView":
-        ChoosePaymentView(path: path)
     case "ForgotPasswordView":
         ForgotPasswordView(path: path)
     case "RegisterView":
@@ -36,6 +34,8 @@ func getScreen(id: String, path: Binding<NavigationPath>) -> some View{
         MyOrdersView(path: path)
     case "TransferMoneyView":
         TransferMoneyView(path: path)
+    case "SuccessView":
+        SuccessView(path: path)
     default:
         Text("screen is developing")
     }

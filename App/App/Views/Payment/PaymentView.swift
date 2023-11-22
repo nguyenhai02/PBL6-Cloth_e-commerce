@@ -12,16 +12,14 @@ struct PaymentView: View, Hashable{
     static func == (lhs: PaymentView, rhs: PaymentView) -> Bool {
         return true
     }
-    func hash(into hasher: inout Hasher) {
-    }
-    
+    func hash(into hasher: inout Hasher) {}
     @Binding var path: NavigationPath
-//    @Environment(\.openURL) private var openURL
     @ObservedObject var homeViewModel: HomeViewModel
     @ObservedObject var cartViewModel: CartViewModel
     @ObservedObject var addressViewModel: AddressViewModel
+    @ObservedObject var viewModel: PaymentViewModel
     @State var showAlert: Bool = false
-    let viewModel: PaymentViewModel = PaymentViewModel()
+    @State var showAlertPayment: Bool = false
     var body: some View {
         VStack(spacing: 0) {
             Spacer().frame(height: 18)
@@ -90,26 +88,25 @@ struct PaymentView: View, Hashable{
                             Spacer()
                             Image("rightlight")
                                 .padding(.trailing, 10)
-                            
                         } else {
                             VStack(alignment: .leading) {
-                                  Button(action: {
-                                      path.append(ChooseAddressView(viewModel: addressViewModel, path: $path))
-                                  }) {
-                                      HStack {
-                                          Image("address2")
-                                              .resizable()
-                                              .frame(width: 14, height: 20)
-                                          Text("Chọn địa chỉ nhận hàng")
-                                              .foregroundColor(.black)
-                                              .font(.system(size: 15))
-                                              .padding(.leading, 10)
-                                          Spacer()
-                                          Image("rightlight")
-                                              .padding(.trailing, 10)
-                                      }
-                                  }
-                              }
+                                Button(action: {
+                                    path.append(ChooseAddressView(viewModel: addressViewModel, path: $path))
+                                }) {
+                                    HStack {
+                                        Image("address2")
+                                            .resizable()
+                                            .frame(width: 14, height: 20)
+                                        Text("Chọn địa chỉ nhận hàng")
+                                            .foregroundColor(.black)
+                                            .font(.system(size: 15))
+                                            .padding(.leading, 10)
+                                        Spacer()
+                                        Image("rightlight")
+                                            .padding(.trailing, 10)
+                                    }
+                                }
+                            }
                         }
                     }
                     .padding(.leading, 12)
@@ -117,7 +114,6 @@ struct PaymentView: View, Hashable{
                         ChooseAddressView(viewModel: addressViewModel, path: $path)
                     }
                 }
-                //                Divider().background(.black).shadow(radius: 10)
                 Spacer().frame(height: 25)
                 HStack {
                     KFImage(URL(string: homeViewModel.productDetail?.product.image ?? ""))
@@ -144,12 +140,10 @@ struct PaymentView: View, Hashable{
                         Spacer()
                     }
                     .padding(.leading, 10)
-                    //                    Spacer()
                 }
                 .padding(.leading, 15)
                 .padding(.vertical, 5)
                 .background(Color("E1E2E7").opacity(0.5))
-                //                Divider().background(Color("E1E2E7")).shadow(radius: 1)
                 Spacer().frame(height: 25)
                 HStack {
                     Text("Tổng số tiền:")
@@ -166,7 +160,7 @@ struct PaymentView: View, Hashable{
                 Spacer().frame(height: 20)
                 Divider().background(Color("E1E2E7"))
                 Button(action: {
-                    path.append("ChoosePaymentView")
+                    path.append(ChoosePaymentView(viewModel: viewModel, path: $path))
                 }) {
                     HStack {
                         Text("Phương phức thanh toán")
@@ -174,9 +168,9 @@ struct PaymentView: View, Hashable{
                             .foregroundColor(.black)
                             .lineLimit(1)
                         Spacer()
-                        Text("Thanh toán khi nhận hàng")
-                            .font(.system(size: 14))
-                            .foregroundColor(.black)
+                        Text(viewModel.paymentMethod?.description ?? "hihi")
+                                .font(.system(size: 14))
+                                .foregroundColor(.black)
                         Image(systemName: "greaterthan")
                             .resizable()
                             .foregroundColor(.black.opacity(0.8))
@@ -210,10 +204,15 @@ struct PaymentView: View, Hashable{
                 .padding(.leading, 100)
                 Spacer()
                 Button(action: {
-                    viewModel.createPayment()
-                    self.showAlert = true
-                    print("viewModel.payment?.redirect_url")
-                    print(viewModel.payment?.redirect_url ?? "rong")
+                    if viewModel.paymentMethod  == Payment.money {
+                        self.showAlert = true
+                    } else if  viewModel.paymentMethod  == Payment.vnpay{
+                        viewModel.amount = Double(((homeViewModel.productDetail?.product.price ?? 0) - ((homeViewModel.productDetail?.product.price ?? 0) * (homeViewModel.productDetail?.product.discount ?? 0) / 100)) * (cartViewModel.quantity))
+                        viewModel.createPayment()
+                        self.showAlert = true
+                    } else {
+                        showAlertPayment = true
+                    }
                 }) {
                     Text("Đặt Hàng")
                         .font(.system(size: 15))
@@ -221,28 +220,29 @@ struct PaymentView: View, Hashable{
                 }
                 .frame(width: 150, height: 52)
                 .background(Color("002482").opacity(0.9))
+                .alert("Vui Lòng chọn phương thức thanh toán", isPresented: $showAlertPayment){}
             }
             Divider().background(Color("E1E2E7"))
             Spacer().frame(height: 8)
         }
         .navigationBarBackButtonHidden(true)
         .alert(isPresented: $showAlert) {
-            Alert(title: Text("Order confirmation"), message: Text(""), dismissButton: .default(Text("OK")) {
+            Alert(title: Text("Order confirmation"), message: Text(""), primaryButton: .default( Text("Có")){
                 if let url = URL(string: viewModel.payment?.redirect_url ?? "") {
                     UIApplication.shared.open(url, options: [:], completionHandler: nil)
-                    print("url")
                 }
-                path.append("MyOrdersView")
+            }, secondaryButton: .cancel(Text("Huỷ")) {
+                showAlert = false
             })
+        }
+        .navigationDestination(for: ChoosePaymentView.self) {_ in 
+            ChoosePaymentView(viewModel: viewModel, path: $path)
         }
     }
 }
 
-
 struct PaymentView_Previews: PreviewProvider {
     static var previews: some View {
-        let product = Product(id: 1, name: "Quần áo là quần áo là quần áo", description: "Green printed woven fit and flare dress, has a notched lapel collar and sleevesless.", price: 10, discount: 10, createDate: "1/1/2023", updateDate: "1/2/2023", category: Categories(id: 3, name: "Quần", description: "Quần jeans nam nữ", createDate: "2023-10-21T00:55:48", updateDate: "2023-10-21T00:55:48"))
-        let productVariants = [ProductVariant(id: 1, color: "red", size: "M", quantity: 40)]
-        PaymentView(path: .constant(NavigationPath()), homeViewModel: HomeViewModel(), cartViewModel: CartViewModel(), addressViewModel: AddressViewModel())
+        PaymentView(path: .constant(NavigationPath()), homeViewModel: HomeViewModel(), cartViewModel: CartViewModel(), addressViewModel: AddressViewModel(), viewModel: PaymentViewModel())
     }
 }

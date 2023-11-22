@@ -19,6 +19,7 @@ struct ItemDetailView: View, Hashable {
     @ObservedObject var cartModel = CartViewModel()
     @ObservedObject var favouriteViewModel = FavouriteViewModel.instance
     var addressViewModel = AddressViewModel.instance
+    var paymentViewModel = PaymentViewModel.instance
     @Binding var path: NavigationPath
     @State var index = 0
     @State var show = false
@@ -50,9 +51,11 @@ struct ItemDetailView: View, Hashable {
                         favouriteViewModel.id = viewModel.productDetail?.product.id ?? 0
                         if favouriteViewModel.favouriteItems.first(where: {$0.product.id == viewModel.productDetail?.product.id}) == nil {
                             favouriteViewModel.addFavouriteProduct()
-//                            favouriteViewModel.idFavourite = favouriteViewModel.favouriteItems.first(where: {($0.product.id == viewModel.productDetail?.product.id)})?.id ??
                         } else {
-                            favouriteViewModel.deleteFavouirteItem()
+                            if let id = favouriteViewModel.favouriteItems.first(where: {$0.product.id == viewModel.productDetail?.product.id})?.id {
+                                favouriteViewModel.idFavourite = id
+                                favouriteViewModel.deleteFavouirteItem()
+                            }
                         }
                     }) {
                         favouriteViewModel.favouriteItems.first(where: {$0.product.id == viewModel.productDetail?.product.id}) != nil ?
@@ -174,7 +177,7 @@ struct ItemDetailView: View, Hashable {
                     .sheet(isPresented: $show) {
                         ProductSelectionView(viewModel: cartModel, homeViewModel: viewModel, title: "Mua ngay") {
                             //                            path.append(ItemDetailView(path: $path, productId: cartItem.productId))
-                            path.append(PaymentView(path: $path, homeViewModel: viewModel, cartViewModel: cartModel, addressViewModel: addressViewModel))
+                            path.append(PaymentView(path: $path, homeViewModel: viewModel, cartViewModel: cartModel, addressViewModel: addressViewModel, viewModel: paymentViewModel))
                             self.show = false
                         }
                         .presentationDetents([.fraction(0.6)])
@@ -186,7 +189,7 @@ struct ItemDetailView: View, Hashable {
             }
         }
         .navigationDestination(for: PaymentView.self) { product in
-            PaymentView(path: $path, homeViewModel: viewModel, cartViewModel: cartModel, addressViewModel: addressViewModel)
+            PaymentView(path: $path, homeViewModel: viewModel, cartViewModel: cartModel, addressViewModel: addressViewModel, viewModel: paymentViewModel)
         }
         .navigationBarBackButtonHidden(true)
         .onAppear {

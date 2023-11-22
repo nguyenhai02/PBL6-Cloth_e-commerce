@@ -13,38 +13,56 @@ struct MyOrdersView: View {
     @State private var selectorIndex = 0
     @Binding var path: NavigationPath
     
-     func NavigationBarView() -> some View {
-        return HStack {
-            Button(action: {
-                path.removeLast()
-            }) {
-                Image(systemName: "arrow.left")
-                    .foregroundColor(.black)
-            }
-            .padding(.leading, 10)
-            .frame(width: 40, height: 40)
-            Spacer()
-        }
-        .frame(width: UIScreen.main.bounds.width, height: 35)
-        .overlay(
-            Text("My Orders")
-                .font(.headline)
-                .padding(.horizontal, 15)
-            , alignment: .center)
-    }
-    
     var body: some View {
             VStack {
+                Spacer().frame(height: 15)
                 NavigationBarView()
-                Picker("", selection: $selectorIndex) {
-                    Text("Delivered").tag(0)
-                    Text("Processing").tag(1)
-                    Text("Cancelled").tag(2)
+                Spacer().frame(height: 20)
+                HStack(alignment: .center, spacing: 35){
+                    Spacer()
+                    Button(action: {
+                        selectorIndex = 0
+                    }) {
+                        VStack {
+                            Image("waiting")
+                                .resizable()
+                                .frame(width: 24, height: 24)
+                            Text("Chờ xác nhận")
+                                .font(.system(size: 13))
+                                .foregroundColor(.gray)
+                                .padding(.top, 5)
+                        }
+                    }
+                    Button(action: {
+                        selectorIndex = 1
+                    }) {
+                        VStack {
+                            Image("delivery")
+                                .resizable()
+                                .frame(width: 24, height: 24)
+                            Text("Đã xác nhận")
+                                .font(.system(size: 13))
+                                .foregroundColor(.gray)
+                                .padding(.top, 5)
+                        }
+                    }
+                    Button(action: {
+                        selectorIndex = 2
+                    }) {
+                        VStack {
+                            Image("shipped")
+                                .resizable()
+                                .frame(width: 24, height: 24)
+                            Text("Hoàn thành")
+                                .font(.system(size: 13))
+                                .foregroundColor(.gray)
+                                .padding(.top, 5)
+                        }
+                    }
+                    Spacer()
                 }
-                .pickerStyle(SegmentedPickerStyle())
-                .padding([.horizontal, .vertical], 10)
-                .padding(.top, 10)
-                
+//                .padding(.leading, 25)
+                Divider()
                 if selectorIndex == 0 {
                     ScrollView(.vertical, showsIndicators: false, content: {
                         VStack(spacing: 10) {
@@ -75,6 +93,7 @@ struct MyOrdersView: View {
 //                        .padding(.horizontal, 15)
 //                    })
 //                }
+                Spacer()
             }
             .navigationBarBackButtonHidden(true)
             .onAppear {
@@ -94,20 +113,13 @@ struct OrderRow: View {
                 Text(order.orderDate)
                     .foregroundColor(.gray)
             }.padding([.top], 2)
-            
-//            HStack() {
-//                Text("Tracking No:")
-//                    .foregroundColor(.gray)
-//                Text(order.trackingId)
-//            }.padding([.top], 2)
-            
             HStack {
 //                Text("Quantity:")
 //                Text("\(order.quantity)")
 //                    .foregroundColor(.gray)
 //                Spacer()
                 Text("Total Amount:")
-                Text("\(order.totalPrice)")
+                Text("\(Int(order.totalPrice))")
                     .foregroundColor(.gray)
             }.padding([.top], 2)
             
@@ -127,6 +139,27 @@ struct OrderRow: View {
            Divider()
         }.font(.footnote)
     }
+}
+extension MyOrdersView {
+    func NavigationBarView() -> some View {
+       return HStack {
+           Button(action: {
+               path.removeLast()
+           }) {
+               Image(systemName: "arrow.left")
+                   .foregroundColor(.black)
+           }
+           .padding(.leading, 10)
+           .frame(width: 40, height: 40)
+           Spacer()
+       }
+       .frame(width: UIScreen.main.bounds.width, height: 35)
+        .overlay(
+            Text("Đơn hàng")
+                .font(.headline)
+                .padding(.horizontal, 15)
+            , alignment: .center)
+   }
 }
 
 struct MyOrdersView_Previews: PreviewProvider {
