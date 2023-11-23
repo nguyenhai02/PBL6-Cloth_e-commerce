@@ -11,6 +11,8 @@ import Kingfisher
 struct CartView: View {
     @ObservedObject var viewModel = CartViewModel()
     @ObservedObject var orderModel = OrderViewModel()
+    var addressViewModel = AddressViewModel.instance
+    var paymentViewModel = PaymentViewModel.instance
     @Binding var path: NavigationPath
     @State var value = 0
     @State private var isOn = false
@@ -33,7 +35,7 @@ struct CartView: View {
                             .frame(width: UIScreen.main.bounds.width, height: 300)
                     } else {
                         ForEach(viewModel.cartItems.prefix(displayedItems), id: \.self) { cartItem in
-                            CartItem(viewModel: viewModel, path: $path, product: productDetail, cartItem: cartItem)
+                            CartItem(viewModel: viewModel, path: $path, cartItem: cartItem)
                         }
                         if displayedItems < viewModel.cartItems.count {
                             Button(action: {
@@ -76,6 +78,10 @@ struct CartView: View {
                                     .font(.system(size: 13))
                                     .foregroundColor(.gray)
                                 Spacer()
+                                Text("\(0) VND")
+                                    .font(.system(size: 14))
+                                    .fontWeight(.medium)
+                                    .foregroundColor(.black)
                                 //                            Text("-VND\(viewModel.cartItems.reduce(0, { $0 + ($1.price * $1.discount)/100}))")
                                 //                                .font(.system(size: 14))
                                 //                                .foregroundColor(.black)
@@ -109,9 +115,10 @@ struct CartView: View {
                                     title: Text("Bạn có chắc muốn đặt hàng"),
                                     message: Text(""),
                                     primaryButton: .default( Text("Có")){
-                                    viewModel.CreateCOD(amount: viewModel.total) {
-                                        path.append("MyOrdersView")
-                                    }
+//                                    viewModel.CreateCOD(amount: viewModel.total) {
+//                                        path.append("MyOrdersView")
+//                                    }
+                                        path.append(ProductListPaymentView(path: $path, addressViewModel: addressViewModel, viewModel: paymentViewModel))
                                     }, secondaryButton: .cancel(Text("Huỷ")) {
                                         showingAlert = false
                                     })
@@ -125,6 +132,9 @@ struct CartView: View {
             .onAppear {
                 viewModel.getCartItems()
             }
+            .navigationDestination(for: ProductListPaymentView.self) { _ in
+                ProductListPaymentView(path: $path, addressViewModel: addressViewModel, viewModel: paymentViewModel)
+            }
             Spacer()
         }
     }
@@ -132,7 +142,7 @@ struct CartView: View {
 struct CartItem: View {
     @ObservedObject var viewModel: CartViewModel
     @Binding var path: NavigationPath
-    let product: ProductDetail
+//    let product: ProductDetail
     @State var cartItem: Cart
     @State var value = 0
     var body: some View {

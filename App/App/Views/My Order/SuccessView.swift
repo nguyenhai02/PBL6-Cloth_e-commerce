@@ -23,7 +23,7 @@ struct SuccessView: View {
         .navigationBarBackButtonHidden(true)
         .onAppear {
             DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                path.removeLast()
+                path.removeLast(3)
             }
         }
         
