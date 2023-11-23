@@ -11,7 +11,7 @@
 ## Profile
 ![image](https://github.com/nguyenhai02/PBL6-Cloth_e-commerce/assets/92006635/9d27c46f-7bb7-4a1c-910a-1011ac079ddd)
 ## Order
-![image](https://github.com/nguyenhai02/PBL6-Cloth_e-commerce/assets/92006635/0b7a8d8e-d1cd-40f2-987d-04b897eb00aa)
+![image](https://github.com/ThanhHien1/Clothes_Selling_App/assets/92006635/ff3cff07-a286-4a69-a5f3-490e6c68f332)
 ## Address
 ![image](https://github.com/nguyenhai02/PBL6-Cloth_e-commerce/assets/92006635/25887ce4-5cff-4a8c-ac6a-e4e0f2a7edd5)
 ## Payment
