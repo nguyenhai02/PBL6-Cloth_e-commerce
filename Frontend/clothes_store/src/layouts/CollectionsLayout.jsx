@@ -24,7 +24,7 @@ const CollectionsLayout = (props) => {
   return (
     <Layout style={{ height: "100vh" }}>
       <HeaderPage />
-      <div style={{ height: "500px", display: "block" }}></div>
+      <div style={{ height: "250px", display: "block" }}></div>
       <Content>
         <Space className="breadcrumb_wrapper">
           <Breadcrumb

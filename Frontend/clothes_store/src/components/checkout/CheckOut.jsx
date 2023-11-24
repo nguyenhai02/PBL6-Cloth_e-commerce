@@ -9,44 +9,22 @@ import {
   InputNumber,
   Row,
   Select,
+  Modal,
+  message,
+  Steps,
+  theme,
 } from "antd";
-import { useState } from "react";
-import { Link } from "react-router-dom";
-const { Option } = Select;
-const residences = [
-  {
-    value: "zhejiang",
-    label: "Zhejiang",
-    children: [
-      {
-        value: "hangzhou",
-        label: "Hangzhou",
-        children: [
-          {
-            value: "xihu",
-            label: "West Lake",
-          },
-        ],
-      },
-    ],
-  },
-  {
-    value: "jiangsu",
-    label: "Jiangsu",
-    children: [
-      {
-        value: "nanjing",
-        label: "Nanjing",
-        children: [
-          {
-            value: "zhonghuamen",
-            label: "Zhong Hua Men",
-          },
-        ],
-      },
-    ],
-  },
-];
+import { useState, useEffect } from "react";
+// import { Link } from "react-router-dom";
+import { getToken } from "../../api/users";
+import { useNavigate } from "react-router-dom";
+// import CartItem from "../cart/CartItem";
+import CartDetail from "../cart/CartDetail";
+import OrderInformation from "../order/OrderInformation";
+import { getAllCartItems } from "../../api/carts";
+import AddressDelivery from "../order/AddressDelivery";
+import PaymentMethod from "../order/PaymentMethod";
+
 const formItemLayout = {
   labelCol: {
     xs: {
@@ -78,34 +56,120 @@ const tailFormItemLayout = {
   },
 };
 const CheckOut = () => {
+  const [deliveryAddress, setDeliveryAddress] = useState("");
+  const [amount, setAmount] = useState(0);
+  const [orderInfo, setOrderInfo] = useState({
+    amount: 0,
+    addressDelivery: "",
+  });
+  const [cartItems, setCartItems] = useState([]);
+
+  useEffect(() => {
+    const fetchCartItems = async () => {
+      try {
+        const response = await getAllCartItems();
+        setCartItems(response || []);
+      } catch (error) {
+        console.error("Error fetching cart items:", error);
+      }
+    };
+    fetchCartItems();
+  }, [getAllCartItems]);
+
+  const updateDeliveryAddress = (address) => {
+    setDeliveryAddress(address);
+  };
+
+  console.log("Địa chỉ nhận hàng:", deliveryAddress);
+
+  // Hàm callback để nhận giá trị totalAmount từ OrderInformation component
+  const handleTotalAmountChange = (amount) => {
+    setAmount(amount);
+  };
+  console.log("Tổng tiền: ", amount);
+
+  useEffect(() => {
+    setOrderInfo({
+      amount: amount,
+      addressDelivery: deliveryAddress,
+    });
+  }, [amount, deliveryAddress]);
+
+  console.log(orderInfo);
+
+  const steps = [
+    {
+      title: "Thông tin đơn hàng",
+      content: (
+        <OrderInformation
+          onTotalAmountChange={handleTotalAmountChange}
+        ></OrderInformation>
+      ),
+    },
+    {
+      title: "Địa chỉ giao hàng",
+      content: (
+        <AddressDelivery
+          onUpdateAddress={updateDeliveryAddress}
+        ></AddressDelivery>
+      ),
+    },
+    {
+      title: "Phương thức thanh toán",
+      content: <PaymentMethod orderInfo={orderInfo}></PaymentMethod>,
+    },
+  ];
+
   const [form] = Form.useForm();
+  const navigate = useNavigate();
+
+  const [open, setOpen] = useState(false);
+  const [confirmLoading, setConfirmLoading] = useState(false);
+  const [modalText, setModalText] = useState(
+    "Chuyển hướng đến trang đăng nhập"
+  );
+  const showModal = () => {
+    setOpen(true);
+  };
+  const handleOk = () => {
+    setModalText("Chuyển hướng đến trang đăng nhập");
+    setConfirmLoading(true);
+    setTimeout(() => {
+      setOpen(false);
+      setConfirmLoading(false);
+      navigate("/account/login");
+    }, 1500);
+  };
+  const handleCancel = () => {
+    console.log("Clicked cancel button");
+    setOpen(false);
+  };
+
+  const { token } = theme.useToken();
+  const [current, setCurrent] = useState(0);
+  const next = () => {
+    setCurrent(current + 1);
+  };
+  const prev = () => {
+    setCurrent(current - 1);
+  };
+  const items = steps.map((item) => ({
+    key: item.title,
+    title: item.title,
+  }));
+  const contentStyle = {
+    lineHeight: 1,
+    textAlign: "center",
+    borderRadius: token.borderRadiusLG,
+    border: `1px dashed ${token.colorBorder}`,
+    marginTop: 16,
+  };
+
+  const { Option } = Select;
+
   const onFinish = (values) => {
     console.log("Received values of form: ", values);
   };
-  const prefixSelector = (
-    <Form.Item name="prefix" noStyle>
-      <Select
-        style={{
-          width: 70,
-        }}
-      >
-        <Option value="86">+86</Option>
-        <Option value="87">+87</Option>
-      </Select>
-    </Form.Item>
-  );
-  const suffixSelector = (
-    <Form.Item name="suffix" noStyle>
-      <Select
-        style={{
-          width: 70,
-        }}
-      >
-        <Option value="USD">$</Option>
-        <Option value="CNY">¥</Option>
-      </Select>
-    </Form.Item>
-  );
   const [autoCompleteResult, setAutoCompleteResult] = useState([]);
   const onWebsiteChange = (value) => {
     if (!value) {
@@ -120,239 +184,62 @@ const CheckOut = () => {
     label: website,
     value: website,
   }));
-  return (
-    <Form
-      {...formItemLayout}
-      form={form}
-      name="register"
-      onFinish={onFinish}
-      initialValues={{
-        residence: ["zhejiang", "hangzhou", "xihu"],
-        prefix: "86",
-      }}
-      style={{
-        maxWidth: 600,
-      }}
-      scrollToFirstError
-    >
-      <Form.Item
-        name="email"
-        label="E-mail"
-        rules={[
-          {
-            type: "email",
-            message: "The input is not valid E-mail!",
-          },
-          {
-            required: true,
-            message: "Please input your E-mail!",
-          },
-        ]}
+  return getToken() === null ? (
+    <>
+      <Button
+        type="primary"
+        onClick={showModal}
+        style={{ width: 200, height: 50, marginTop: 50, marginLeft: 555 }}
       >
-        <Input />
-      </Form.Item>
-
-      <Form.Item
-        name="password"
-        label="Password"
-        rules={[
-          {
-            required: true,
-            message: "Please input your password!",
-          },
-        ]}
-        hasFeedback
+        LOGIN TO CONTINUE
+      </Button>
+      <Modal
+        title="Thông báo"
+        open={open}
+        onOk={handleOk}
+        confirmLoading={confirmLoading}
+        onCancel={handleCancel}
       >
-        <Input.Password />
-      </Form.Item>
-
-      <Form.Item
-        name="confirm"
-        label="Confirm Password"
-        dependencies={["password"]}
-        hasFeedback
-        rules={[
-          {
-            required: true,
-            message: "Please confirm your password!",
-          },
-          ({ getFieldValue }) => ({
-            validator(_, value) {
-              if (!value || getFieldValue("password") === value) {
-                return Promise.resolve();
-              }
-              return Promise.reject(
-                new Error("The new password that you entered do not match!")
-              );
-            },
-          }),
-        ]}
+        <p>{modalText}</p>
+      </Modal>
+    </>
+  ) : (
+    <>
+      <div className="item__title" style={{ marginTop: 40 }}>
+        THANH TOÁN
+      </div>
+      <Steps current={current} items={items} style={{ marginTop: 40 }} />
+      <div style={contentStyle}>{steps[current].content}</div>
+      <div
+        style={{
+          marginTop: 24,
+        }}
       >
-        <Input.Password />
-      </Form.Item>
-
-      <Form.Item
-        name="nickname"
-        label="Nickname"
-        tooltip="What do you want others to call you?"
-        rules={[
-          {
-            required: true,
-            message: "Please input your nickname!",
-            whitespace: true,
-          },
-        ]}
-      >
-        <Input />
-      </Form.Item>
-
-      <Form.Item
-        name="residence"
-        label="Habitual Residence"
-        rules={[
-          {
-            type: "array",
-            required: true,
-            message: "Please select your habitual residence!",
-          },
-        ]}
-      >
-        <Cascader options={residences} />
-      </Form.Item>
-
-      <Form.Item
-        name="phone"
-        label="Phone Number"
-        rules={[
-          {
-            required: true,
-            message: "Please input your phone number!",
-          },
-        ]}
-      >
-        <Input
-          addonBefore={prefixSelector}
-          style={{
-            width: "100%",
-          }}
-        />
-      </Form.Item>
-
-      <Form.Item
-        name="donation"
-        label="Donation"
-        rules={[
-          {
-            required: true,
-            message: "Please input donation amount!",
-          },
-        ]}
-      >
-        <InputNumber
-          addonAfter={suffixSelector}
-          style={{
-            width: "100%",
-          }}
-        />
-      </Form.Item>
-
-      <Form.Item
-        name="website"
-        label="Website"
-        rules={[
-          {
-            required: true,
-            message: "Please input website!",
-          },
-        ]}
-      >
-        <AutoComplete
-          options={websiteOptions}
-          onChange={onWebsiteChange}
-          placeholder="website"
-        >
-          <Input />
-        </AutoComplete>
-      </Form.Item>
-
-      <Form.Item
-        name="intro"
-        label="Intro"
-        rules={[
-          {
-            required: true,
-            message: "Please input Intro",
-          },
-        ]}
-      >
-        <Input.TextArea showCount maxLength={100} />
-      </Form.Item>
-
-      <Form.Item
-        name="gender"
-        label="Gender"
-        rules={[
-          {
-            required: true,
-            message: "Please select gender!",
-          },
-        ]}
-      >
-        <Select placeholder="select your gender">
-          <Option value="male">Male</Option>
-          <Option value="female">Female</Option>
-          <Option value="other">Other</Option>
-        </Select>
-      </Form.Item>
-
-      <Form.Item
-        label="Captcha"
-        extra="We must make sure that your are a human."
-      >
-        <Row gutter={8}>
-          <Col span={12}>
-            <Form.Item
-              name="captcha"
-              noStyle
-              rules={[
-                {
-                  required: true,
-                  message: "Please input the captcha you got!",
-                },
-              ]}
-            >
-              <Input />
-            </Form.Item>
-          </Col>
-          <Col span={12}>
-            <Button>Get captcha</Button>
-          </Col>
-        </Row>
-      </Form.Item>
-
-      <Form.Item
-        name="agreement"
-        valuePropName="checked"
-        rules={[
-          {
-            validator: (_, value) =>
-              value
-                ? Promise.resolve()
-                : Promise.reject(new Error("Should accept agreement")),
-          },
-        ]}
-        {...tailFormItemLayout}
-      >
-        <Checkbox>
-          I have read the <Link to="">agreement</Link>
-        </Checkbox>
-      </Form.Item>
-      <Form.Item {...tailFormItemLayout}>
-        <Button type="primary" htmlType="submit">
-          Register
-        </Button>
-      </Form.Item>
-    </Form>
+        {current < steps.length - 1 && (
+          <Button type="primary" onClick={() => next()}>
+            Next
+          </Button>
+        )}
+        {/* {current === steps.length - 1 && (
+          <Button
+            type="primary"
+            onClick={() => message.success("Processing complete!")}
+          >
+            Done
+          </Button>
+        )} */}
+        {current > 0 && (
+          <Button
+            style={{
+              margin: "0 8px",
+            }}
+            onClick={() => prev()}
+          >
+            Previous
+          </Button>
+        )}
+      </div>
+    </>
   );
 };
 export default CheckOut;

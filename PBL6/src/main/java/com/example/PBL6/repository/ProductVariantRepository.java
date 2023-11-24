@@ -44,9 +44,9 @@ public interface ProductVariantRepository extends JpaRepository<ProductVariant, 
     @Modifying
     @Query(value = "UPDATE product_variants " +
             "SET quantity = quantity - :quantityToSubtract " +
-            "WHERE id = :productId " +
+            "WHERE id = :productVariantId " +
             "AND quantity >= :quantityToSubtract", nativeQuery = true)
-    void subtractQuantity(@Param("productId") Integer productId,
+    void subtractQuantity(@Param("productVariantId") Integer productVariantId,
                           @Param("quantityToSubtract") Integer quantityToSubtract);
 
     @Query

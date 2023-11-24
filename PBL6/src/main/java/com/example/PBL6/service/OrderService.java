@@ -7,6 +7,6 @@ import com.example.PBL6.persistance.user.User;
 import java.util.List;
 
 public interface OrderService {
-    OrderDto saveOrder(User user, String paymentMethod, double totalPrice, String status);
+    OrderDto saveOrder(User user, String paymentMethod, double totalPrice, String status, String addressDelivery);
     List<Order> getAllOrders(User user);
 }

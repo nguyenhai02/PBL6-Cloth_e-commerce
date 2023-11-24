@@ -34,11 +34,11 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
-    public OrderDto saveOrder(User user, String paymentMethod, double totalPrice, String status) {
+    public OrderDto saveOrder(User user, String paymentMethod, double totalPrice, String status, String addressDelivery) {
 //        User user = AuthenticationUtils.getUserFromSecurityContext();
         System.out.println(user);
         List<CartItemDetail> cartItemDetails = cartService.getAllCartItems(user);
-        if(cartItemDetails.isEmpty()) {
+        if(cartItemDetails.isEmpty() || cartItemDetails == null) {
             return null;
         }
         List<OrderItem> orderItems = new ArrayList<>();
@@ -50,6 +50,7 @@ public class OrderServiceImpl implements OrderService {
                 .paymentMethod(paymentMethod)
                 .user(user)
                 .status(status)
+                .addressDelivery(addressDelivery)
                 .build();
         orderRepository.save(order);
 
@@ -63,7 +64,7 @@ public class OrderServiceImpl implements OrderService {
                         .build();
                 orderItems.add(orderItem);
                 if(status.equals("COMPLETE")) {
-                    productVariantRepository.subtractQuantity(cartItemDetail.getProductId(), orderItem.getQuantity());
+                    productVariantRepository.subtractQuantity(cartItemDetail.getProductVariantId(), orderItem.getQuantity());
 
                 }
                 orderItemRepository.save(orderItem);
@@ -71,7 +72,7 @@ public class OrderServiceImpl implements OrderService {
         }
         orderDto = new OrderDto().builder()
                 .orderId(order.getId())
-                .address(user.getAddress())
+                .address(addressDelivery)
                 .orderDate(order.getOrderDate())
                 .totalPrice(order.getTotalPrice())
                 .paymentMethod(order.getPaymentMethod())

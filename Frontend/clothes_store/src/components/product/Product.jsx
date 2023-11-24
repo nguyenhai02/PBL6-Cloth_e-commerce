@@ -4,17 +4,23 @@ import "./Product.scss";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../../stores/cart/cart-slice";
+import { addCartItem } from "../../api/carts";
 const { Text } = Typography;
 const Product = (props) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const buyNowHandler = () => {
-    dispatch(addToCart({ ...product, quantity: 1, size: "S" }));
+  const buyNowHandler = async () => {
+    // try {
+    //   const response = await addCartItem();
+    //   const { items } = response.data;
+    // } catch (error) {
+    //   console.error("Error fetching cart items:", error);
+    // }
   };
+  const product = props?.product.product;
   const detailHandler = (id) => {
     navigate(`/products/${id}`);
   };
-  const product = props?.product.product;
   return (
     <Col xs={12} md={8}>
       <Space
@@ -53,7 +59,7 @@ const Product = (props) => {
           title="Buy now"
           onClick={() => buyNowHandler()}
         >
-          Buy Now
+          Add to cart
         </div>
         <div
           className="buy__detail buy-product__btn"
