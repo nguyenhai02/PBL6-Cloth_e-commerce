@@ -4,7 +4,7 @@ import {
   ShoppingCartOutlined,
   UserOutlined,
 } from "@ant-design/icons";
-import { Drawer, Image, Menu, Space } from "antd";
+import { Drawer, Menu, Space } from "antd";
 import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import Cart from "../cart/Cart";
@@ -12,7 +12,9 @@ import SearchForm from "../search/SearchForm";
 import User from "../user/User";
 import "./Header.scss";
 import logo from "../../assets/images/logo.png";
-import { useSelector } from "react-redux";
+// import { useSelector } from "react-redux";
+import { getAllCartItems } from "../../api/carts";
+
 const HeaderPage = () => {
   const { pathname } = useLocation();
   const [isScroll, setIsScroll] = useState(false);
@@ -20,7 +22,22 @@ const HeaderPage = () => {
   const [isDrawerVisible, setIsDrawerVisible] = useState(false);
   const [openDrawer, setOpenDrawer] = useState(false);
   const [drawerItem, setDrawerItem] = useState("");
-  const items = useSelector((state) => state.cart.items);
+  const [cartItems, setCartItems] = useState([]);
+  // const items = useSelector((state) => state.cart.items);
+
+  useEffect(() => {
+    const fetchCartItems = async () => {
+      try {
+        const response = await getAllCartItems();
+        setCartItems(response);
+      } catch (error) {
+        console.error("Error fetching cart items:", error);
+      }
+    };
+
+    fetchCartItems();
+  }, [getAllCartItems]);
+
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 240) {
@@ -85,7 +102,7 @@ const HeaderPage = () => {
     },
     {
       label: "ACCESSORIES",
-      href: "/collections/Accessories",
+      href: "/collections/accessories",
     },
   ];
   const navItems = links.map((item, index) => {
@@ -157,8 +174,8 @@ const HeaderPage = () => {
             {renderDrawerContent(drawerItem)}
           </Drawer>
         )}
-        {/* <span className="quantity">({items.length})</span> */}
-        <span className="quantity">3</span>
+        <span className="quantity">({cartItems.length})</span>
+        {/* <span className="quantity">3</span> */}
         {isMobile && (
           <MenuOutlined className="menu-icon" onClick={handleMenuClick} />
         )}

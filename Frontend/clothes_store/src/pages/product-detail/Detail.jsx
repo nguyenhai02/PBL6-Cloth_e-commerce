@@ -3,13 +3,16 @@ import {
   MinusOutlined,
   PlusOutlined,
 } from "@ant-design/icons";
-import { Col, Form, Image, InputNumber, Row, Space } from "antd";
+import { notification, Col, Form, Image, InputNumber, Row, Space } from "antd";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getProductDetail } from "../../stores/products/product-slice";
 import "./Detail.scss";
 import { useDispatch, useSelector } from "react-redux";
-import { addToCart } from "../../stores/cart/cart-slice";
+// import { addToCart } from "../../stores/cart/cart-slice";
+import { addCartItem } from "../../api/carts";
+// import { addToCart } from "../../stores/cart/cart-slice";
+import { getToken } from "../../api/users";
 const Detail = (props) => {
   const { idProduct } = useParams();
   const [productCurrent, setProductCurrent] = useState();
@@ -66,15 +69,47 @@ const Detail = (props) => {
     setSelectedColor(newSelectedColor);
   };
 
-  const addToCartHandler = () => {
+  const addToCartHandler = async () => {
+    if (getToken() === null) {
+      notification.error({
+        message: "Error",
+        description: "Please login to add cart item",
+        placement: "top",
+      });
+      return;
+    }
+    if (!selectedSize || !selectedColor) {
+      notification.error({
+        message: "Error",
+        description: "Please select size and color before adding to cart",
+        placement: "top",
+      });
+      return;
+    }
+
     const item = {
-      ...productCurrent,
-      size: size,
-      color: color,
+      productId: productCurrent?.product.id,
+      size: selectedSize,
+      color: selectedColor,
       quantity: quantity,
     };
-    dispatch(addToCart(item));
+
+    try {
+      const response = await addCartItem(item);
+      const message = response.message;
+      console.log(message);
+    } catch (error) {
+      console.error("Error fetching cart items:", error);
+    }
+    notification.success({
+      message: "Success",
+      description: "Item added to cart successfully!",
+    });
+    setTimeout(() => {
+      window.location.reload();
+    }, 1000);
   };
+
   const changeQuantityHandler = (e) => {
     setQuantity(e);
   };

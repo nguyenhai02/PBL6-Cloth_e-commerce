@@ -1,8 +1,11 @@
-import { MobileOutlined, SkinOutlined } from "@ant-design/icons";
 import { Menu } from "antd";
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import "./SideMenu.scss";
+import { SkinOutlined } from "@ant-design/icons";
+
+const { SubMenu } = Menu;
+
 function getItem(label, key, icon, children, type) {
   return {
     key,
@@ -12,6 +15,7 @@ function getItem(label, key, icon, children, type) {
     type,
   };
 }
+
 const items = [
   getItem("CLOTHES", "collections", <SkinOutlined />, [
     getItem("SHIRT", "shirt"),
@@ -30,6 +34,7 @@ const items = [
     type: "divider",
   },
 ];
+
 const SideBar = () => {
   const { pathname } = useLocation();
   const [, setMainPath] = useState("");
@@ -52,10 +57,29 @@ const SideBar = () => {
       onClick={onClick}
       className="menubox"
       defaultSelectedKeys={[`${pathArr[1]}`]}
-      defaultOpenKeys={["sub1"]}
+      defaultOpenKeys={["collections"]}
       mode="inline"
-      items={items}
-    />
+    >
+      {items.map((item) => {
+        if (item.children) {
+          return (
+            <SubMenu key={item.key} icon={item.icon} title={item.label}>
+              {item.children.map((child) => (
+                <Menu.Item key={child.key}>{child.label}</Menu.Item>
+              ))}
+            </SubMenu>
+          );
+        } else if (item.type === "divider") {
+          return <Menu.Divider key={item.key} />;
+        } else {
+          return (
+            <Menu.Item key={item.key} icon={item.icon}>
+              {item.label}
+            </Menu.Item>
+          );
+        }
+      })}
+    </Menu>
   );
 };
 

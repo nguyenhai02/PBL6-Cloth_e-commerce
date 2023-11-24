@@ -8,7 +8,8 @@ import Detail from "../pages/product-detail/Detail";
 import Products from "../pages/products/Products";
 import Register from "../pages/register/Register";
 import CheckOut from "../components/checkout/CheckOut";
-import User from "../components/user/User";
+import Success from "../pages/resultPayment/Success";
+// import User from "../components/user/User";
 import AdminPage from "../pages/admin/AdminPage";
 const routers = createBrowserRouter([
   {
@@ -24,16 +25,16 @@ const routers = createBrowserRouter([
     element: <AdminPage />,
   },
   {
+    path: "/payment/success",
+    element: <Success />,
+  },
+  {
     path: "/checkouts",
     element: <CollectionsLayout />,
     children: [
       {
-        path: ":idCart",
-        element: <CheckOut />,
-      },
-      {
         path: "",
-        element: <User onLogin={true} />,
+        element: <CheckOut />,
       },
     ],
   },

@@ -8,8 +8,8 @@ import {
   deleteProduct,
 } from "../../stores/cart/cart-slice";
 import { deleteCartItemApi } from "../../api/carts";
-import "./CartItem.scss";
-const CartItem = (props) => {
+import "./OrderItem.scss";
+const OrderItem = (props) => {
   const [form] = Form.useForm();
   const [quantity, setQuantity] = useState(props?.product?.quantity);
   const [previousValue, setPreviousValue] = useState(quantity);
@@ -69,43 +69,24 @@ const CartItem = (props) => {
       <Image src={props.product?.image} width={96}></Image>
       <Space className="cartItem__infor" direction="vertical">
         <div className="cartItem__name">{props?.product?.productName}</div>
-        <div className="cartItem__size">{props?.product?.size}</div>
-        <div className="cartItem__size">{props?.product?.color}</div>
+        <div className="cartItem__size">Kích cỡ: {props?.product?.size}</div>
+        <div className="cartItem__size">Màu sắc: {props?.product?.color}</div>
+        <div className="cartItem__size">
+          Số lượng: {props?.product?.quantity}
+        </div>
       </Space>
-      <Space.Compact className="cartItem__quantity" block>
-        <div className="cartItem__btn" onClick={onDeleteQuantityHandler}>
-          <MinusOutlined />
-        </div>
-        <Form form={form}>
-          <InputNumber
-            min={1}
-            keyboard={true}
-            defaultValue={previousValue}
-            value={quantity}
-            controls={false}
-            size="large"
-            onBlur={changeQuantityHandler}
-          />
-        </Form>
 
-        <div className="cartItem__btn" onClick={onAddQuantityHandler}>
-          <PlusOutlined />
-        </div>
-      </Space.Compact>
-      <div className="cartItem__price" style={{ paddingLeft: 20 }}>
-        {props.product?.price}
+      <div className="cartItem__price" style={{ paddingLeft: 10 }}>
+        Đơn giá: {props.product?.price}
       </div>
       <div className="cartItem__total">
-        <div className="cartItem__total_title">Into money:</div>
+        <div className="cartItem__total_price">Thành tiền: </div>
         <div className="cartItem__total_price">
           {props.product?.price * quantity}VNĐ
-        </div>
-        <div className="cartItem__del">
-          <DeleteOutlined onClick={deleteProductHandler} />
         </div>
       </div>
     </Space>
   );
 };
 
-export default CartItem;
+export default OrderItem;

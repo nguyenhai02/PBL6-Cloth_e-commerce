@@ -1,15 +1,14 @@
 import {
   Avatar,
-  Col,
   Form,
   Image,
   Input,
-  Row,
+  // Row,
   Select,
   Space,
   Button,
 } from "antd";
-import { Option } from "antd/es/mentions";
+// import { Option } from "antd/es/mentions";
 import React, { useEffect, useState } from "react";
 import "./User.scss";
 import { useNavigate } from "react-router-dom";
@@ -23,7 +22,7 @@ const User = (props) => {
   const [isEditing, setIsEditing] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { user, loading } = useSelector((state) => state.user);
+  const { user } = useSelector((state) => state.user);
   const userToken = localStorage.getItem("token");
   const [values, setValues] = useState({
     name: "",

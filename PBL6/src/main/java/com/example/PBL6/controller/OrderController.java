@@ -1,6 +1,7 @@
 package com.example.PBL6.controller;
 
 import com.example.PBL6.dto.order.OrderDto;
+import com.example.PBL6.dto.order.OrderRequestDto;
 import com.example.PBL6.persistance.order.Order;
 import com.example.PBL6.persistance.user.User;
 import com.example.PBL6.service.OrderService;
@@ -22,12 +23,13 @@ public class OrderController {
     private OrderService orderService;
 
     @PostMapping("/createOrder")
-    public ResponseEntity<OrderDto> createOrder(@RequestBody Map<String, Double> requestBody) {
+    public ResponseEntity<OrderDto> createOrder(@RequestBody OrderRequestDto orderRequestDto) {
         User user = AuthenticationUtils.getUserFromSecurityContext();
         if (user != null) {
-            Double amount = requestBody.get("amount");
+            Double amount = orderRequestDto.getAmount();
+            String addressDelivery = orderRequestDto.getAddressDelivery();
             if (amount != null) {
-                OrderDto orderDto = orderService.saveOrder(user, "COD", amount, "UN-COMPLETE");
+                OrderDto orderDto = orderService.saveOrder(user, "COD", amount, "UN-COMPLETE", addressDelivery);
                 if (orderDto != null) {
                     return ResponseEntity.ok(orderDto);
                 } else {

@@ -6,19 +6,23 @@ import { useDispatch } from "react-redux";
 import { deleteProduct } from "../../stores/cart/cart-slice";
 const CartItemPreview = (props) => {
   const dispatch = useDispatch();
-  const deleteProductHandler = () => {
-    const item = {
-      ...props.product,
-    };
-    dispatch(deleteProduct(item));
-  };
+  console.log(props?.product);
+  // const deleteProductHandler = () => {
+  //   // const item = {
+  //   //   ...props.product,
+  //   // };
+  //   // dispatch(deleteProduct(item));
+  // };
   return (
     <Space style={{ margin: "8px 0", position: "relative" }}>
-      <Image src={props.product?.images[0]} width={64}></Image>
+      <Image src={props.product?.image} width={64}></Image>
       <Space className="clothes wrapper" style={{ alignItems: "flex-start" }}>
-        <div className="clothes__name">{props.product?.title}</div>
-        <span className="clothes__size" style={{ color: "#333", fontSize: 12 }}>
-          {props?.product?.size}
+        <div className="clothes__name">{props.product?.productName}</div>
+        <span
+          className="clothes__size"
+          style={{ color: "#333", fontSize: 12, fontWeight: "bold" }}
+        >
+          {props?.product?.size} --- {props?.product?.color}
         </span>
         <Space>
           <Space
@@ -42,9 +46,9 @@ const CartItemPreview = (props) => {
           </span>
         </Space>
       </Space>
-      <div className="delBtn">
+      {/* <div className="delBtn">
         <CloseOutlined onClick={deleteProductHandler} />
-      </div>
+      </div> */}
     </Space>
   );
 };

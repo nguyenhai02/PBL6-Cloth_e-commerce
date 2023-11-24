@@ -3,6 +3,7 @@ package com.example.PBL6.controller;
 import com.example.PBL6.configuration.VNPayConfig;
 import com.example.PBL6.dto.cart.CartItemDetail;
 import com.example.PBL6.dto.order.OrderDto;
+import com.example.PBL6.dto.order.OrderRequestDto;
 import com.example.PBL6.dto.payment.PaymentCreateDto;
 import com.example.PBL6.dto.payment.PaymentResultDto;
 import com.example.PBL6.dto.product.FaProductRespDto;
@@ -39,13 +40,15 @@ public class PaymentController {
     private OrderService orderService;
 
     private User user;
+    private String addressDelivery;
 
-    @GetMapping("/createPayment")
-    public ResponseEntity<Object> createPayment(HttpServletRequest request, @Param("amount") double amount) throws UnsupportedEncodingException {
+    @PostMapping("/createPayment")
+    public ResponseEntity<Object> createPayment(HttpServletRequest request, @RequestBody OrderRequestDto orderRequestDto) throws UnsupportedEncodingException {
         user = AuthenticationUtils.getUserFromSecurityContext();
+        addressDelivery = orderRequestDto.getAddressDelivery();
         if (user != null) {
-            System.out.println("1: " + amount);
-            long amountAsLong = (long) (amount * 100);
+            System.out.println("1: " + orderRequestDto.getAmount());
+            long amountAsLong = (long) (orderRequestDto.getAmount().doubleValue() * 100);
             System.out.println("2: " + amountAsLong);
             String vnp_TxnRef = VNPayConfig.getRandomNumber(8);
 
@@ -73,6 +76,9 @@ public class PaymentController {
             cld.add(Calendar.MINUTE, 15);
             String vnp_ExpireDate = formatter.format(cld.getTime());
             vnp_Params.put("vnp_ExpireDate", vnp_ExpireDate);
+
+//            vnp_Params.put("address_delivery", orderRequestDto.getAddressDelivery());
+
 
             List<String> fieldNames = new ArrayList<>(vnp_Params.keySet());
             Collections.sort(fieldNames);
@@ -102,7 +108,7 @@ public class PaymentController {
             queryUrl += "&vnp_SecureHash=" + vnp_SecureHash;
             String paymentUrl = VNPayConfig.vnp_PayUrl + "?" + queryUrl;
             vnp_Params.put("redirect_url", paymentUrl);
-//            vnp_Params.put("Authorization", request.getHeader("Authorization"));
+
             PaymentCreateDto paymentCreateDto = new PaymentCreateDto().builder()
                     .status("OK")
                     .message("Thực hiện thanh toán")
@@ -127,13 +133,13 @@ public class PaymentController {
                     if (userAgent.contains("Mobile")) {
                         HttpHeaders httpHeaders = new HttpHeaders();
                         httpHeaders.add("location", "myapp://paymentResult?vnp_ResponseCode=00");
-                        orderService.saveOrder(user, "VNPAY", amount, "COMPLETE");
+                        orderService.saveOrder(user, "VNPAY", amount/100, "COMPLETE", addressDelivery);
                         return new ResponseEntity<>(httpHeaders, HttpStatus.FOUND);
                     }
                 } else if (userAgent.contains("Mozilla")) {
                     HttpHeaders httpHeaders = new HttpHeaders();
-                    httpHeaders.add("location", "http://localhost:3000/");
-                    orderService.saveOrder(user, "VNPAY", amount, "COMPLETE");
+                    httpHeaders.add("location", "http://localhost:3000/payment/success");
+                    orderService.saveOrder(user, "VNPAY", amount, "COMPLETE", addressDelivery);
                     return new ResponseEntity<>(httpHeaders, HttpStatus.FOUND);
                 }
             } else {

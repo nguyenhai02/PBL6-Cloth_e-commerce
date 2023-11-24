@@ -38,5 +38,8 @@ public class Order {
     @JoinColumn(name = "users_id", referencedColumnName = "id")
     private User user;
 
+    @Column(name = "address_delivery")
+    private String addressDelivery;
+
 
 }
