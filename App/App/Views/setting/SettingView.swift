@@ -33,6 +33,7 @@ struct SettingView: View {
                     .fade(duration: 1)
                     .forceTransition(true)
                     .resizable()
+                    .resizable()
                     .frame(width: 57, height: 57)
                     .clipShape(Circle())
                 VStack(alignment: .leading, spacing: 0) {

@@ -8,6 +8,6 @@
 import Foundation
 
 struct Favourite: Decodable, Hashable {
-    let id: Int
+    var id: Int
     let product: Product
 }

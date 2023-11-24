@@ -11,45 +11,44 @@ import Kingfisher
 struct CartView: View {
     @ObservedObject var viewModel = CartViewModel()
     @ObservedObject var orderModel = OrderViewModel()
+    var addressViewModel = AddressViewModel.instance
+    var paymentViewModel = PaymentViewModel.instance
     @Binding var path: NavigationPath
     @State var value = 0
     @State private var isOn = false
     let productDetail: ProductDetail
     @State var displayedItems = 5
+    @State private  var showingAlert = false
     var body: some View {
-        ZStack {
-            Color("CFCFCF").opacity(0.3)
-            //            Color.black
-                .edgesIgnoringSafeArea(.all)
-            VStack(alignment: .leading, spacing: 0) {
-                Text("My cart")
-                    .bold()
-                    .frame(maxWidth: .infinity)
-                    .font(.system(size: 18))
-                    .foregroundColor(.black)
-                    .padding([.top, .leading], 20)
-                Spacer().frame(height: 10)
-                VStack(spacing: 0) {
-                    ScrollView {
+        VStack(alignment: .leading, spacing: 0) {
+            Text("Giỏ hàng")
+                .bold()
+                .frame(maxWidth: .infinity)
+                .font(.system(size: 18))
+                .foregroundColor(.black)
+                .padding([.top, .leading], 20)
+            Spacer().frame(height: 10)
+            VStack(spacing: 0) {
+                ScrollView {
+                    if viewModel.cartItems == [] {
+                        LottieView(lottieFile: "CartAnimation")
+                            .frame(width: UIScreen.main.bounds.width, height: 300)
+                    } else {
                         ForEach(viewModel.cartItems.prefix(displayedItems), id: \.self) { cartItem in
-                            CartItem(viewModel: viewModel, path: $path, product: productDetail, cartItem: cartItem)
+                            CartItem(viewModel: viewModel, path: $path, cartItem: cartItem)
                         }
                         if displayedItems < viewModel.cartItems.count {
-//                            Button(action: {
-//                                displayedItems += 5
-//                            }) {
-//                                Text("Xem Thêm")
-//                                    .foregroundColor(.blue)
-//                            }
-                            TLButton(title: "Xem Thêm", background: Color("FF3300")) {
+                            Button(action: {
                                 displayedItems += 5
+                            }) {
+                                Image("expand")
+                                    .resizable()
+                                    .frame(width: 24, height: 24)
                             }
-                            .padding(.horizontal, 30)
-                            .padding(.vertical, 15)
                         }
                         VStack {
                             HStack {
-                                Text("Item Total")
+                                Text("Tổng tiền")
                                     .font(.system(size: 14))
                                     .foregroundColor(.gray)
                                 Spacer()
@@ -62,11 +61,11 @@ struct CartView: View {
                             .padding(.horizontal, 15)
                             
                             HStack {
-                                Text("Delivery Charges")
+                                Text("Phí giao hàng")
                                     .font(.system(size: 14))
                                     .foregroundColor(.gray)
                                 Spacer()
-                                Text("\(0)VND")
+                                Text("\(0) VND")
                                     .font(.system(size: 14))
                                     .fontWeight(.medium)
                                     .foregroundColor(.black)
@@ -79,54 +78,71 @@ struct CartView: View {
                                     .font(.system(size: 13))
                                     .foregroundColor(.gray)
                                 Spacer()
-    //                            Text("-VND\(viewModel.cartItems.reduce(0, { $0 + ($1.price * $1.discount)/100}))")
-    //                                .font(.system(size: 14))
-    //                                .foregroundColor(.black)
+                                Text("\(0) VND")
+                                    .font(.system(size: 14))
+                                    .fontWeight(.medium)
+                                    .foregroundColor(.black)
+                                //                            Text("-VND\(viewModel.cartItems.reduce(0, { $0 + ($1.price * $1.discount)/100}))")
+                                //                                .font(.system(size: 14))
+                                //                                .foregroundColor(.black)
                             }
                             .padding(.top, 5)
                             .padding(.horizontal, 15)
                             
-                          Divider()
+                            Divider()
                                 .padding(.vertical, 5)
                             
                             HStack {
-                                Text("Total Amount")
+                                Text("Tổng tiền")
                                     .font(.system(size: 13))
                                     .foregroundColor(.gray)
                                 Spacer()
-    //                            Text("VND\(viewModel.cartItems.reduce(0, { $0 + ($1.price - ($1.price * $1.price)/100)}))")
-                                Text("\(viewModel.total)VND")
+                                //                            Text("VND\(viewModel.cartItems.reduce(0, { $0 + ($1.price - ($1.price * $1.price)/100)}))")
+                                Text("\(viewModel.cartItems.reduce(0, { $0 + Int($1.price) * $1.quantity })) VND")
                                     .font(.system(size: 13))
                                     .fontWeight(.medium)
                                     .foregroundColor(.black)
                             }
                             .padding(.horizontal, 15)
                             .padding(.bottom, 5)
-                            TLButton(title: "Thanh Toán", background: Color("FF3300").opacity(0.7)) {
-                                viewModel.CreateCOD(amount: viewModel.total) {
-                                    path.append("MyOrdersView")
-                                }
-                                print(viewModel.total)
+                            TLButton(title: "Đặt hàng", background: Color("FF3300").opacity(0.7)) {
+                                showingAlert = true
                             }
                             .padding(.horizontal, 25)
                             .padding(.vertical, 15)
+                            .alert(isPresented: $showingAlert) {
+                                Alert(
+                                    title: Text("Bạn có chắc muốn đặt hàng"),
+                                    message: Text(""),
+                                    primaryButton: .default( Text("Có")){
+//                                    viewModel.CreateCOD(amount: viewModel.total) {
+//                                        path.append("MyOrdersView")
+//                                    }
+                                        path.append(ProductListPaymentView(path: $path, addressViewModel: addressViewModel, viewModel: paymentViewModel))
+                                    }, secondaryButton: .cancel(Text("Huỷ")) {
+                                        showingAlert = false
+                                    })
+                            }
                             Spacer()
                         }
                     }
-                    .background(.white)
                 }
-                .onAppear {
-                    viewModel.getCartItems()
-                }
-                Spacer()
+                .background(.white)
             }
+            .onAppear {
+                viewModel.getCartItems()
+            }
+            .navigationDestination(for: ProductListPaymentView.self) { _ in
+                ProductListPaymentView(path: $path, addressViewModel: addressViewModel, viewModel: paymentViewModel)
+            }
+            Spacer()
         }
     }
 }
 struct CartItem: View {
     @ObservedObject var viewModel: CartViewModel
     @Binding var path: NavigationPath
-    let product: ProductDetail
+//    let product: ProductDetail
     @State var cartItem: Cart
     @State var value = 0
     var body: some View {
@@ -183,7 +199,7 @@ struct CartItem: View {
                     Text("Price:")
                         .font(.system(size: 14))
                         .foregroundColor(.black)
-                    Text("\(Double(cartItem.price))")
+                    Text("\(Int(cartItem.price))")
                         .font(.system(size: 14))
                         .foregroundColor(Color("002482"))
                 }

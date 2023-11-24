@@ -8,6 +8,7 @@
 import Foundation
 
 class SplashViewModel: ObservableObject {
+    @Published var isPaymentSuccess = false
     
     func checkLogin(completed: (Bool) -> Void){
         let token = UserDefaults.standard.string(forKey: Constanst.tokenKey) ?? ""

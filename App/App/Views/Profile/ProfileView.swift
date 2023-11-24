@@ -65,6 +65,7 @@ struct ProfileView: View {
                                                 .border(Color.blue)
                                         }
                                         .resizable()
+                                        .scaledToFill()
                                         .frame(width: 100, height: 100)
                                         .cornerRadius(50)
                                         .shadow(radius: 5)
@@ -72,6 +73,7 @@ struct ProfileView: View {
                                 }
                             }
                             Text("Edit photo")
+                                .foregroundColor(Color("002482"))
                         }
                     }
                 }

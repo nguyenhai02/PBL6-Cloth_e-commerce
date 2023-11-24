@@ -36,6 +36,7 @@ struct HomeView: View {
                                         .fade(duration: 1)
                                         .forceTransition(true)
                                         .resizable()
+                                        .scaledToFill()
                                         .frame(width: 35, height: 35)
                                         .cornerRadius(20)
                                         .padding(.leading, 20)
@@ -142,21 +143,6 @@ struct HomeView: View {
                                 .padding(.top, 15)
                             }
                             
-                        })
-                        Text("Our Collection")
-                            .font(.system(size: 18))
-                            .foregroundColor(Color("272727"))
-                            .fontWeight(.medium)
-                            .padding(.top, 15)
-                            .padding(.leading, 10)
-                        ScrollView(.horizontal, showsIndicators: false, content:  {
-                            HStack(spacing: 15) {
-                                ForEach(viewModel.products, id: \.self) { productDetail in
-                                    ItemRow(path: $path, product: productDetail)
-                                }
-                            }
-                            .padding(.leading, 10)
-                            .padding(.top, 15)
                         })
                     }
                 }
