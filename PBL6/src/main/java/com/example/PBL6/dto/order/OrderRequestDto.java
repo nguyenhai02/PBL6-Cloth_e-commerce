@@ -12,4 +12,8 @@ import lombok.NoArgsConstructor;
 public class OrderRequestDto {
     private Double amount;
     private String addressDelivery;
+    private Integer productId;
+    private String color;
+    private String size;
+    private Integer quantity;
 }

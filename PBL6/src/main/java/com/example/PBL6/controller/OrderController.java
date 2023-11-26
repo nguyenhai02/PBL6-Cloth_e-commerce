@@ -1,20 +1,21 @@
 package com.example.PBL6.controller;
 
 import com.example.PBL6.dto.order.OrderDto;
+import com.example.PBL6.dto.order.OrderItemResponseDto;
 import com.example.PBL6.dto.order.OrderRequestDto;
+import com.example.PBL6.dto.order.OrderResponseDto;
 import com.example.PBL6.persistance.order.Order;
 import com.example.PBL6.persistance.user.User;
 import com.example.PBL6.service.OrderService;
 import com.example.PBL6.util.AuthenticationUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
-import org.springframework.http.HttpHeaders;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
+
 
 @RestController
 @RequestMapping("/order")
@@ -29,7 +30,12 @@ public class OrderController {
             Double amount = orderRequestDto.getAmount();
             String addressDelivery = orderRequestDto.getAddressDelivery();
             if (amount != null) {
-                OrderDto orderDto = orderService.saveOrder(user, "COD", amount, "UN-COMPLETE", addressDelivery);
+                OrderDto orderDto;
+                if(orderRequestDto.getProductId() != null) {
+                    orderDto = orderService.saveOrderBuyNow(user, orderRequestDto, "UN-COMPLETE","COD");
+                } else {
+                    orderDto = orderService.saveOrder(user, "COD", amount, "UN-COMPLETE", addressDelivery);
+                }
                 if (orderDto != null) {
                     return ResponseEntity.ok(orderDto);
                 } else {
@@ -47,8 +53,8 @@ public class OrderController {
     public ResponseEntity<Object> getAllOrders() {
         User user = AuthenticationUtils.getUserFromSecurityContext();
         if (user != null) {
-            List<Order> orders = orderService.getAllOrders(user);
-            if(orders.isEmpty()) {
+            List<OrderResponseDto> orders = orderService.getAllOrders(user);
+            if(orders == null || orders.isEmpty()) {
                 return ResponseEntity.ok("Chưa có đơn hàng nào");
             } else {
                 return ResponseEntity.ok(orders);

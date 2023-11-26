@@ -1,26 +1,18 @@
 package com.example.PBL6.controller;
 
 import com.example.PBL6.configuration.VNPayConfig;
-import com.example.PBL6.dto.cart.CartItemDetail;
-import com.example.PBL6.dto.order.OrderDto;
+
 import com.example.PBL6.dto.order.OrderRequestDto;
 import com.example.PBL6.dto.payment.PaymentCreateDto;
 import com.example.PBL6.dto.payment.PaymentResultDto;
-import com.example.PBL6.dto.product.FaProductRespDto;
-import com.example.PBL6.persistance.cart.CartItem;
-import com.example.PBL6.persistance.order.Order;
-import com.example.PBL6.persistance.order.OrderItem;
-import com.example.PBL6.persistance.product.ProductVariant;
+
 import com.example.PBL6.persistance.user.User;
-import com.example.PBL6.repository.OrderItemRepository;
-import com.example.PBL6.repository.OrderRepository;
-import com.example.PBL6.repository.ProductVariantRepository;
-import com.example.PBL6.service.CartService;
+
 import com.example.PBL6.service.OrderService;
 import com.example.PBL6.util.AuthenticationUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
+
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,7 +22,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
+
 import java.util.*;
 
 @RestController
@@ -42,10 +34,13 @@ public class PaymentController {
     private User user;
     private String addressDelivery;
 
+    private OrderRequestDto orderRequest;
+
     @PostMapping("/createPayment")
     public ResponseEntity<Object> createPayment(HttpServletRequest request, @RequestBody OrderRequestDto orderRequestDto) throws UnsupportedEncodingException {
         user = AuthenticationUtils.getUserFromSecurityContext();
         addressDelivery = orderRequestDto.getAddressDelivery();
+        orderRequest = orderRequestDto;
         if (user != null) {
             System.out.println("1: " + orderRequestDto.getAmount());
             long amountAsLong = (long) (orderRequestDto.getAmount().doubleValue() * 100);
@@ -124,7 +119,6 @@ public class PaymentController {
     public ResponseEntity<Object> getPaymentResult(HttpServletRequest request,
                                                    @RequestParam(value = "vnp_ResponseCode") String vnp_ResponseCode,
                                                    @RequestParam(value = "vnp_Amount") Double amount) {
-        System.out.println(user);
         String userAgent = request.getHeader("User-Agent");
         PaymentResultDto paymentResultDto = new PaymentResultDto();
         if (userAgent != null) {
@@ -133,13 +127,23 @@ public class PaymentController {
                     if (userAgent.contains("Mobile")) {
                         HttpHeaders httpHeaders = new HttpHeaders();
                         httpHeaders.add("location", "myapp://paymentResult?vnp_ResponseCode=00");
-                        orderService.saveOrder(user, "VNPAY", amount/100, "COMPLETE", addressDelivery);
+                        if(orderRequest.getProductId() != null) {
+                            orderService.saveOrderBuyNow(user, orderRequest, "COMPLETE","VNPAY");
+                        } else {
+                            orderService.saveOrder(user, "VNPAY", amount/100, "COMPLETE", addressDelivery);
+                        }
+//                        orderService.saveOrder(user, "VNPAY", amount/100, "COMPLETE", addressDelivery);
                         return new ResponseEntity<>(httpHeaders, HttpStatus.FOUND);
                     }
                 } else if (userAgent.contains("Mozilla")) {
                     HttpHeaders httpHeaders = new HttpHeaders();
                     httpHeaders.add("location", "http://localhost:3000/payment/success");
-                    orderService.saveOrder(user, "VNPAY", amount, "COMPLETE", addressDelivery);
+                    if(orderRequest.getProductId() != null) {
+                        orderService.saveOrderBuyNow(user, orderRequest, "COMPLETE","VNPAY");
+                    } else {
+                        orderService.saveOrder(user, "VNPAY", amount/100, "COMPLETE", addressDelivery);
+                    }
+//                    orderService.saveOrder(user, "VNPAY", amount, "COMPLETE", addressDelivery);
                     return new ResponseEntity<>(httpHeaders, HttpStatus.FOUND);
                 }
             } else {

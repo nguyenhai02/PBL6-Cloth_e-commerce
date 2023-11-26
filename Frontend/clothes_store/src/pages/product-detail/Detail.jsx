@@ -5,7 +5,7 @@ import {
 } from "@ant-design/icons";
 import { notification, Col, Form, Image, InputNumber, Row, Space } from "antd";
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { getProductDetail } from "../../stores/products/product-slice";
 import "./Detail.scss";
 import { useDispatch, useSelector } from "react-redux";
@@ -30,11 +30,13 @@ const Detail = (props) => {
   const [quantity, setQuantity] = useState(1);
   const [form] = Form.useForm();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const { productDetail } = useSelector((state) => state.products);
   useEffect(() => {
     dispatch(getProductDetail(idProduct));
   }, [dispatch, idProduct]);
-
+  console.log(productDetail);
   useEffect(() => {
     setProductCurrent(productDetail);
     if (
@@ -98,6 +100,14 @@ const Detail = (props) => {
       const response = await addCartItem(item);
       const message = response.message;
       console.log(message);
+      if (message === "Sản phẩm tạm thời hết hàng") {
+        notification.warning({
+          message: "Warning",
+          description: "Sản phẩm tạm thời hết hàng",
+          placement: "top",
+        });
+        return;
+      }
     } catch (error) {
       console.error("Error fetching cart items:", error);
     }

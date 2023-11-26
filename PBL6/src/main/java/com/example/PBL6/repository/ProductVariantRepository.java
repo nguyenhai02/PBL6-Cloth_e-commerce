@@ -2,6 +2,7 @@ package com.example.PBL6.repository;
 
 import com.example.PBL6.persistance.product.Product;
 import com.example.PBL6.persistance.product.ProductVariant;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -54,4 +55,16 @@ public interface ProductVariantRepository extends JpaRepository<ProductVariant, 
 
     @Query
     Optional<ProductVariant> getProductVariantByProductAndColorAndSize(Product product, String color, String size);
+
+    @Query(value = "SELECT * " +
+            "FROM product_variants " +
+            "WHERE product_variants.product_id = :productId " +
+            "AND product_variants.color LIKE %:color% " +
+            "AND product_variants.size LIKE %:size%", nativeQuery = true)
+    ProductVariant getByProductIdAndColorAndSize(@Param("productId") Integer productId,
+                                                 @Param("color") String color,
+                                                 @Param("size") String size);
+
+
+
 }
