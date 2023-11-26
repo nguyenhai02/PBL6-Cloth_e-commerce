@@ -65,7 +65,7 @@ public class CartServiceImpl implements CartService {
         Optional<ProductVariant> productVariant = productVariantRepository.getProductVariantByProductAndColorAndSize(
                 product, cartRequestDto.getColor(), cartRequestDto.getSize());               // Lấy product_variant
         if (!productVariant.isPresent()) {
-            return new CartResponseDto("Sản phẩm không tồn tại");
+            return new CartResponseDto("Sản phẩm tạm thời hết hàng");
         } else {
             Cart cart;
             if (!cartRepository.existsCartByUser(user)) {  // check xem cart của user có chưa
