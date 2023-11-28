@@ -4,10 +4,11 @@ import { createPaymentVNPay, createOrderCOD } from "../../api/orders";
 
 const PaymentMethod = ({ orderInfo }) => {
   const [paymentMethod, setPaymentMethod] = useState(null);
-
+  const [order, setOrder] = useState(null);
   useEffect(() => {
-    console.log("Updated OrderInfo:", orderInfo);
-  }, [orderInfo]);
+    setOrder(orderInfo);
+    console.log("Order: ", order);
+  }, [orderInfo, order]);
 
   const handlePaymentMethodChange = (e) => {
     setPaymentMethod(e.target.value);
@@ -43,7 +44,6 @@ const PaymentMethod = ({ orderInfo }) => {
       >
         <Radio value="COD">Thanh toán khi nhận hàng (COD)</Radio>
         <Radio value="VNPAY">Thanh toán qua VNPAY</Radio>
-        {console.log(paymentMethod)}
       </Radio.Group>
       <Button
         type="primary"

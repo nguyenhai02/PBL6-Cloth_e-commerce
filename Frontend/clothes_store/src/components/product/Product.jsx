@@ -27,9 +27,9 @@ const Product = (props) => {
         className="product"
         direction="vertical"
         style={{
-          height: 525,
+          height: 450,
           display: "flex",
-          justifyContent: "space-between",
+          justifyContent: "center",
         }}
         align="center"
         justify="space-between"
@@ -45,7 +45,6 @@ const Product = (props) => {
             height={295}
           />
         </Space>
-
         <Space className="product__infor" direction="vertical" align="center">
           <Text className="product__title font-Mont">{product?.name}</Text>
           <Text className="product__price font-Mont" strong>
@@ -53,7 +52,7 @@ const Product = (props) => {
           </Text>
         </Space>
       </Space>
-      <div className="buy">
+      {/* <div className="buy">
         <div
           className="buy__now buy-product__btn"
           title="Buy now"
@@ -68,7 +67,7 @@ const Product = (props) => {
         >
           Detail
         </div>
-      </div>
+      </div> */}
     </Col>
   );
 };

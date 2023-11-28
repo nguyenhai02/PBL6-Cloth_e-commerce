@@ -21,6 +21,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @Table(name = "product_variants")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class ProductVariant {
 
     @Id

@@ -1,16 +1,16 @@
 import {
-  AutoComplete,
+  // AutoComplete,
   Button,
-  Cascader,
-  Checkbox,
-  Col,
-  Form,
-  Input,
-  InputNumber,
-  Row,
-  Select,
+  // Cascader,
+  // Checkbox,
+  // Col,
+  // Form,
+  // Input,
+  // InputNumber,
+  // Row
+  // Select,
   Modal,
-  message,
+  // message,
   Steps,
   theme,
 } from "antd";
@@ -19,83 +19,98 @@ import { useState, useEffect } from "react";
 import { getToken } from "../../api/users";
 import { useNavigate } from "react-router-dom";
 // import CartItem from "../cart/CartItem";
-import CartDetail from "../cart/CartDetail";
+// import CartDetail from "../cart/CartDetail";
 import OrderInformation from "../order/OrderInformation";
-import { getAllCartItems } from "../../api/carts";
+// import { getAllCartItems } from "../../api/carts";
 import AddressDelivery from "../order/AddressDelivery";
 import PaymentMethod from "../order/PaymentMethod";
+import "./CheckOut.scss";
 
-const formItemLayout = {
-  labelCol: {
-    xs: {
-      span: 24,
-    },
-    sm: {
-      span: 8,
-    },
-  },
-  wrapperCol: {
-    xs: {
-      span: 24,
-    },
-    sm: {
-      span: 16,
-    },
-  },
-};
-const tailFormItemLayout = {
-  wrapperCol: {
-    xs: {
-      span: 24,
-      offset: 0,
-    },
-    sm: {
-      span: 16,
-      offset: 8,
-    },
-  },
-};
+// const formItemLayout = {
+//   labelCol: {
+//     xs: {
+//       span: 24,
+//     },
+//     sm: {
+//       span: 8,
+//     },
+//   },
+//   wrapperCol: {
+//     xs: {
+//       span: 24,
+//     },
+//     sm: {
+//       span: 16,
+//     },
+//   },
+// };
+// const tailFormItemLayout = {
+//   wrapperCol: {
+//     xs: {
+//       span: 24,
+//       offset: 0,
+//     },
+//     sm: {
+//       span: 16,
+//       offset: 8,
+//     },
+//   },
+// };
 const CheckOut = () => {
   const [deliveryAddress, setDeliveryAddress] = useState("");
   const [amount, setAmount] = useState(0);
   const [orderInfo, setOrderInfo] = useState({
     amount: 0,
     addressDelivery: "",
+    productId: 0,
+    color: "",
+    size: "",
+    quantity: 1,
   });
-  const [cartItems, setCartItems] = useState([]);
+  // const [cartItems, setCartItems] = useState([]);
 
-  useEffect(() => {
-    const fetchCartItems = async () => {
-      try {
-        const response = await getAllCartItems();
-        setCartItems(response || []);
-      } catch (error) {
-        console.error("Error fetching cart items:", error);
-      }
-    };
-    fetchCartItems();
-  }, [getAllCartItems]);
+  // useEffect(() => {
+  //   if (localStorage.getItem("token") === null) {
+  //     navigate("/account/login");
+  //   }
+  //   if (localStorage.getItem("item") !== "") {
+  //     const fetchCartItems = async () => {
+  //       try {
+  //         const response = await getAllCartItems();
+  //         setCartItems(response || []);
+  //       } catch (error) {
+  //         console.error("Error fetching cart items:", error);
+  //       }
+  //     };
+  //     fetchCartItems();
+  //   }
+  // }, [getAllCartItems]);
 
   const updateDeliveryAddress = (address) => {
     setDeliveryAddress(address);
   };
 
-  console.log("Địa chỉ nhận hàng:", deliveryAddress);
+  // console.log("Địa chỉ nhận hàng:", deliveryAddress);
 
   // Hàm callback để nhận giá trị totalAmount từ OrderInformation component
   const handleTotalAmountChange = (amount) => {
     setAmount(amount);
   };
-  console.log("Tổng tiền: ", amount);
+  // console.log("Tổng tiền: ", amount);
 
   useEffect(() => {
+    const item = JSON.parse(localStorage.getItem("item"));
     setOrderInfo({
-      amount: amount,
+      amount: item ? item.product.product.price : amount,
       addressDelivery: deliveryAddress,
+      productId: item?.productId,
+      color: item?.color,
+      size: item?.size,
+      quantity: item?.quantity,
     });
   }, [amount, deliveryAddress]);
 
-  console.log(orderInfo);
+  // console.log(orderInfo);
 
   const steps = [
     {
@@ -120,7 +135,7 @@ const CheckOut = () => {
     },
   ];
 
-  const [form] = Form.useForm();
+  // const [form] = Form.useForm();
   const navigate = useNavigate();
 
   const [open, setOpen] = useState(false);
@@ -165,25 +180,32 @@ const CheckOut = () => {
     marginTop: 16,
   };
 
-  const { Option } = Select;
+  // const { Option } = Select;
 
-  const onFinish = (values) => {
-    console.log("Received values of form: ", values);
+  // const onFinish = (values) => {
+  //   console.log("Received values of form: ", values);
+  // };
+  // const [autoCompleteResult, setAutoCompleteResult] = useState([]);
+  // const onWebsiteChange = (value) => {
+  //   if (!value) {
+  //     setAutoCompleteResult([]);
+  //   } else {
+  //     setAutoCompleteResult(
+  //       [".com", ".org", ".net"].map((domain) => `${value}${domain}`)
+  //     );
+  //   }
+  // };
+  // const websiteOptions = autoCompleteResult.map((website) => ({
+  //   label: website,
+  //   value: website,
+  // }));
+
+  const cancelPayment = () => {
+    localStorage.removeItem("item");
+    navigate("/cart");
+    // Redirect user or show a message
   };
-  const [autoCompleteResult, setAutoCompleteResult] = useState([]);
-  const onWebsiteChange = (value) => {
-    if (!value) {
-      setAutoCompleteResult([]);
-    } else {
-      setAutoCompleteResult(
-        [".com", ".org", ".net"].map((domain) => `${value}${domain}`)
-      );
-    }
-  };
-  const websiteOptions = autoCompleteResult.map((website) => ({
-    label: website,
-    value: website,
-  }));
+
   return getToken() === null ? (
     <>
       <Button
@@ -239,6 +261,22 @@ const CheckOut = () => {
           </Button>
         )}
       </div>
+      <Button
+        type="danger"
+        onClick={cancelPayment}
+        // style={{
+        //   borderColor: "red",
+        //   borderWidth: "2px",
+        //   transition: "opacity 0.5s ease-in-out",
+        //   ":hover": { opacity: 0.7 },
+        //   width: "150px", // Adjust as needed
+        //   height: "40px", // Adjust as needed
+        //   margin: "0 auto", // Center the button
+        // }}
+        className="myButton"
+      >
+        Hủy đơn hàng
+      </Button>
     </>
   );
 };

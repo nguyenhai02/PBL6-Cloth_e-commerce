@@ -11,6 +11,7 @@ import CheckOut from "../components/checkout/CheckOut";
 import Success from "../pages/resultPayment/Success";
 // import User from "../components/user/User";
 import AdminPage from "../pages/admin/AdminPage";
+import Fail from "../pages/resultPayment/Fail";
 const routers = createBrowserRouter([
   {
     path: "/",
@@ -27,6 +28,10 @@ const routers = createBrowserRouter([
   {
     path: "/payment/success",
     element: <Success />,
+  },
+  {
+    path: "/payment/fail",
+    element: <Fail />,
   },
   {
     path: "/checkouts",
