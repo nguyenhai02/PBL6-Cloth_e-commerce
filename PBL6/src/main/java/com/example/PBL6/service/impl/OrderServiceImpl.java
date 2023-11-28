@@ -17,6 +17,7 @@ import com.example.PBL6.repository.ProductVariantRepository;
 import com.example.PBL6.service.CartService;
 import com.example.PBL6.service.OrderService;
 import jakarta.transaction.Transactional;
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -156,13 +157,14 @@ public class OrderServiceImpl implements OrderService {
             for (Order order : orders) {
                 List<OrderItem> orderItems = orderItemRepository.getOrderItemByOrder(order);
                 List<OrderItemResponseDto> orderItemResponseDtos = new ArrayList<>();
-                List<ProductVariant> productVariants = new ArrayList<>();
                 for (OrderItem orderItem : orderItems) {
-                    productVariants.add(orderItem.getProductVariant());
-
-                    OrderItemResponseDto dto = new OrderItemResponseDto();
-                    dto.setQuantity(orderItem.getQuantity());
-                    dto.setProductVariant(orderItem.getProductVariant());
+                    ProductVariant productVariant = orderItem.getProductVariant();
+                    Product product = productRepository.getById(productVariant.getProduct().getId());
+                    OrderItemResponseDto dto = new OrderItemResponseDto().builder()
+                            .quantity(orderItem.getQuantity())
+                            .product(product)
+                            .productVariant(orderItem.getProductVariant())
+                            .build();
 
                     orderItemResponseDtos.add(dto);
                 }

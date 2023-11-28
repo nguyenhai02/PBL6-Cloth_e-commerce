@@ -17,7 +17,7 @@ const Detail = (props) => {
   const { idProduct } = useParams();
   const [productCurrent, setProductCurrent] = useState();
   // const [mainImage, setMainImage] = useState();
-  const [size, setSize] = useState("");
+  // const [size, setSize] = useState("");
   const [color, setColor] = useState("");
 
   const [selectedSize, setSelectedSize] = useState("");
@@ -61,7 +61,7 @@ const Detail = (props) => {
 
   const onSizeSelectHandler = (e, selectedSize) => {
     const newSelectedSize = e.target.innerHTML.toString();
-    setSize(newSelectedSize);
+    // setSize(newSelectedSize);
     setSelectedSize(newSelectedSize);
   };
 
@@ -221,6 +221,34 @@ const Detail = (props) => {
     );
   };
 
+  const buyNowHandler = () => {
+    if (getToken() === null) {
+      notification.error({
+        message: "Error",
+        description: "Please login to buy now",
+        placement: "top",
+      });
+      return;
+    }
+    if (!selectedSize || !selectedColor) {
+      notification.error({
+        message: "Error",
+        description: "Please select size and color before buying",
+        placement: "top",
+      });
+      return;
+    }
+    const item = {
+      productId: productCurrent?.product.id,
+      size: selectedSize,
+      color: selectedColor,
+      quantity: quantity,
+      product: productCurrent,
+    };
+    localStorage.setItem("item", JSON.stringify(item));
+    navigate("/checkouts");
+  };
+
   return (
     <Row gutter={16} style={{ marginTop: 64 }}>
       {/* <Col md={4} style={{ position: "relative" }}>
@@ -288,7 +316,9 @@ const Detail = (props) => {
             <div className="btn__cart btn__normal" onClick={addToCartHandler}>
               Add to cart
             </div>
-            <div className="btn__buy btn__normal">Buy now</div>
+            <div className="btn__buy btn__normal" onClick={buyNowHandler}>
+              Buy now
+            </div>
           </Space>
         </Space>
       </Col>

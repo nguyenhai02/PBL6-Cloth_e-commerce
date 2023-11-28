@@ -1,6 +1,6 @@
 import { Col, Row } from "antd";
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+// import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import "./CartDetail.scss";
 import CartItem from "./CartItem";
@@ -23,7 +23,7 @@ const CartDetail = (props) => {
     };
 
     fetchCartItems();
-  }, [getAllCartItems]);
+  }, []);
 
   // const { items, totalAmount } = useSelector((state) => state.cart);
 
@@ -52,7 +52,7 @@ const CartDetail = (props) => {
   return (
     <Row gutter={64} style={{ marginTop: 32 }}>
       <Col md={18}>
-        <div className="item__title">YOUR CART</div>
+        <div className="item__title">GIỎ HÀNG</div>
         <div className="item" direction={"vertical"} size={0}>
           <div className="item__count">
             You have <span>{cartItems.length} products</span> in your cart
@@ -67,7 +67,7 @@ const CartDetail = (props) => {
           </div>
           <div className="item__total border-bottom-solid">
             <span className="item__total_title">Total:</span>
-            <span className="item__total_number">{totalAmount} $</span>
+            <span className="item__total_number">{totalAmount} VNĐ</span>
           </div>
           <div className="item__sub" onClick={() => navigate("/")}>
             You can buy more{" "}

@@ -4,9 +4,11 @@
   margin-bottom: 16px;
   border-radius: 4px;
   cursor: pointer;
+
   &:hover {
     background: #91919124;
-    & + .buy {
+
+    &+.buy {
       display: flex;
     }
   }
@@ -16,9 +18,11 @@
     font-weight: 500;
   }
 }
+
 .font-Mont {
   font-family: "Montserrat", sans-serif !important;
 }
+
 .buy-product__btn {
   width: 80px;
   background: #000;
@@ -26,6 +30,7 @@
   text-align: center;
   line-height: normal !important;
   padding: 4px;
+
   &:hover {
     cursor: pointer;
     opacity: 0.85;
@@ -41,6 +46,7 @@
   top: 295px;
   left: 0;
   font-size: 14px;
+
   &:hover {
     display: flex;
   }

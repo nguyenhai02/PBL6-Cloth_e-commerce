@@ -147,6 +147,11 @@ public class PaymentController {
                     return new ResponseEntity<>(httpHeaders, HttpStatus.FOUND);
                 }
             } else {
+                if(userAgent.contains("Mozilla")) {
+                    HttpHeaders httpHeaders = new HttpHeaders();
+                    httpHeaders.add("location", "http://localhost:3000/payment/fail");
+                    return new ResponseEntity<>(httpHeaders, HttpStatus.FOUND);
+                }
                 paymentResultDto.setStatus("FAIL");
                 paymentResultDto.setMessage("Thanh toán thất bại");
                 ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(paymentResultDto);
