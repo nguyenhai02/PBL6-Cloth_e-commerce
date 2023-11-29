@@ -7,7 +7,11 @@
 
 import SwiftUI
 
-struct AddAddressView: View {
+struct AddAddressView: View, Hashable {
+    static func == (lhs: AddAddressView, rhs: AddAddressView) -> Bool {
+        return true
+    }
+    func hash(into hasher: inout Hasher) {}
     @ObservedObject var viewModel = AddressViewModel()
     @State var name: String = ""
     @State var text: String = ""
@@ -29,7 +33,7 @@ struct AddAddressView: View {
                             .frame(width: 18, height: 18)
                             .padding(.leading, 25)
                     }
-                    Text("Sửa tên")
+                    Text("Thêm địa chỉ")
                         .font(.system(size: 20))
                         .fontWeight(.medium)
                         .padding(.leading, 15)
@@ -47,10 +51,6 @@ struct AddAddressView: View {
                             .foregroundColor(.black.opacity(0.6))
                             .padding(.leading, 15)
                             .padding(.top, 5)
-//                        Text(viewModel.errorMessage)
-//                            .font(.system(size: 12))
-//                            .foregroundColor(.red)
-//                        Spacer()
                     }
                     TextFielCustom(title: "Họ và tên", text: $viewModel.name)
                     TextFielCustom(title: "Số điện thoai", text: $viewModel.phone)
@@ -137,6 +137,6 @@ struct TextFielCustom: View {
     
 struct AddAddressView_Previews: PreviewProvider {
     static var previews: some View {
-        AddAddressView(path: .constant(NavigationPath()))
+        AddAddressView(viewModel: AddressViewModel(), path: .constant(NavigationPath()))
     }
 }

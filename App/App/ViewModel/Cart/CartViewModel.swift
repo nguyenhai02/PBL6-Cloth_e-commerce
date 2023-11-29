@@ -21,12 +21,12 @@ class CartViewModel: ObservableObject {
     @Published var cartItems: [Cart] = []
     @Published var total: Double = 0
     
-    func CreateCOD(amount: Double, completed: @escaping () -> Void) {
+    func CreateCOD(amount: Double, addressDelivery: String, productId: Int?, color: String?, size: String?, quantity: Int?, completed: @escaping () -> Void) {
         let token = UserDefaults.standard.string(forKey: Constanst.tokenKey) ?? ""
         let tokenPlugin = AccessTokenPlugin{_ in token }
         let plugin: PluginType = NetworkLoggerPlugin(configuration: .init(logOptions: .verbose))
         let provider = MoyaProvider<MyService>(plugins: [tokenPlugin, plugin])
-        provider.request(.createCOD(amount: amount)) {result in
+        provider.request(.createCOD(amount: amount, addressDelivery: addressDelivery, productId: productId, color: color, size: size, quantity: quantity)) {result in
             switch result {
             case .success(_):
                 print("success")

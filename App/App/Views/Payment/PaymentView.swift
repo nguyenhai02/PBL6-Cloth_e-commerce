@@ -169,8 +169,8 @@ struct PaymentView: View, Hashable{
                             .lineLimit(1)
                         Spacer()
                         Text(viewModel.paymentMethod?.description ?? "")
-                                .font(.system(size: 14))
-                                .foregroundColor(.red)
+                            .font(.system(size: 14))
+                            .foregroundColor(.red)
                         Image(systemName: "greaterthan")
                             .resizable()
                             .foregroundColor(.black.opacity(0.8))
@@ -207,9 +207,15 @@ struct PaymentView: View, Hashable{
                     if viewModel.paymentMethod  == Payment.money {
                         self.showAlert = true
                     } else if  viewModel.paymentMethod  == Payment.vnpay{
-                        viewModel.amount = Double(((homeViewModel.productDetail?.product.price ?? 0) - ((homeViewModel.productDetail?.product.price ?? 0) * (homeViewModel.productDetail?.product.discount ?? 0) / 100)) * (cartViewModel.quantity))
-                        viewModel.createPayment()
-                        self.showAlert = true
+                        let amount = Double(((homeViewModel.productDetail?.product.price ?? 0) - ((homeViewModel.productDetail?.product.price ?? 0) * (homeViewModel.productDetail?.product.discount ?? 0) / 100)) * (cartViewModel.quantity))
+                        if let street = addressViewModel.selectedAddress?.street,
+                           let district = addressViewModel.selectedAddress?.district,
+                           let ward = addressViewModel.selectedAddress?.ward,
+                           let city = addressViewModel.selectedAddress?.city {
+                            let addressDelivery = "\(street), \(district), \(ward), \(city)"
+                            viewModel.createPayment(amount: amount, addressDelivery: addressDelivery, productId: cartViewModel.quantity, color: cartViewModel.color, size: cartViewModel.size, quantity: cartViewModel.quantity)
+                            self.showAlert = true
+                        }
                     } else {
                         showAlertPayment = true
                     }
@@ -235,7 +241,7 @@ struct PaymentView: View, Hashable{
                 showAlert = false
             })
         }
-        .navigationDestination(for: ChoosePaymentView.self) {_ in 
+        .navigationDestination(for: ChoosePaymentView.self) {_ in
             ChoosePaymentView(viewModel: viewModel, path: $path)
         }
     }

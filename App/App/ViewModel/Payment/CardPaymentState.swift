@@ -15,14 +15,14 @@ struct CardPaymentState: Equatable {
         let deepLinkURL: String?
     }
 
-    var createOrder: Order?
-    var authorizedOrder: Order?
-    var capturedOrder: Order?
+    var createOrder: Order1?
+    var authorizedOrder: Order1?
+    var capturedOrder: Order1?
     var intent: Intent = .authorize
     var scaSelection: SCA = .scaWhenRequired
     var approveResult: CardResult?
 
-    var createdOrderResponse: LoadingState<Order> = .idle {
+    var createdOrderResponse: LoadingState<Order1> = .idle {
         didSet {
             if case .loaded(let value) = createdOrderResponse {
                 createOrder = value
@@ -38,7 +38,7 @@ struct CardPaymentState: Equatable {
         }
     }
 
-    var capturedOrderResponse: LoadingState<Order> = .idle {
+    var capturedOrderResponse: LoadingState<Order1> = .idle {
         didSet {
             if case .loaded(let value) = capturedOrderResponse {
                 capturedOrder = value
@@ -46,7 +46,7 @@ struct CardPaymentState: Equatable {
         }
     }
 
-    var authorizedOrderResponse: LoadingState<Order> = .idle {
+    var authorizedOrderResponse: LoadingState<Order1> = .idle {
         didSet {
             if case .loaded(let value) = authorizedOrderResponse {
                 authorizedOrder = value

@@ -117,13 +117,13 @@ struct ProductListPaymentView: View, Hashable {
                 VStack (spacing: 0) {
                     ForEach(cartViewModel.cartItems, id: \.self) { cartItem in
                         HStack(spacing: 0) {
-                                KFImage(URL(string: cartItem.image ?? "https://i.pinimg.com/736x/c6/e5/65/c6e56503cfdd87da299f72dc416023d4.jpg"))
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fill)
-                                    .frame(width: 80, height: 85)
-                                    .scaledToFill()
-                                    .cornerRadius(1)
-                                    .padding(.leading, 20)
+                            KFImage(URL(string: cartItem.image ?? "https://i.pinimg.com/736x/c6/e5/65/c6e56503cfdd87da299f72dc416023d4.jpg"))
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+                                .frame(width: 80, height: 85)
+                                .scaledToFill()
+                                .cornerRadius(1)
+                                .padding(.leading, 20)
                             VStack(alignment: .leading, spacing: 0) {
                                 HStack   {
                                     Text(cartItem.productName)
@@ -177,24 +177,24 @@ struct ProductListPaymentView: View, Hashable {
                     .padding(.top, 10)
                 }
                 .background(Color("E1E2E7").opacity(0.2))
-                    Spacer().frame(height: 25)
-                    HStack {
-                        Text("Tổng số tiền:")
-                            .font(.system(size: 16))
-                            .foregroundColor(.black)
-                        Spacer()
-                        Text("\(cartViewModel.cartItems.reduce(0, { $0 + Int($1.price) * $1.quantity })) VND")
-                            .font(.system(size: 13))
-                            .fontWeight(.medium)
-                            .foregroundColor(.black)
-                            .font(.system(size: 16))
-                            .fontWeight(.medium)
-                            .foregroundColor(.red)
-                            .padding(.trailing, 15)
-                    }
-                    .padding(.leading, 12)
-                    Spacer().frame(height: 20)
-                    Divider().background(Color("E1E2E7"))
+                Spacer().frame(height: 25)
+                HStack {
+                    Text("Tổng số tiền:")
+                        .font(.system(size: 16))
+                        .foregroundColor(.black)
+                    Spacer()
+                    Text("\(cartViewModel.cartItems.reduce(0, { $0 + Int($1.price) * $1.quantity })) VND")
+                        .font(.system(size: 13))
+                        .fontWeight(.medium)
+                        .foregroundColor(.black)
+                        .font(.system(size: 16))
+                        .fontWeight(.medium)
+                        .foregroundColor(.red)
+                        .padding(.trailing, 15)
+                }
+                .padding(.leading, 12)
+                Spacer().frame(height: 20)
+                Divider().background(Color("E1E2E7"))
                 Button(action: {
                     path.append(ChoosePaymentView(viewModel: viewModel, path: $path))
                 }) {
@@ -205,8 +205,8 @@ struct ProductListPaymentView: View, Hashable {
                             .lineLimit(1)
                         Spacer()
                         Text(viewModel.paymentMethod?.description ?? "")
-                                .font(.system(size: 14))
-                                .foregroundColor(.red)
+                            .font(.system(size: 14))
+                            .foregroundColor(.red)
                         Image(systemName: "greaterthan")
                             .resizable()
                             .foregroundColor(.black.opacity(0.8))
@@ -243,9 +243,14 @@ struct ProductListPaymentView: View, Hashable {
                     if viewModel.paymentMethod  == Payment.money {
                         self.showAlert = true
                     } else if  viewModel.paymentMethod  == Payment.vnpay{
-                        viewModel.amount = cartViewModel.total
-                        viewModel.createPayment()
-                        self.showAlert = true
+                        if let street = addressViewModel.selectedAddress?.street,
+                           let district = addressViewModel.selectedAddress?.district,
+                           let ward = addressViewModel.selectedAddress?.ward,
+                           let city = addressViewModel.selectedAddress?.city {
+                            let addressDelivery = "\(street), \(district), \(ward), \(city)"
+                            viewModel.createPayment(amount: cartViewModel.total, addressDelivery: addressDelivery, productId: cartViewModel.quantity, color: cartViewModel.color, size: cartViewModel.size, quantity: cartViewModel.quantity)
+                            self.showAlert = true
+                        }
                     } else {
                         showAlertPayment = true
                     }
@@ -269,11 +274,16 @@ struct ProductListPaymentView: View, Hashable {
                         UIApplication.shared.open(url, options: [:], completionHandler: nil)
                     }
                 } else if viewModel.paymentMethod  == Payment.money  {
-                    cartViewModel.CreateCOD(amount: cartViewModel.total) {
-                       path.append("MyOrdersView")
-                   }
+                    if let street = addressViewModel.selectedAddress?.street,
+                       let district = addressViewModel.selectedAddress?.district,
+                       let ward = addressViewModel.selectedAddress?.ward,
+                       let city = addressViewModel.selectedAddress?.city {
+                        let addressDelivery = "\(street), \(district), \(ward), \(city)"
+                        cartViewModel.CreateCOD(amount: cartViewModel.total, addressDelivery: addressDelivery, productId: nil, color: "", size: "", quantity: nil) {
+                            path.append("MyOrdersView")
+                        }
+                    }
                 }
-                
             }, secondaryButton: .cancel(Text("Huỷ")) {
                 showAlert = false
             })

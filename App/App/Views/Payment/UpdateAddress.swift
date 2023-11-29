@@ -33,7 +33,7 @@ struct UpdateAddressView: View, Hashable {
                             .frame(width: 18, height: 18)
                             .padding(.leading, 25)
                     }
-                    Text("Sửa tên")
+                    Text("Sửa địa chỉ")
                         .font(.system(size: 20))
                         .fontWeight(.medium)
                         .padding(.leading, 15)
