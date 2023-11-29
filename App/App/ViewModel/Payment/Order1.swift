@@ -1,4 +1,4 @@
-struct Order: Codable, Equatable {
+struct Order1: Codable, Equatable {
     
     let id: String
     let status: String

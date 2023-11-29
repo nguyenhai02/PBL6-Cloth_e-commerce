@@ -54,7 +54,7 @@ final class DemoMerchantAPI {
         }
     }
     
-    func captureOrder(orderID: String, selectedMerchantIntegration: MerchantIntegration) async throws -> Order {
+    func captureOrder(orderID: String, selectedMerchantIntegration: MerchantIntegration) async throws -> Order1 {
         guard let url = buildBaseURL(with: "/orders/\(orderID)/capture", selectedMerchantIntegration: selectedMerchantIntegration) else {
             throw URLResponseError.invalidURL
         }
@@ -64,7 +64,7 @@ final class DemoMerchantAPI {
         return try parse(from: data)
     }
     
-    func authorizeOrder(orderID: String, selectedMerchantIntegration: MerchantIntegration) async throws -> Order {
+    func authorizeOrder(orderID: String, selectedMerchantIntegration: MerchantIntegration) async throws -> Order1 {
         guard let url = buildBaseURL(with: "/orders/\(orderID)/authorize", selectedMerchantIntegration: selectedMerchantIntegration) else {
             throw URLResponseError.invalidURL
         }
@@ -78,9 +78,9 @@ final class DemoMerchantAPI {
     /// - Parameter orderParams: the parameters to create the order with
     /// - Returns: an order
     /// - Throws: an error explaining why create order failed
-    func createOrder(orderParams: CreateOrderParams, selectedMerchantIntegration: MerchantIntegration) async throws -> Order {
+    func createOrder(orderParams: CreateOrderParams, selectedMerchantIntegration: MerchantIntegration) async throws -> Order1 {
         if let injectedOrderID = InjectedValues.orderID {
-            return Order(id: injectedOrderID, status: "CREATED")
+            return Order1(id: injectedOrderID, status: "CREATED")
         }
         guard let url = buildBaseURL(with: "/orders", selectedMerchantIntegration: selectedMerchantIntegration) else {
             throw URLResponseError.invalidURL

@@ -17,46 +17,46 @@ struct MyOrdersView: View {
             VStack {
                 Spacer().frame(height: 15)
                 NavigationBarView()
-                Spacer().frame(height: 20)
-                HStack(alignment: .center, spacing: 35){
+                Spacer().frame(height: 30)
+                HStack(alignment: .center, spacing: 37){
                     Spacer()
                     Button(action: {
                         selectorIndex = 0
                     }) {
                         VStack {
-                            Image("waiting")
-                                .resizable()
-                                .frame(width: 24, height: 24)
+//                            Image("waiting")
+//                                .resizable()
+//                                .frame(width: 24, height: 24)
                             Text("Chờ xác nhận")
                                 .font(.system(size: 13))
-                                .foregroundColor(.gray)
-                                .padding(.top, 5)
+                                .foregroundColor(.black)
+//                                .padding(.top, 5)
                         }
                     }
                     Button(action: {
                         selectorIndex = 1
                     }) {
                         VStack {
-                            Image("delivery")
-                                .resizable()
-                                .frame(width: 24, height: 24)
+//                            Image("delivery")
+//                                .resizable()
+//                                .frame(width: 24, height: 24)
                             Text("Đã xác nhận")
                                 .font(.system(size: 13))
-                                .foregroundColor(.gray)
-                                .padding(.top, 5)
+                                .foregroundColor(.black)
+//                                .padding(.top, 5)
                         }
                     }
                     Button(action: {
                         selectorIndex = 2
                     }) {
                         VStack {
-                            Image("shipped")
-                                .resizable()
-                                .frame(width: 24, height: 24)
+//                            Image("shipped")
+//                                .resizable()
+//                                .frame(width: 24, height: 24)
                             Text("Hoàn thành")
                                 .font(.system(size: 13))
-                                .foregroundColor(.gray)
-                                .padding(.top, 5)
+                                .foregroundColor(.black)
+//                                .padding(.top, 5)
                         }
                     }
                     Spacer()
@@ -68,7 +68,6 @@ struct MyOrdersView: View {
                         VStack(spacing: 10) {
                             ForEach(viewModel.orders.filter { $0.status == "UN-COMPLETE" }, id: \.self) { order in
                                 OrderRow(order: order, selectorIndex: self.selectorIndex)
-//
                             }
                         }
                         .padding(.horizontal, 15)
@@ -103,7 +102,7 @@ struct MyOrdersView: View {
 }
 
 struct OrderRow: View {
-    var order: OrderResponse
+    var order: Order
     var selectorIndex = 0
     var body: some View {
         VStack(alignment: .leading) {
@@ -142,24 +141,23 @@ struct OrderRow: View {
 }
 extension MyOrdersView {
     func NavigationBarView() -> some View {
-       return HStack {
-           Button(action: {
-               path.removeLast()
-           }) {
-               Image(systemName: "arrow.left")
-                   .foregroundColor(.black)
-           }
-           .padding(.leading, 10)
-           .frame(width: 40, height: 40)
-           Spacer()
-       }
-       .frame(width: UIScreen.main.bounds.width, height: 35)
-        .overlay(
-            Text("Đơn hàng")
-                .font(.headline)
-                .padding(.horizontal, 15)
-            , alignment: .center)
-   }
+        return HStack {
+            Button(action: {
+                path.removeLast()
+            }) {
+                Image(systemName: "arrow.left")
+                    .resizable()
+                    .foregroundColor(.black)
+                    .frame(width: 18, height: 18)
+                    .padding(.leading, 25)
+            }
+            Text("Đơn mua")
+                .font(.system(size: 20))
+                .fontWeight(.medium)
+                .padding(.leading, 15)
+            Spacer()
+        }
+    }
 }
 
 struct MyOrdersView_Previews: PreviewProvider {

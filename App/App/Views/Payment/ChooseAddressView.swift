@@ -39,11 +39,13 @@ struct ChooseAddressView: View, Hashable {
                 Spacer()
                 //                    }
             }
-            Spacer().frame(height: 30)
-            RadioAddressGroup(path: $path, selection: 0, viewModel: viewModel) {
-                path.removeLast()
+            Spacer().frame(height: 15)
+            ScrollView {
+                RadioAddressGroup(path: $path, selection: 0, viewModel: viewModel) {
+                    path.removeLast()
+                }
+                Spacer()
             }
-            Spacer()
         }
         .navigationBarBackButtonHidden(true)
         .onAppear {

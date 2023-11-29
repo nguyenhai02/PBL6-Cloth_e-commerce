@@ -104,7 +104,7 @@
 		987BDB9D2B021A3500D90960 /* PayPalNativePayments in Frameworks */ = {isa = PBXBuildFile; productRef = 987BDB9C2B021A3500D90960 /* PayPalNativePayments */; };
 		987BDB9F2B021A3500D90960 /* PayPalWebPayments in Frameworks */ = {isa = PBXBuildFile; productRef = 987BDB9E2B021A3500D90960 /* PayPalWebPayments */; };
 		987BDBA42B021AD600D90960 /* CardPaymentState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 987BDBA12B021AD600D90960 /* CardPaymentState.swift */; };
-		987BDBA72B021B9300D90960 /* Order.swift in Sources */ = {isa = PBXBuildFile; fileRef = 987BDBA62B021B9300D90960 /* Order.swift */; };
+		987BDBA72B021B9300D90960 /* Order1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 987BDBA62B021B9300D90960 /* Order1.swift */; };
 		987BDBA92B021C3D00D90960 /* EnumPayment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 987BDBA82B021C3D00D90960 /* EnumPayment.swift */; };
 		987BDBAB2B021CA200D90960 /* CoreConfigManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 987BDBAA2B021CA200D90960 /* CoreConfigManager.swift */; };
 		987BDBB02B021CE400D90960 /* URLResponseError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 987BDBAD2B021CE300D90960 /* URLResponseError.swift */; };
@@ -231,7 +231,7 @@
 		987BDB872B01D4B900D90960 /* UserDefaultExt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserDefaultExt.swift; sourceTree = "<group>"; };
 		987BDB932B020BCD00D90960 /* TransferMoneyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransferMoneyView.swift; sourceTree = "<group>"; };
 		987BDBA12B021AD600D90960 /* CardPaymentState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardPaymentState.swift; sourceTree = "<group>"; };
-		987BDBA62B021B9300D90960 /* Order.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Order.swift; sourceTree = "<group>"; };
+		987BDBA62B021B9300D90960 /* Order1.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Order1.swift; sourceTree = "<group>"; };
 		987BDBA82B021C3D00D90960 /* EnumPayment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnumPayment.swift; sourceTree = "<group>"; };
 		987BDBAA2B021CA200D90960 /* CoreConfigManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreConfigManager.swift; sourceTree = "<group>"; };
 		987BDBAD2B021CE300D90960 /* URLResponseError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = URLResponseError.swift; sourceTree = "<group>"; };
@@ -460,7 +460,7 @@
 			isa = PBXGroup;
 			children = (
 				987BDBAC2B021CE300D90960 /* Networking */,
-				987BDBA62B021B9300D90960 /* Order.swift */,
+				987BDBA62B021B9300D90960 /* Order1.swift */,
 				987BDAFA2B01CE2000D90960 /* PaymentViewModel.swift */,
 				987BDBC12B021EC900D90960 /* EnvironmentPaypal.swift */,
 				987BDBAA2B021CA200D90960 /* CoreConfigManager.swift */,
@@ -733,6 +733,7 @@
 		987BDB8E2B01D63000D90960 /* Order */ = {
 			isa = PBXGroup;
 			children = (
+				249F49822B08851700CA486A /* OrderResponse.swift */,
 				987BDB832B01D47200D90960 /* OrderModel.swift */,
 			);
 			path = Order;
@@ -742,7 +743,6 @@
 			isa = PBXGroup;
 			children = (
 				987BDAE02B01CE1800D90960 /* FavouriteResponse.swift */,
-				249F49822B08851700CA486A /* OrderResponse.swift */,
 			);
 			path = Favorite;
 			sourceTree = "<group>";
@@ -1018,7 +1018,7 @@
 				249F498B2B08E74E00CA486A /* LottieView.swift in Sources */,
 				987BDB552B01CE2700D90960 /* MyOrdersView.swift in Sources */,
 				987BDAF12B01CE1800D90960 /* ProductResponse.swift in Sources */,
-				987BDBA72B021B9300D90960 /* Order.swift in Sources */,
+				987BDBA72B021B9300D90960 /* Order1.swift in Sources */,
 				987BDB0E2B01CE2000D90960 /* CategoryProductViewModel.swift in Sources */,
 				987BDB4E2B01CE2700D90960 /* CategoryProductView.swift in Sources */,
 				987BDBC42B021F7F00D90960 /* ClientIDRequest.swift in Sources */,

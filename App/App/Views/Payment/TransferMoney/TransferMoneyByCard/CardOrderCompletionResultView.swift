@@ -24,7 +24,7 @@ struct CardOrderCompletionResultView: View {
         }
     }
 
-    func getOrderSuccessView(orderResponse: Order, intent: String) -> some View {
+    func getOrderSuccessView(orderResponse: Order1, intent: String) -> some View {
         VStack(spacing: 16) {
             HStack {
                 Text("Order \(intent)")

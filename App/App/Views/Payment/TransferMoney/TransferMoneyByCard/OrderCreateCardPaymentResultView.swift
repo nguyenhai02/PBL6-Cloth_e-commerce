@@ -15,7 +15,7 @@ struct OrderCreateCardPaymentResultView: View {
         }
     }
 
-    func getSuccessView(createOrderResponse: Order) -> some View {
+    func getSuccessView(createOrderResponse: Order1) -> some View {
         VStack(spacing: 16) {
             HStack {
                 Text("Thông tin đơn hàng")

@@ -41,7 +41,7 @@ struct FavoriteView: View {
                 }
                 ForEach(viewModel.favouriteItems, id: \.self) { favouriteItem in
                     Button(action: {
-                        path.append(ItemDetailView(path: $path, productId: favouriteItem.id))
+                        path.append(ItemDetailView(path: $path, productId: favouriteItem.product.id))
                     }) {
                         HStack {
                             KFImage(URL(string: favouriteItem.product.image ?? ""))

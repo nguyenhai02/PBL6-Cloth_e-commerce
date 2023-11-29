@@ -37,8 +37,7 @@ struct Categories: Decodable, Hashable {
 }
 struct ProductVariant: Decodable, Hashable {
     let id: Int
-    var color: String
-    var size: String
+    var color, size: String
     var quantity: Int
 }
 

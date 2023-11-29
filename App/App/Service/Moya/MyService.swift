@@ -24,8 +24,8 @@ enum MyService {
     case addFavouriteProduct(id: Int)
     case getFavouriteProduct
     case deleteFavouriteProduct(id: Int)
-    case createPayment(amount: Double)
-    case createCOD(amount: Double)
+    case createPayment(amount: Double, addressDelivery: String, productId: Int?, color: String?, size: String?, quantity: Int?)
+    case createCOD(amount: Double, addressDelivery: String, productId: Int?, color: String?, size: String?, quantity: Int?)
     case getAllOders
 }
 
@@ -61,11 +61,11 @@ extension MyService: TargetType, AccessTokenAuthorizable {
             return "/favouriteProduct"
         case .deleteFavouriteProduct(id: let id):
             return "/favouriteProduct/delete/\(id)"
-        case .createPayment(_):
+        case .createPayment(_,_,_,_,_,_):
             return "/payment/createPayment"
         case .displayAndArrangeProducts(_,_,_):
             return "/product/all"
-        case .createCOD(_):
+        case .createCOD(_,_,_,_,_,_):
             return "/order/createOrder"
         case .getAllOders:
             return "/order/getOrders"
@@ -73,9 +73,9 @@ extension MyService: TargetType, AccessTokenAuthorizable {
     }
     var method: Moya.Method {
         switch self {
-        case .showCategories, .showProfile, .showProduct, .getCartItems, .getItemDetail, .getFavouriteProduct, .createPayment, .displayAndArrangeProducts, .getAllOders:
+        case .showCategories, .showProfile, .showProduct, .getCartItems, .getItemDetail, .getFavouriteProduct, .displayAndArrangeProducts, .getAllOders:
             return .get
-        case .register, .login, .updateProfile, .addCart, .addFavouriteProduct, .createCOD:
+        case .register, .login, .updateProfile, .addCart, .addFavouriteProduct, .createCOD, .createPayment:
             return .post
         case .deleteCartItem, .deleteFavouriteProduct, .deleteAllCartItem:
             return .delete
@@ -97,10 +97,10 @@ extension MyService: TargetType, AccessTokenAuthorizable {
             return .requestParameters(parameters: ["name": name, "address": address ?? "", "phone": phone, "gender": gender ?? "", "avatar": avatar], encoding: JSONEncoding.default)
         case .addCart(productId: let productId, quantity: let quantity, color: let color, size: let size):
             return .requestParameters(parameters: ["productId": productId, "quantity": quantity, "color": color, "size": size], encoding: JSONEncoding.default)
-        case .createCOD(amount: let amount):
-            return .requestParameters(parameters: ["amount": amount ], encoding: JSONEncoding.default)
-        case .createPayment(amount: let amount):
-            return .requestParameters(parameters: ["amount": amount ], encoding: URLEncoding.default)
+        case .createCOD(amount: let amount, addressDelivery: let addressDelivery, productId: let productId, color: let color, size: let size, quantity: let quantity):
+            return .requestParameters(parameters: ["amount": amount, "addressDelivery": addressDelivery, "productId": productId,"color": color, "size": size, "quantity": quantity ], encoding: JSONEncoding.default)
+        case .createPayment(amount: let amount, addressDelivery: let addressDelivery, productId: let productId, color: let color, size: let size, quantity: let quantity):
+            return .requestParameters(parameters: ["amount": amount, "addressDelivery": addressDelivery, "productId": productId,"color": color, "size": size, "quantity": quantity ], encoding: JSONEncoding.default)
         }
     }
     

@@ -51,7 +51,6 @@ struct ProvinceView: View, Hashable {
                             }
                         }
                         Button(action: {
-                            print("searchText")
                             viewModel.searchCity(name: searchText)
                             print(searchText)
                             print(viewModel.cities)
@@ -94,7 +93,8 @@ struct ProvinceView: View, Hashable {
                                 selectedProvince = province
                                 viewModel.city = province.name
                                 path.append(DistrictView(path: $path, viewModel: viewModel))
-                                print( viewModel.city)
+                                print("iewModel.cit")
+                                print(viewModel.city)
                             }
                         }
                     }
@@ -131,9 +131,9 @@ struct ProvinceView: View, Hashable {
         .navigationDestination(for: DistrictView.self) { _ in
             DistrictView(path: $path, viewModel: viewModel)
         }
-        .onAppear {
-            viewModel.getAddressFromURL() {_ in }
-        }
+//        .onAppear {
+//            viewModel.getAddressFromURL() {_ in }
+//        }
     }
 }
 

@@ -10,6 +10,8 @@ import Kingfisher
 
 struct SettingView: View {
     @ObservedObject var viewModel = ProfileViewModel()
+    @ObservedObject var addressViewModel = AddressViewModel.instance
+    @ObservedObject var paymentViewModel = PaymentViewModel.instance
     @State private var logout = false
     @Binding var path : NavigationPath
     
@@ -56,10 +58,10 @@ struct SettingView: View {
                         path.append("MyOrdersView")
                         break
                     case 2:
-                        path.append(ChooseAddressView(viewModel: AddressViewModel(), path: $path))
+                        path.append(ChooseAddressView(viewModel: addressViewModel, path: $path))
                         break
                     case 3:
-                        path.append("ChoosePaymentView")
+                        path.append(ChoosePaymentView(viewModel: paymentViewModel, path: $path))
                     default:
                         return
                     }
@@ -84,7 +86,10 @@ struct SettingView: View {
                 .padding(.top, 30)
                 .padding(.leading, 28)
                 .navigationDestination(for: ChooseAddressView.self) {_ in
-                    ChooseAddressView(viewModel: AddressViewModel(), path: $path)
+                    ChooseAddressView(viewModel: addressViewModel, path: $path)
+                }
+                .navigationDestination(for: ChoosePaymentView.self) {_ in
+                    ChoosePaymentView(viewModel: paymentViewModel, path: $path)
                 }
             }
             Button(action: {
