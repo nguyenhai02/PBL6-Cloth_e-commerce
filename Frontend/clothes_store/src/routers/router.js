@@ -12,6 +12,8 @@ import Success from "../pages/resultPayment/Success";
 // import User from "../components/user/User";
 import AdminPage from "../pages/admin/AdminPage";
 import Fail from "../pages/resultPayment/Fail";
+import Order from "../pages/order/Order";
+import LoginAdmin from "../pages/admin/login/LoginAdmin";
 const routers = createBrowserRouter([
   {
     path: "/",
@@ -23,15 +25,51 @@ const routers = createBrowserRouter([
   },
   {
     path: "/admin",
-    element: <AdminPage />,
+    children: [
+      {
+        path: "",
+        element: <AdminPage />,
+      },
+    ],
+  },
+  {
+    path: "/admin/login",
+    children: [
+      {
+        path: "",
+        element: <LoginAdmin />,
+      },
+    ],
   },
   {
     path: "/payment/success",
-    element: <Success />,
+    element: <CollectionsLayout />,
+    children: [
+      {
+        path: "",
+        element: <Success />,
+      },
+    ],
   },
   {
     path: "/payment/fail",
-    element: <Fail />,
+    element: <CollectionsLayout />,
+    children: [
+      {
+        path: "",
+        element: <Fail />,
+      },
+    ],
+  },
+  {
+    path: "/orders",
+    element: <CollectionsLayout />,
+    children: [
+      {
+        path: "",
+        element: <Order />,
+      },
+    ],
   },
   {
     path: "/checkouts",

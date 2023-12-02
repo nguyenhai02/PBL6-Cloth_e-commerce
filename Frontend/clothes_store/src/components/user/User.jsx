@@ -35,9 +35,11 @@ const User = (props) => {
   useEffect(() => {
     if (userToken) {
       setIsLogin(true);
-      dispatch(userProfile(userToken));
+      dispatch(userProfile(userToken)).then((response) => {
+        console.log(response);
+      });
     }
-  }, []);
+  }, [dispatch, userToken]);
 
   useEffect(() => {
     setValues({

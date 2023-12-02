@@ -2,11 +2,7 @@ import { DeleteOutlined, MinusOutlined, PlusOutlined } from "@ant-design/icons";
 import { Form, Image, InputNumber, Space } from "antd";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import {
-  addToCart,
-  deleteCartItem,
-  deleteProduct,
-} from "../../stores/cart/cart-slice";
+import { addToCart, deleteCartItem } from "../../stores/cart/cart-slice";
 import { deleteCartItemApi } from "../../api/carts";
 import "./CartItem.scss";
 const CartItem = (props) => {

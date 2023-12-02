@@ -1,4 +1,4 @@
-import { Row, Select, Space, theme } from "antd";
+import { Pagination, Row, Select, Space, theme } from "antd";
 import Sider from "antd/es/layout/Sider";
 import { Content } from "antd/es/layout/layout";
 import React, { useEffect, useState } from "react";
@@ -9,52 +9,52 @@ import { getAllProduct } from "../../stores/products/product-slice";
 import LoadingPage from "../loading/LoadingPage";
 const Products = (props) => {
   const dispatch = useDispatch();
-  const { products, loading } = useSelector((state) => state.products);
-  const [productSort, setProductSort] = useState([]);
+  const { products, loading, total } = useSelector((state) => state.products);
+  // const [productSort, setProductSort] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1); // new line
+
   useEffect(() => {
-    dispatch(getAllProduct());
-  }, [dispatch]);
-  useEffect(() => {
-    setProductSort(products);
-  }, [products]);
+    dispatch(getAllProduct({ page: currentPage - 1 })); // modified line
+  }, [dispatch, currentPage]);
+
+  // useEffect(() => {
+  //   setProductSort(products);
+  // }, [products]);
 
   const {
     token: { colorBgContainer },
   } = theme.useToken();
 
-  const renderProducts = productSort?.map((product, index) => {
+  const renderProducts = products?.map((product, index) => {
     return <Product key={product.id} product={product} />;
   });
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
+
   const onSelectedKeyHandler = (e) => {
-    let res = [];
-    const newArr = [...products];
+    let sortParam = "";
     switch (e) {
       case "none":
-        setProductSort(products);
+        sortParam = "";
         break;
       case "sortAZ":
-        res = newArr.sort((a, b) =>
-          a.title.toLowerCase().localeCompare(b.title.toLowerCase())
-        );
-        setProductSort(res);
+        sortParam = "name,asc";
         break;
       case "sortZA":
-        res = newArr.sort((a, b) =>
-          b.title.toLowerCase().localeCompare(a.title.toLowerCase())
-        );
-        setProductSort(res);
+        sortParam = "name,desc";
         break;
       case "Decrease":
-        res = newArr.sort((a, b) => b.price - a.price);
-        setProductSort(res);
+        sortParam = "price,desc";
         break;
       case "Increase":
-        res = newArr.sort((a, b) => a.price - b.price);
-        setProductSort(res);
+        sortParam = "price,asc";
         break;
       default:
         break;
     }
+    dispatch(getAllProduct({ page: currentPage - 1, sort: sortParam }));
   };
 
   return (
@@ -85,31 +85,44 @@ const Products = (props) => {
             options={[
               {
                 value: "none",
-                label: "Sort",
+                label: "Măc định",
               },
               {
                 value: "sortAZ",
-                label: "A-Z",
+                label: "Tên: A-Z",
               },
               {
                 value: "sortZA",
-                label: "Z-A",
+                label: "Tên: Z-A",
               },
               {
                 value: "Decrease",
-                label: "Decrease",
+                label: "Giá: Giảm dần",
               },
               {
                 value: "Increase",
-                label: "Increase",
+                label: "Giá: Tăng dần",
               },
             ]}
           />
         </Space>
         <Space style={{ marginTop: 32 }}>
-          {loading ? <LoadingPage /> : <Row gutter={16}>{renderProducts}</Row>}
-          {/* {console.log(products)} */}
+          {loading ? (
+            <LoadingPage />
+          ) : (
+            <>
+              <Row gutter={16}>{renderProducts}</Row>
+            </>
+          )}
         </Space>
+        <Row>
+          <Pagination
+            current={currentPage}
+            pageSize={6}
+            total={total}
+            onChange={handlePageChange}
+          />
+        </Row>
       </Content>
     </>
   );

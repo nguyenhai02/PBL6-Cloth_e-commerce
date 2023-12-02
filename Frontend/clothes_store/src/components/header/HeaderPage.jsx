@@ -4,7 +4,7 @@ import {
   ShoppingCartOutlined,
   UserOutlined,
 } from "@ant-design/icons";
-import { Drawer, Menu, Space } from "antd";
+import { Col, Drawer, Menu, Space } from "antd";
 import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import Cart from "../cart/Cart";
@@ -36,7 +36,7 @@ const HeaderPage = () => {
     };
 
     fetchCartItems();
-  }, [getAllCartItems]);
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -121,11 +121,13 @@ const HeaderPage = () => {
   });
   return (
     <header className={`header ${isScroll ? "header__black" : ""}`}>
-      <Link to={"/"} className="logo">
-        <div className="box">
-          <img className="vector" alt="Vector" src={logo} />
-        </div>
-      </Link>
+      <Col md={4}>
+        <Link to={"/"} className="logo">
+          <div className="box">
+            <img className="vector" alt="Vector" src={logo} />
+          </div>
+        </Link>
+      </Col>
       {isMobile ? (
         <>
           <Drawer
@@ -146,40 +148,41 @@ const HeaderPage = () => {
       ) : (
         <Space className="navbar">{navItems}</Space>
       )}
-
-      <Space className="icon">
-        <SearchOutlined
-          title="Search"
-          className="icon__i"
-          onClick={() => openDrawerHandler("search")}
-        />
-        <UserOutlined
-          title="Profile"
-          className="icon__i"
-          onClick={() => openDrawerHandler("user")}
-        />
-        <ShoppingCartOutlined
-          title="Cart"
-          className="icon__i"
-          onClick={() => openDrawerHandler("cart")}
-        />
-        {openDrawer && (
-          <Drawer
-            placement="right"
-            onClose={() => setOpenDrawer(false)}
-            open={openDrawer}
-            className="mobile-menu"
-            width={isMobile ? "50vw" : "30%"}
-          >
-            {renderDrawerContent(drawerItem)}
-          </Drawer>
-        )}
-        <span className="quantity">({cartItems.length})</span>
-        {/* <span className="quantity">3</span> */}
-        {isMobile && (
-          <MenuOutlined className="menu-icon" onClick={handleMenuClick} />
-        )}
-      </Space>
+      <Col md={4}>
+        <Space className="icon">
+          <SearchOutlined
+            title="Search"
+            className="icon__i"
+            onClick={() => openDrawerHandler("search")}
+          />
+          <UserOutlined
+            title="Profile"
+            className="icon__i"
+            onClick={() => openDrawerHandler("user")}
+          />
+          <ShoppingCartOutlined
+            title="Cart"
+            className="icon__i"
+            onClick={() => openDrawerHandler("cart")}
+          />
+          {openDrawer && (
+            <Drawer
+              placement="right"
+              onClose={() => setOpenDrawer(false)}
+              open={openDrawer}
+              className="mobile-menu"
+              width={isMobile ? "50vw" : "30%"}
+            >
+              {renderDrawerContent(drawerItem)}
+            </Drawer>
+          )}
+          <span className="quantity">({cartItems.length})</span>
+          {/* <span className="quantity">3</span> */}
+          {isMobile && (
+            <MenuOutlined className="menu-icon" onClick={handleMenuClick} />
+          )}
+        </Space>
+      </Col>
     </header>
   );
 };

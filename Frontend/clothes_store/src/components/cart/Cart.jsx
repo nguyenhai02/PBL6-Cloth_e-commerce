@@ -20,7 +20,7 @@ const Cart = (props) => {
     };
 
     fetchCartItems();
-  }, [getAllCartItems]);
+  }, []);
 
   useEffect(() => {
     const cartContainer = document.querySelector(".cart__container");
@@ -53,6 +53,13 @@ const Cart = (props) => {
     navigate("/cart");
   };
 
+  const ordersHandler = () => {
+    if (props.drawer) {
+      props?.drawer(false);
+    }
+    navigate("/orders");
+  };
+
   const renderCartItem = cartItems.map((item) => (
     <CartItemPreview key={item.id} product={item} />
   ));
@@ -70,10 +77,13 @@ const Cart = (props) => {
       </div>
       <div className="cart__btn">
         <div className="cart__btn_w" onClick={cartHandler}>
-          MY CART
+          CARTS
         </div>
         <div className="cart__btn_checkout" onClick={checkoutsHandler}>
           CHECKOUTS
+        </div>
+        <div className="cart__btn_checkout" onClick={ordersHandler}>
+          ORDERS
         </div>
       </div>
     </div>

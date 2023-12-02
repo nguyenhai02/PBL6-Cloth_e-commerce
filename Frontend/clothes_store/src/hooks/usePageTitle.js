@@ -7,7 +7,7 @@ const usePageTitle = () => {
 
   useEffect(() => {
     const pathLength = pathArr.length;
-    document.title = `${pathArr[pathLength - 1]}- MiniShop`;
+    document.title = `${pathArr[pathLength - 1]}- CLOTHES SHOP`;
   }, [pathArr]);
 };
 export default usePageTitle;
