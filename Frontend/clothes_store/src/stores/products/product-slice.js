@@ -1,11 +1,13 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { getAllProducts, getDetailProduct } from "../../api/products";
 
-export const getAllProduct = createAsyncThunk("getAllProducts", async () => {
-  const response = await getAllProducts();
-  return response;
-});
+export const getAllProduct = createAsyncThunk(
+  "getAllProducts",
+  async ({ page, size = 6, sort }) => {
+    const response = await getAllProducts(page, size, sort);
+    return response;
+  }
+);
 
 export const getProductDetail = createAsyncThunk(
   "getDetailProduct",
@@ -20,7 +22,9 @@ const initialState = {
   productDetail: null,
   loading: false,
   error: null,
+  total: 0, // new line
 };
+
 const productsSlice = createSlice({
   name: "products",
   initialState: initialState,
@@ -33,6 +37,7 @@ const productsSlice = createSlice({
       .addCase(getAllProduct.fulfilled, (state, action) => {
         state.loading = false;
         state.products = action.payload.content;
+        state.total = action.payload.totalElements; // new line
       })
       .addCase(getAllProduct.rejected, (state, action) => {
         state.loading = false;
@@ -52,6 +57,7 @@ const productsSlice = createSlice({
       });
   },
 });
+
 export default productsSlice.reducer;
 export const productsAction = {
   ...productsSlice.actions,
