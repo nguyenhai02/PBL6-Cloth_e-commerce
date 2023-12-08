@@ -128,9 +128,9 @@ public class OrderServiceImpl implements OrderService {
                     .order(order)
                     .quantity(orderRequestDto.getQuantity())
                     .build();
-            if (status.equals("COMPLETE")) {
-                productVariantRepository.subtractQuantity(productVariant.get().getId(), orderItem.getQuantity());
-            }
+
+            productVariantRepository.subtractQuantity(productVariant.get().getId(), orderItem.getQuantity());
+
             orderItemRepository.save(orderItem);
         }
 
