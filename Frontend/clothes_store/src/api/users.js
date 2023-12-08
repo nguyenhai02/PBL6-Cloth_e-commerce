@@ -27,3 +27,11 @@ export const editProfile = (data) => {
     },
   });
 };
+
+export const getCustomersOrders = () => {
+  return http.get("/user/customerOrders", {
+    headers: {
+      Authorization: "Bearer " + getToken(),
+    },
+  });
+};

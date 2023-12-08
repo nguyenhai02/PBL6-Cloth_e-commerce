@@ -16,7 +16,6 @@ const LoginAdmin = () => {
       .unwrap()
       .then(() => {
         dispatch(userProfile(getToken())).then((response) => {
-          console.log(response);
           if (response.payload.role === "ADMIN") {
             localStorage.getItem("token")
               ? localStorage.setItem("isAdmin", "true")
@@ -27,6 +26,9 @@ const LoginAdmin = () => {
             messageApi.error("You are not admin");
           }
         });
+      })
+      .catch(() => {
+        messageApi.error("Email or password is incorrect");
       });
   };
 

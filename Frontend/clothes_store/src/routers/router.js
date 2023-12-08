@@ -14,6 +14,15 @@ import AdminPage from "../pages/admin/AdminPage";
 import Fail from "../pages/resultPayment/Fail";
 import Order from "../pages/order/Order";
 import LoginAdmin from "../pages/admin/login/LoginAdmin";
+import {
+  createRoutesFromElements,
+  Route,
+  RouterProvider,
+} from "react-router-dom";
+import AdminLayout from "../pages/admin/layout/AdminLayout";
+import Customers from "../pages/admin/customers/Customers";
+import AdminProducts from "../pages/admin/products/AdminProducts";
+
 const routers = createBrowserRouter([
   {
     path: "/",
@@ -25,10 +34,25 @@ const routers = createBrowserRouter([
   },
   {
     path: "/admin",
+    element: <AdminLayout />,
     children: [
       {
         path: "",
         element: <AdminPage />,
+      },
+      {
+        path: "users",
+        element: <Customers />,
+      },
+      {
+        path: "products",
+        element: <AdminProducts />,
+        children: [
+          {
+            path: "all",
+            element: <AdminProducts />,
+          },
+        ],
       },
     ],
   },

@@ -26,11 +26,11 @@ const CollectionsLayout = (props) => {
       <HeaderPage />
       <div style={{ height: "200px", display: "block" }}></div>
       <Content>
-        <Space className="breadcrumb_wrapper">
-          {/* <Breadcrumb
+        {/* <Space className="breadcrumb_wrapper">
+          <Breadcrumb
             items={[{ title: <Link to={"/"}>Home</Link> }, ...itemBreadcrumb]}
-          ></Breadcrumb> */}
-        </Space>
+          ></Breadcrumb>
+        </Space> */}
 
         <Layout className="mainPage">
           <Outlet />

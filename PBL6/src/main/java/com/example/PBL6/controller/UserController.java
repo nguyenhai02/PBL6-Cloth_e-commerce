@@ -1,12 +1,10 @@
 package com.example.PBL6.controller;
 
-import com.example.PBL6.dto.user.AuthResponse;
-import com.example.PBL6.dto.user.UserEditProfileDto;
-import com.example.PBL6.dto.user.UserLoginDto;
-import com.example.PBL6.dto.user.UserRegisterDto;
+import com.example.PBL6.dto.user.*;
 import com.example.PBL6.persistance.user.User;
 import com.example.PBL6.service.AuthService;
 import com.example.PBL6.service.UserService;
+import com.example.PBL6.util.AuthenticationUtils;
 import com.example.PBL6.util.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -76,6 +74,21 @@ public class UserController {
 
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Error");
+        }
+    }
+
+    @GetMapping("/customerOrders")
+    public ResponseEntity<Object> getCustomerOrders() {
+        User user = AuthenticationUtils.getUserFromSecurityContext();
+        if (user != null) {
+            List<UserOrderDto> userOrderDtos = userService.getAllUserOrder();
+            if(userOrderDtos == null || userOrderDtos.isEmpty()) {
+                return ResponseEntity.ok("Chưa có khách hàng");
+            } else {
+                return ResponseEntity.ok(userOrderDtos);
+            }
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
     }
 }
