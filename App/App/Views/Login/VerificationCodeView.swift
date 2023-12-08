@@ -12,6 +12,9 @@ struct VerificationCodeView: View {
     @Environment(\.presentationMode) var presentationMode
     @FocusState private var isFocused: Bool
     var body: some View {
+        ZStack(alignment: .trailing){
+            Color.white
+                .edgesIgnoringSafeArea(.all)
             VStack(alignment: .leading, spacing: 0) {
                 Spacer().frame(height: 100)
                 Group {
@@ -48,7 +51,8 @@ struct VerificationCodeView: View {
                 .padding([.leading, .trailing], 30)
                 Spacer()
             }
-        .navigationBarBackButtonHidden()
+            .navigationBarBackButtonHidden()
+        }
     }
 }
 

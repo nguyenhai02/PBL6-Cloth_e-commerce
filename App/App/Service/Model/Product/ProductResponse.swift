@@ -5,6 +5,8 @@
 //  Created by Thanh Hien on 21/10/2023.
 //
 
+import Foundation
+
 struct ResponseData: Decodable {
     let content: [ProductDetail]
     let pageable: Pageable
@@ -17,7 +19,9 @@ struct ResponseData: Decodable {
     let empty: Bool
 }
 
-struct ProductDetail: Decodable, Hashable {
+struct ProductDetail: Identifiable, Decodable, Hashable {
+    var id: String? = UUID().uuidString
+    
     let product: Product
     var productVariants: [ProductVariant]
 }

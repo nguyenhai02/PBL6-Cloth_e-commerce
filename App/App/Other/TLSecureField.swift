@@ -22,6 +22,7 @@ struct TLSecureField: View {
                         .frame(width: 24, height: 24)
                         .padding([.leading,.trailing], 12)
                    SecureField("Enter \(title.lowercased())", text: $text)
+                       .foregroundColor(Color("323232"))
                        .padding(.leading, 50)
                        .frame(height: 48)
                        .overlay(

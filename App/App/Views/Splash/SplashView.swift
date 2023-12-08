@@ -14,26 +14,30 @@ struct SplashView: View {
     
     var body: some View {
         NavigationStack(path: $path){
-            VStack {
-                LottieView(lottieFile: "splashAnimation")
-                    .frame(width: 200, height: 200)
-            }
-            .navigationBarBackButtonHidden(true)
-            .navigationDestination(for: String.self){ name in
-                getScreen(id: name, path: $path )
-            }
-        }.onAppear {
-            viewModel.checkLogin { isLogined in
-                if(isLogined){
-                    path.append("TagBarView")
-                } else {
-                    path.append("LoginView")
+            ZStack(alignment: .trailing){
+                Color.white
+                    .edgesIgnoringSafeArea(.all)
+                VStack {
+                    LottieView(lottieFile: "splashAnimation")
+                        .frame(width: 200, height: 200)
                 }
-            }
-        }.onReceive(viewModel.$isPaymentSuccess){ _ in
-            print("############-> onReceive(viewModel.$isPaymentSuccess)")
-            if(viewModel.isPaymentSuccess){
-                path.append("SuccessView")
+                .navigationBarBackButtonHidden(true)
+                .navigationDestination(for: String.self){ name in
+                    getScreen(id: name, path: $path )
+                }
+            }.onAppear {
+                viewModel.checkLogin { isLogined in
+                    if(isLogined){
+                        path.append("TagBarView")
+                    } else {
+                        path.append("LoginView")
+                    }
+                }
+            }.onReceive(viewModel.$isPaymentSuccess){ _ in
+                print("############-> onReceive(viewModel.$isPaymentSuccess)")
+                if(viewModel.isPaymentSuccess){
+                    path.append("SuccessView")
+                }
             }
         }
     }
@@ -43,7 +47,7 @@ struct SplashView: View {
 
 struct SplashView_Previews: PreviewProvider {
     static var previews: some View {
-        SplashView(path: NavigationPath())
+        SplashView()
     }
 }
 

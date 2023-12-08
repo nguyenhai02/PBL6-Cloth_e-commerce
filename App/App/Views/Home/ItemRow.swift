@@ -104,9 +104,9 @@ struct ItemRow: View {
                     print("Hình ảnh đã được tải thành công")
                     if let imageURL = product.product.image {
                         dataStore.imageURL = imageURL
-                    }
                 }
             }
+        }
     }
 }
 

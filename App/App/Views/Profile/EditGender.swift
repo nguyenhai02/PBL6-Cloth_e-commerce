@@ -48,6 +48,7 @@ struct EditGender: View {
             .padding()
             .frame(width: 300, height: 150)
             .background(.white)
+            .padding(.bottom, 100)
             
         }
         .navigationBarBackButtonHidden(true)
