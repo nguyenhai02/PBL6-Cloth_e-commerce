@@ -66,6 +66,8 @@ const AddProduct = () => {
     image: "",
   });
 
+  console.log(request);
+
   const onFinish = async (values) => {
     if (
       image === "" ||
@@ -113,9 +115,6 @@ const AddProduct = () => {
       description: values.description,
       imageUrl: image,
     };
-    console.log("1", request);
-    console.log("2", newRequest);
-
     try {
       const response = await addProduct(newRequest);
       messageApi.success("Thêm thành công");

@@ -2,6 +2,7 @@ package com.example.PBL6.controller;
 
 import com.example.PBL6.dto.product.ProductRequestDto;
 import com.example.PBL6.dto.product.ProductResponseDto;
+import com.example.PBL6.dto.product.UpdateProductDto;
 import com.example.PBL6.persistance.product.Product;
 import com.example.PBL6.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +43,16 @@ public class ProductController {
         ProductResponseDto productResponseDto = productService.getDetailProduct(id);
         if(productResponseDto != null) {
             return ResponseEntity.ok(productResponseDto);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not found");
+        }
+    }
+
+    @PostMapping("/update/{id}")
+    public ResponseEntity<Object> updateProduct(@PathVariable("id") Integer id, @RequestBody UpdateProductDto updateProductDto) {
+        ProductResponseDto product = productService.updateProduct(id, updateProductDto);
+        if(product != null) {
+            return ResponseEntity.ok(product);
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not found");
         }

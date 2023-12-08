@@ -34,9 +34,6 @@ const AdminProducts = () => {
   const handleOk = () => {
     setIsModalOpen(false);
   };
-  const handleCancel = () => {
-    setIsModalOpen(false);
-  };
 
   return (
     <div style={{ marginTop: 40, overflowX: "hidden" }}>
@@ -66,6 +63,7 @@ const AdminProducts = () => {
             title="Thêm sản phẩm mới"
             open={isModalOpen}
             centered
+            closable={false}
             footer={[
               <Button key="submit" type="ghost" onClick={handleOk}>
                 Đóng

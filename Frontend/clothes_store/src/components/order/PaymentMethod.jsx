@@ -19,6 +19,7 @@ const PaymentMethod = ({ orderInfo }) => {
       if (paymentMethod === "COD") {
         // Thanh toán COD
         const response = await createOrderCOD(orderInfo);
+        window.location.href = "/payment/success";
         console.log(response);
       } else if (paymentMethod === "VNPAY") {
         // Thanh toán VNPAY

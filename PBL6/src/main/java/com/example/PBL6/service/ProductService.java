@@ -1,9 +1,6 @@
 package com.example.PBL6.service;
 
-import com.example.PBL6.dto.product.FaProductRespDto;
-import com.example.PBL6.dto.product.FaProductRespMesDto;
-import com.example.PBL6.dto.product.ProductRequestDto;
-import com.example.PBL6.dto.product.ProductResponseDto;
+import com.example.PBL6.dto.product.*;
 import com.example.PBL6.persistance.product.Product;
 import com.example.PBL6.persistance.user.User;
 import org.springframework.data.domain.Page;
@@ -29,5 +26,7 @@ public interface ProductService {
     FaProductRespMesDto deleteFavouriteProduct(User user, Integer id);
 
     FaProductRespMesDto deleteAllFavouriteProducts(User user);
+
+    ProductResponseDto updateProduct(Integer id, UpdateProductDto updateProductDto);
 
 }

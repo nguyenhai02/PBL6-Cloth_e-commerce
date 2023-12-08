@@ -74,10 +74,10 @@ public class OrderServiceImpl implements OrderService {
                         .quantity(cartItemDetail.getQuantity())
                         .build();
                 orderItems.add(orderItem);
-                if (status.equals("COMPLETE")) {
-                    productVariantRepository.subtractQuantity(cartItemDetail.getProductVariantId(), orderItem.getQuantity());
 
-                }
+                productVariantRepository.subtractQuantity(cartItemDetail.getProductVariantId(), orderItem.getQuantity());
+
+
                 orderItemRepository.save(orderItem);
             }
         }
@@ -90,9 +90,9 @@ public class OrderServiceImpl implements OrderService {
                 .status(order.getStatus())
                 .orderItems(orderItems)
                 .build();
-        if (status.equals("COMPLETE")) {
-            cartService.deleteAllCartItems(user);
-        }
+
+        cartService.deleteAllCartItems(user);
+
         return orderDto;
     }
 

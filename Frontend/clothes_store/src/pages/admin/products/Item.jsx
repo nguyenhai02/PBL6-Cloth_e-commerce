@@ -1,7 +1,9 @@
 import React from "react";
 import { EditOutlined, EllipsisOutlined } from "@ant-design/icons";
-import { Card, Space, Image } from "antd";
+import { Card, Space, Image, Modal, Button } from "antd";
 import "./Item.scss";
+import { useState } from "react";
+import UpdateProduct from "./UpdateProduct";
 
 const { Meta } = Card;
 
@@ -12,6 +14,22 @@ const Item = (props) => {
     (total, variant) => total + variant.quantity,
     0
   );
+
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isEllipsisModalOpen, setIsEllipsisModalOpen] = useState(false);
+
+  const showEditModal = () => {
+    setIsEditModalOpen(true);
+  };
+
+  const showEllipsisModal = () => {
+    setIsEllipsisModalOpen(true);
+  };
+
+  const handleOk = () => {
+    setIsEditModalOpen(false);
+    setIsEllipsisModalOpen(false);
+  };
 
   return (
     <Space>
@@ -32,10 +50,37 @@ const Item = (props) => {
           </div>
         }
         actions={[
-          <EditOutlined key="edit" />,
-          <EllipsisOutlined key="ellipsis" />,
+          <EditOutlined key="edit" onClick={showEditModal} />,
+          <EllipsisOutlined key="ellipsis" onClick={showEllipsisModal} />,
         ]}
       >
+        <Modal
+          title="Chỉnh sửa sản phẩm"
+          open={isEditModalOpen}
+          centered
+          closable={false}
+          footer={[
+            <Button key="submit" type="ghost" onClick={handleOk}>
+              Đóng
+            </Button>,
+          ]}
+        >
+          <UpdateProduct product={product} />
+        </Modal>
+
+        <Modal
+          title="Chi tiết sản phẩm"
+          open={isEllipsisModalOpen}
+          centered
+          closable={false}
+          footer={[
+            <Button key="submit" type="ghost" onClick={handleOk}>
+              Đóng
+            </Button>,
+          ]}
+        >
+          {/* Content for the ellipsis modal */}
+        </Modal>
         <Meta title={product.name} />
         <Meta description={product.description} style={{ paddingTop: 5 }} />
         <Meta

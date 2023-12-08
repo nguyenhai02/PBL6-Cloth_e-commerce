@@ -1,9 +1,6 @@
 package com.example.PBL6.service.impl;
 
-import com.example.PBL6.dto.product.FaProductRespDto;
-import com.example.PBL6.dto.product.FaProductRespMesDto;
-import com.example.PBL6.dto.product.ProductRequestDto;
-import com.example.PBL6.dto.product.ProductResponseDto;
+import com.example.PBL6.dto.product.*;
 import com.example.PBL6.persistance.product.FavouriteProduct;
 import com.example.PBL6.persistance.product.Product;
 import com.example.PBL6.persistance.product.ProductVariant;
@@ -141,7 +138,7 @@ public class ProductServiceImpl implements ProductService {
     public FaProductRespMesDto addFavouriteProduct(User user, Integer id) {
         boolean check = favouriteProductRepository.existsFavouriteProductByUserAndProduct(user,
                 productRepository.getById(id));
-        if(check != true) {
+        if (check != true) {
             FavouriteProduct favouriteProduct = new FavouriteProduct().builder()
                     .product(productRepository.getById(id))
                     .user(user)
@@ -166,5 +163,30 @@ public class ProductServiceImpl implements ProductService {
     public FaProductRespMesDto deleteAllFavouriteProducts(User user) {
         favouriteProductRepository.deleteAllByUser(user);
         return new FaProductRespMesDto("Xóa toàn bộ thành công");
+    }
+
+    @Override
+    @Transactional
+    public ProductResponseDto updateProduct(Integer id, UpdateProductDto updateProductDto) {
+//        Optional<Product> product = productRepository.findById(id);
+//        if (product.isPresent()) {
+//            Product productUpdate = productRepository.updateProductByDescriptionAndPriceAndImageAndCategory(product.get().builder()
+//                    .createDate(product.get().getCreateDate())
+//                    .name(updateProductDto.getName())
+//                    .description(updateProductDto.getDescription())
+//                    .price(updateProductDto.getPrice())
+//                    .discount(product.get().getDiscount())
+//                    .image(updateProductDto.getImageUrl())
+//                    .category(categoryRepository.getById(Integer.valueOf(updateProductDto.getCategoryId())))
+//                    .updateDate(LocalDateTime.now())
+//                    .build());
+//            ProductResponseDto productResponseDto = new ProductResponseDto().builder()
+//                    .product(productUpdate)
+//                    .build();
+//            return productResponseDto;
+//        } else {
+//            return null;
+//        }
+        return null;
     }
 }
