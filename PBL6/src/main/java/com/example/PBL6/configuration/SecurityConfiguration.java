@@ -35,7 +35,7 @@ public class SecurityConfiguration {
                         "/payment/createPayment/**", "/order/createOrder/**", "/order/getOrders/**")
                 .hasAnyAuthority(UserRole.CUSTOMER.name(), UserRole.ADMIN.name())
                 .requestMatchers("/user/all/**", "/category/add/**", "/category/delete/**",
-                        "/product/add/**", "/user/customerOrders")
+                        "/product/add/**", "/product/update/**", "/user/customerOrders")
                 .hasAuthority(UserRole.ADMIN.name())
                 .anyRequest()
                 .authenticated()
