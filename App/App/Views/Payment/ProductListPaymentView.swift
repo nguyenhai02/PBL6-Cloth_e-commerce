@@ -282,7 +282,7 @@ struct ProductListPaymentView: View, Hashable {
                            let ward = addressViewModel.selectedAddress?.ward,
                            let city = addressViewModel.selectedAddress?.city {
                             let addressDelivery = "\(street), \(district), \(ward), \(city)"
-                            cartViewModel.CreateCOD(amount: cartViewModel.total, addressDelivery: addressDelivery, productId: nil, color: "", size: "", quantity: nil) {
+                            cartViewModel.CreateCOD(amount: cartViewModel.total, addressDelivery: addressDelivery, productId: nil, color: nil, size: nil, quantity: nil) {
                                 path.append("MyOrdersView")
                             }
                         }

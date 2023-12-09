@@ -237,8 +237,21 @@ struct PaymentView: View, Hashable{
             .navigationBarBackButtonHidden(true)
             .alert(isPresented: $showAlert) {
                 Alert(title: Text("Xác nhận đặt hàng"), message: Text(""), primaryButton: .default( Text("Có")){
-                    if let url = URL(string: viewModel.payment?.redirect_url ?? "") {
-                        UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                    if viewModel.paymentMethod == Payment.money {
+                        let amount = Double(((homeViewModel.productDetail?.product.price ?? 0) - ((homeViewModel.productDetail?.product.price ?? 0) * (homeViewModel.productDetail?.product.discount ?? 0) / 100)) * (cartViewModel.quantity))
+                        if let street = addressViewModel.selectedAddress?.street,
+                           let district = addressViewModel.selectedAddress?.district,
+                           let ward = addressViewModel.selectedAddress?.ward,
+                           let city = addressViewModel.selectedAddress?.city {
+                            let addressDelivery = "\(street), \(district), \(ward), \(city)"
+                            cartViewModel.CreateCOD(amount: amount, addressDelivery: addressDelivery, productId: cartViewModel.quantity, color: cartViewModel.color, size: cartViewModel.size, quantity: cartViewModel.quantity) {
+                                path.append("MyOrdersView")
+                            }
+                        }
+                    } else if viewModel.paymentMethod == Payment.vnpay {
+                        if let url = URL(string: viewModel.payment?.redirect_url ?? "") {
+                            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                        }
                     }
                 }, secondaryButton: .cancel(Text("Huỷ")) {
                     showAlert = false
