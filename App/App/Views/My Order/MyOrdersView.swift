@@ -14,6 +14,9 @@ struct MyOrdersView: View {
     @Binding var path: NavigationPath
     
     var body: some View {
+        ZStack(alignment: .trailing){
+            Color.white
+                .edgesIgnoringSafeArea(.all)
             VStack {
                 Spacer().frame(height: 15)
                 NavigationBarView()
@@ -24,44 +27,40 @@ struct MyOrdersView: View {
                         selectorIndex = 0
                     }) {
                         VStack {
-//                            Image("waiting")
-//                                .resizable()
-//                                .frame(width: 24, height: 24)
                             Text("Chờ xác nhận")
                                 .font(.system(size: 13))
                                 .foregroundColor(.black)
-//                                .padding(.top, 5)
                         }
                     }
                     Button(action: {
                         selectorIndex = 1
                     }) {
                         VStack {
-//                            Image("delivery")
-//                                .resizable()
-//                                .frame(width: 24, height: 24)
+                            //                            Image("delivery")
+                            //                                .resizable()
+                            //                                .frame(width: 24, height: 24)
                             Text("Đã xác nhận")
                                 .font(.system(size: 13))
                                 .foregroundColor(.black)
-//                                .padding(.top, 5)
+                            //                                .padding(.top, 5)
                         }
                     }
                     Button(action: {
                         selectorIndex = 2
                     }) {
                         VStack {
-//                            Image("shipped")
-//                                .resizable()
-//                                .frame(width: 24, height: 24)
+                            //                            Image("shipped")
+                            //                                .resizable()
+                            //                                .frame(width: 24, height: 24)
                             Text("Hoàn thành")
                                 .font(.system(size: 13))
                                 .foregroundColor(.black)
-//                                .padding(.top, 5)
+                            //                                .padding(.top, 5)
                         }
                     }
                     Spacer()
                 }
-//                .padding(.leading, 25)
+                //                .padding(.leading, 25)
                 Divider()
                 if selectorIndex == 0 {
                     ScrollView(.vertical, showsIndicators: false, content: {
@@ -82,22 +81,23 @@ struct MyOrdersView: View {
                         .padding(.horizontal, 15)
                     })
                 }
-//                else {
-//                    ScrollView(.vertical, showsIndicators: false, content: {
-//                        VStack(spacing: 10) {
-//                            ForEach(self.arrOrder.filter { $0.status == "Cancelled" }, id: \.id) { order in
-//                                OrderRow(order: order, selectorIndex: self.selectorIndex)
-//                            }
-//                        }
-//                        .padding(.horizontal, 15)
-//                    })
-//                }
+                //                else {
+                //                    ScrollView(.vertical, showsIndicators: false, content: {
+                //                        VStack(spacing: 10) {
+                //                            ForEach(self.arrOrder.filter { $0.status == "Cancelled" }, id: \.id) { order in
+                //                                OrderRow(order: order, selectorIndex: self.selectorIndex)
+                //                            }
+                //                        }
+                //                        .padding(.horizontal, 15)
+                //                    })
+                //                }
                 Spacer()
             }
             .navigationBarBackButtonHidden(true)
             .onAppear {
                 viewModel.getAllOders()
             }
+        }
     }
 }
 
@@ -108,6 +108,7 @@ struct OrderRow: View {
         VStack(alignment: .leading) {
             HStack {
                 Text("Order No: \(order.id)")
+                    .foregroundColor(.black)
                 Spacer()
                 Text(order.orderDate)
                     .foregroundColor(.gray)
@@ -118,6 +119,7 @@ struct OrderRow: View {
 //                    .foregroundColor(.gray)
 //                Spacer()
                 Text("Total Amount:")
+                    .foregroundColor(.black)
                 Text("\(Int(order.totalPrice))")
                     .foregroundColor(.gray)
             }.padding([.top], 2)
@@ -143,7 +145,7 @@ extension MyOrdersView {
     func NavigationBarView() -> some View {
         return HStack {
             Button(action: {
-                path.removeLast()
+                path.removeLast(2)
             }) {
                 Image(systemName: "arrow.left")
                     .resizable()
@@ -152,6 +154,7 @@ extension MyOrdersView {
                     .padding(.leading, 25)
             }
             Text("Đơn mua")
+                .foregroundColor(.black)
                 .font(.system(size: 20))
                 .fontWeight(.medium)
                 .padding(.leading, 15)

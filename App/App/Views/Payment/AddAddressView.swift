@@ -12,7 +12,7 @@ struct AddAddressView: View, Hashable {
         return true
     }
     func hash(into hasher: inout Hasher) {}
-    @ObservedObject var viewModel = AddressViewModel()
+    @ObservedObject var viewModel = AddressViewModel.instance
     @State var name: String = ""
     @State var text: String = ""
     @Binding var path: NavigationPath
@@ -34,6 +34,7 @@ struct AddAddressView: View, Hashable {
                             .padding(.leading, 25)
                     }
                     Text("Thêm địa chỉ")
+                        .foregroundColor(.black)
                         .font(.system(size: 20))
                         .fontWeight(.medium)
                         .padding(.leading, 15)
@@ -61,7 +62,7 @@ struct AddAddressView: View, Hashable {
                         .padding(.top, 5)
                     ZStack(alignment: .trailing) {
                         HStack {
-                        if viewModel.city == "" {
+                            if viewModel.city.isEmpty {
                             TextFielCustom(title: "Tỉnh/Thành phố,Quận/Huyện,Phường/Xã ", text: $viewModel.city)
                         } else {
                             Text("\(viewModel.ward), \(viewModel.district), \(viewModel.city)" )
@@ -71,7 +72,10 @@ struct AddAddressView: View, Hashable {
                         }
                             Spacer()
                             Button(action: {
-                                path.append(ProvinceView(path: $path, viewModel: viewModel))
+            
+                                    
+                                    path.append(ProvinceView(path: $path, viewModel: viewModel))
+            
                             }) {
                                 Image("rightlight")
                             }
@@ -87,8 +91,6 @@ struct AddAddressView: View, Hashable {
                         if !viewModel.errorMessage.isEmpty {
                             showingAlert = true
                         }
-                    print("ADD")
-                        print(Address(name: viewModel.name, phone: viewModel.phone, street: viewModel.street, city: viewModel.city, ward: viewModel.ward, district: viewModel.district))
                     }
                     .padding(.top, 40)
                     .padding(.horizontal, 10)
@@ -106,7 +108,9 @@ struct AddAddressView: View, Hashable {
             ProvinceView(path: $path, viewModel: viewModel)
         }
         .onAppear {
-            viewModel.getAddressFromURL() {_ in}
+            if viewModel.addresses.isEmpty {
+                viewModel.getAddressFromURL() {_ in}
+            }
         }
     }
 }

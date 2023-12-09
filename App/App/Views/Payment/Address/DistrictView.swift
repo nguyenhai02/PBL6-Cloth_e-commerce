@@ -33,6 +33,7 @@ struct DistrictView: View, Hashable {
                             .padding(.leading, 25)
                     }
                     Text("Chọn Quận/ Huyện")
+                        .foregroundColor(.black)
                         .font(.system(size: 20))
                         .fontWeight(.medium)
                         .padding(.leading, 15)

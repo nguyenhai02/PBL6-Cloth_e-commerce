@@ -7,6 +7,7 @@
 
 import Foundation
 import Moya
+import Combine
 
 class HomeViewModel: ObservableObject {
     @Published var categories: [Categories] = []
@@ -15,12 +16,14 @@ class HomeViewModel: ObservableObject {
     @Published var categoryProduct: [ProductDetail] = []
     @Published var categoryProductByName: [ProductDetail] = []
     @Published var productVariants: [ProductVariant] = []
-    @Published var categoryId = 0
+    @Published var categoryId = -1
     @Published var idProductVariant = 0
     @Published var id: Int = 0
     @Published var sort = ""
     var quantity: Int = 0
     var productDetail: ProductDetail? = nil
+    let searchPublicsher = PassthroughSubject<String, Never>()
+    var searchText: String = ""
     
     
     init() {
@@ -36,7 +39,6 @@ class HomeViewModel: ObservableObject {
                 do{
                     print(self.id)
                     let filteredReponse = try moyaResponse.filterSuccessfulStatusCodes()
-                    print("hihi")
                     let productDetail = try filteredReponse.map(ProductDetail.self)
                     self.productDetail = productDetail
 //                    print(self.productDetail)
@@ -84,7 +86,7 @@ class HomeViewModel: ObservableObject {
         }
     }
     
-    func showCategoryProduct(categoryId: Int) {
+    func showCategoryProduct() {
         let provider = MoyaProvider<MyService>()
         provider.request(.showProduct(sort: sort)) { result in
             switch result {
@@ -92,10 +94,10 @@ class HomeViewModel: ObservableObject {
                 do {
                     let filteredResponse = try moyaResponse.filterSuccessfulStatusCodes()
                     let responseData = try filteredResponse.map(ResponseData.self)
-                    self.categoryProduct = responseData.content.filter{$0.product.category.id == categoryId}
-                    print("categoryProduct")
+                    self.categoryProduct = responseData.content.filter{$0.product.category.id == self.categoryId || self.categoryId == -1}
+                        .filter{$0.product.name.lowercased().contains(self.searchText.lowercased()) || self.searchText.isEmpty}
+                    print(responseData.content)
                     print(self.categoryProduct)
-                    //                    print(responseData.content) // in ra dữ liệu đã được map từ JSON
                 } catch {
                     print("Error in processing product data: \(error)")
                 }
@@ -110,15 +112,15 @@ class HomeViewModel: ObservableObject {
         provider.request(.showProduct(sort: sort)) { result in
             switch result {
             case let .success(moyaResponse):
-                print("producthiproducthi2")
                 do {
                     let filteredResponse = try moyaResponse.filterSuccessfulStatusCodes()
                     let responseData = try filteredResponse.map(ResponseData.self)
-                    print("responseData.content")
-                    self.categoryProductByName = responseData.content.filter{$0.product.name.contains(text)}
+                    if(text.isEmpty){
+                        self.categoryProductByName = responseData.content
+                    }else{
+                        self.categoryProductByName = responseData.content.filter{$0.product.name.lowercased().contains(text.lowercased())}
+                    }
                     print(self.categoryProductByName)
-                    print("self.categoryProduct")
-                    //                    print(responseData.content) // in ra dữ liệu đã được map từ JSON
                 } catch {
                     print("Error in processing product data: \(error)")
                 }

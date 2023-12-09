@@ -33,6 +33,7 @@ struct WardView: View, Hashable {
                             .padding(.leading, 25)
                     }
                     Text("Chọn Phường/ Xã")
+                        .foregroundColor(.black)
                         .font(.system(size: 20))
                         .fontWeight(.medium)
                         .padding(.leading, 15)
@@ -62,7 +63,7 @@ struct WardView: View, Hashable {
                         selectedWard = ward
                         viewModel.ward = ward.name
                         path.removeLast(3)
-                            print( viewModel.ward)
+                        print( viewModel.ward)
                     }
                 }
                 .listStyle(.plain)

@@ -19,38 +19,42 @@ struct CategoryProductView: View, Hashable{
     let columns: [GridItem] = Array(repeating: .init(.flexible(minimum: 10, maximum: 170)), count: 2)
     var category: Categories
     var body: some View {
-        VStack {
-            Spacer().frame(height: 20)
-            HStack {
-                Button(action: {
-                    path.removeLast()
-                }) {
-                    Image(systemName: "arrow.left")
-                        .resizable()
-                        .foregroundColor(.black)
-                        .frame(width: 18, height: 18)
-                        .padding(.leading, 25)
+        ZStack {
+            Color.white
+                .edgesIgnoringSafeArea(.all)
+            VStack {
+                Spacer().frame(height: 20)
+                HStack {
+                    Button(action: {
+                        path.removeLast()
+                    }) {
+                        Image(systemName: "arrow.left")
+                            .resizable()
+                            .foregroundColor(.black)
+                            .frame(width: 18, height: 18)
+                            .padding(.leading, 25)
+                    }
+                    Text("Tops")
+                        .font(.system(size: 20))
+                        .fontWeight(.medium)
+                        .padding(.leading, 15)
+                    Spacer()
                 }
-                Text("Tops")
-                    .font(.system(size: 20))
-                    .fontWeight(.medium)
-                    .padding(.leading, 15)
-                Spacer()
-            }
-            Spacer().frame(height: 40)
-            ScrollView {
-                LazyVGrid(columns: columns, spacing: 15) {
-                    ForEach(viewModel.categoryProduct, id: \.self) {
-                        productDetail in
-                        ItemRow(path: $path, product: productDetail)
+                Spacer().frame(height: 40)
+                ScrollView {
+                    LazyVGrid(columns: columns, spacing: 15) {
+                        ForEach(viewModel.categoryProduct, id: \.self) {
+                            productDetail in
+                            ItemRow(path: $path, product: productDetail)
+                        }
                     }
                 }
             }
-        }
-        .navigationBarBackButtonHidden(true)
-        .onAppear {
-            print( viewModel.categoryId)
-            viewModel.showCategoryProduct(categoryId: viewModel.categoryId)
+            .navigationBarBackButtonHidden(true)
+            .onAppear {
+                print( viewModel.categoryId)
+                viewModel.showCategoryProduct()
+            }
         }
     }
 }

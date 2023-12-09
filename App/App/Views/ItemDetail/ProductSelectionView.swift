@@ -12,98 +12,102 @@ struct ProductSelectionView: View {
     @Environment(\.presentationMode) var presentationMode
     @ObservedObject var viewModel: CartViewModel
     @ObservedObject var homeViewModel: HomeViewModel
-//    @Binding var path: NavigationPath
-//    let productDetail: ProductDetail
+    //    @Binding var path: NavigationPath
+    //    let productDetail: ProductDetail
     let title: String
     var onNext: () -> Void
     var body: some View {
-        VStack(alignment: .leading) {
-            Spacer().frame(height: 10)
-            HStack {
-                KFImage(URL(string: homeViewModel.productDetail?.product.image ?? ""))
-//                Image("xinh")
-                    .resizable()
-                    .scaledToFill()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 120, height: 120)
-                VStack(alignment: .leading, spacing: 0) {
-                    HStack {
-                        Text("\(homeViewModel.productDetail?.product.price ?? 0)")
-                            .font(.system(size: 16))
-                            .foregroundColor(.gray)
-                            .strikethrough()
-                        Text("đ\((homeViewModel.productDetail?.product.price ?? 0) - ((homeViewModel.productDetail?.product.price ?? 0) * (homeViewModel.productDetail?.product.discount ?? 0) / 100))")
-                            .font(.system(size: 16))
-                            .foregroundColor(.red)
-                    }
-                    GetQuantity(viewModel: viewModel, homeViewModel: homeViewModel)
-                        
-                }
-                .padding(.leading, 15)
-                Spacer()
-                Button(action: {
-                    self.presentationMode.wrappedValue.dismiss()
-                }) {
-                    Image(systemName: "xmark")
+        ZStack {
+            Color("F9F9F9")
+                .edgesIgnoringSafeArea(.all)
+            VStack(alignment: .leading) {
+                Spacer().frame(height: 10)
+                HStack {
+                    KFImage(URL(string: homeViewModel.productDetail?.product.image ?? ""))
+                    //                Image("xinh")
                         .resizable()
+                        .scaledToFill()
                         .aspectRatio(contentMode: .fit)
-                        .frame(width: 14, height: 14)
-                        .foregroundColor(.gray)
-                        .padding(.trailing, 15)
-                }
-                .padding(.top, -40)
-            }
-            .padding(.leading, 30)
-            Divider()
-            HStack(spacing: 0) {
-                Text("Số lượng")
-                    .padding(.leading, 20)
-                Spacer()
-                Button(action: {
-                    if  viewModel.quantity > 0 {
-                        viewModel.quantity -= 1
-                        print(viewModel.quantity)
+                        .frame(width: 120, height: 120)
+                    VStack(alignment: .leading, spacing: 0) {
+                        HStack {
+                            Text("\(homeViewModel.productDetail?.product.price ?? 0)")
+                                .font(.system(size: 16))
+                                .foregroundColor(.gray)
+                                .strikethrough()
+                            Text("đ\((homeViewModel.productDetail?.product.price ?? 0) - ((homeViewModel.productDetail?.product.price ?? 0) * (homeViewModel.productDetail?.product.discount ?? 0) / 100))")
+                                .font(.system(size: 16))
+                                .foregroundColor(.red)
+                        }
+                        GetQuantity(viewModel: viewModel, homeViewModel: homeViewModel)
+                        
                     }
-                }) {
-                    Image(systemName: "minus")
-                        .font(.system(size: 12))
+                    .padding(.leading, 15)
+                    Spacer()
+                    Button(action: {
+                        self.presentationMode.wrappedValue.dismiss()
+                    }) {
+                        Image(systemName: "xmark")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 14, height: 14)
+                            .foregroundColor(.gray)
+                            .padding(.trailing, 15)
+                    }
+                    .padding(.top, -40)
+                }
+                .padding(.leading, 30)
+                Divider()
+                HStack(spacing: 0) {
+                    Text("Số lượng")
+                        .padding(.leading, 20)
+                    Spacer()
+                    Button(action: {
+                        if  viewModel.quantity > 0 {
+                            viewModel.quantity -= 1
+                            print(viewModel.quantity)
+                        }
+                    }) {
+                        Image(systemName: "minus")
+                            .font(.system(size: 12))
+                            .foregroundColor(.gray)
+                            .frame(width: 32, height: 25)
+                            .padding(1)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 2).stroke(Color("EBF0FF"), lineWidth: 1))
+                    }
+                    Text("\(viewModel.quantity)")
                         .foregroundColor(.gray)
+                        .font(.system(size: 12))
                         .frame(width: 32, height: 25)
                         .padding(1)
                         .overlay(
                             RoundedRectangle(cornerRadius: 2).stroke(Color("EBF0FF"), lineWidth: 1))
+                    Button(action: {
+                        viewModel.quantity += 1
+                        print( viewModel.quantity)
+                    }) {
+                        Image(systemName: "plus")
+                            .font(.system(size: 12))
+                            .foregroundColor(.gray)
+                            .frame(width: 32, height: 25)
+                            .padding(1)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 2).stroke(Color("EBF0FF"), lineWidth: 1))
+                    }
                 }
-                Text("\(viewModel.quantity)")
-                    .foregroundColor(.gray)
-                    .font(.system(size: 12))
-                    .frame(width: 32, height: 25)
-                    .padding(1)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 2).stroke(Color("EBF0FF"), lineWidth: 1))
-                Button(action: {
-                    viewModel.quantity += 1
+                .padding(.top, 15)
+                .padding(.trailing, 15)
+                Spacer().frame(height: 170)
+                TLButton(title: title, background: Color("002482"), action:  {
                     print( viewModel.quantity)
-                }) {
-                    Image(systemName: "plus")
-                        .font(.system(size: 12))
-                        .foregroundColor(.gray)
-                        .frame(width: 32, height: 25)
-                        .padding(1)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 2).stroke(Color("EBF0FF"), lineWidth: 1))
-                }
+                    onNext()
+                })
+                .padding(.horizontal, 20)
+                Spacer()
             }
-            .padding(.top, 15)
-            .padding(.trailing, 15)
-            Spacer().frame(height: 170)
-            TLButton(title: title, background: Color("002482"), action:  {
-                print( viewModel.quantity)
-                onNext()
-            })
-            .padding(.horizontal, 20)
-            Spacer()
+            .navigationBarBackButtonHidden(true)
         }
-        .navigationBarBackButtonHidden(true)
     }
 }
 

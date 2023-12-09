@@ -17,89 +17,94 @@ struct ProfileView: View {
     @State private var selectedGender: Int = 0
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 0) {
-            Spacer().frame(height: 12)
-            HStack {
-                Button(action: {
-                    path.removeLast()
-                }) {
-                    Image(systemName: "arrow.left")
-                        .resizable()
+        ZStack {
+            Color("F9F9F9")
+                .edgesIgnoringSafeArea(.all)
+            VStack(alignment: .leading, spacing: 0) {
+                Spacer().frame(height: 12)
+                HStack {
+                    Button(action: {
+                        path.removeLast()
+                    }) {
+                        Image(systemName: "arrow.left")
+                            .resizable()
+                            .foregroundColor(.black)
+                            .frame(width: 18, height: 18)
+                            .padding(.leading, 25)
+                    }
+                    Text("Xem hồ sơ")
                         .foregroundColor(.black)
-                        .frame(width: 18, height: 18)
-                        .padding(.leading, 25)
+                        .font(.system(size: 20))
+                        .fontWeight(.medium)
+                        .padding(.leading, 15)
                 }
-                Text("Xem hồ sơ")
-                    .font(.system(size: 20))
-                    .fontWeight(.medium)
-                    .padding(.leading, 15)
-            }
-            Spacer().frame(height: 30)
-            Divider().background(Color("E1E2E7").opacity(0.7)).shadow(radius: 1)
-            VStack(alignment: .center, spacing: 0) {
-                Spacer().frame(height: 25)
-                Button(action: {
-                    viewModel.showProfile()
-                }) {
-                    PhotosPicker(selection: $pickerImageViewModel.imageSelection, matching: .images) {
-                        VStack() {
-                            ZStack() {
-                                if let image = pickerImageViewModel.selectedImage {
-                                    Image(uiImage: image)
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fit)
-                                        .scaledToFill()
-                                        .frame(width: 100, height: 100)
-                                        .clipShape(Circle())
-                                    
-                                } else {
-                                    KFImage(URL(string: viewModel.profile?.avatar ?? "https://i.pinimg.com/736x/c6/e5/65/c6e56503cfdd87da299f72dc416023d4.jpg"))
-                                        .cacheOriginalImage()
-                                        .onSuccess { r in
-                                            print("suc: \(r)")
-                                        }
-                                        .onFailure { e in
-                                            print("err: \(e)")
-                                        }
-                                        .placeholder {                                            ProgressView().frame(width: 100, height: 100)
-                                                .border(Color.blue)
-                                        }
-                                        .resizable()
-                                        .scaledToFill()
-                                        .frame(width: 100, height: 100)
-                                        .cornerRadius(50)
-                                        .shadow(radius: 5)
-                                    
+                Spacer().frame(height: 30)
+                Divider().background(Color("E1E2E7").opacity(0.7)).shadow(radius: 1)
+                VStack(alignment: .center, spacing: 0) {
+                    Spacer().frame(height: 25)
+                    Button(action: {
+                        viewModel.showProfile()
+                    }) {
+                        PhotosPicker(selection: $pickerImageViewModel.imageSelection, matching: .images) {
+                            VStack() {
+                                ZStack() {
+                                    if let image = pickerImageViewModel.selectedImage {
+                                        Image(uiImage: image)
+                                            .resizable()
+                                            .aspectRatio(contentMode: .fit)
+                                            .scaledToFill()
+                                            .frame(width: 100, height: 100)
+                                            .clipShape(Circle())
+                                        
+                                    } else {
+                                        KFImage(URL(string: viewModel.profile?.avatar ?? "https://i.pinimg.com/736x/c6/e5/65/c6e56503cfdd87da299f72dc416023d4.jpg"))
+                                            .cacheOriginalImage()
+                                            .onSuccess { r in
+                                                print("suc: \(r)")
+                                            }
+                                            .onFailure { e in
+                                                print("err: \(e)")
+                                            }
+                                            .placeholder {                                            ProgressView().frame(width: 100, height: 100)
+                                                    .border(Color.blue)
+                                            }
+                                            .resizable()
+                                            .scaledToFill()
+                                            .frame(width: 100, height: 100)
+                                            .cornerRadius(50)
+                                            .shadow(radius: 5)
+                                        
+                                    }
                                 }
+                                Text("Edit photo")
+                                    .foregroundColor(Color("002482"))
                             }
-                            Text("Edit photo")
-                                .foregroundColor(Color("002482"))
                         }
                     }
+                    .padding(.bottom, 25)
+                    Divider().background(Color("E1E2E7"))
                 }
-                .padding(.bottom, 25)
-                Divider().background(Color("E1E2E7"))
+                .background(Color("EBF0FF1"))
+                VStack(spacing: 0) {
+                    profileItem(icon: "name", title: "Tên", value: (viewModel.profile?.name ?? "")) {
+                        path.append("EditNameView")
+                    }
+                    profileItem(icon: "smartphone", title: "Số điện thoai", value: viewModel.profile?.phone ?? "") {
+                        path.append("EditPhoneView")
+                    }
+                    profileItem(icon: "gender", title: "Giới tính", value: viewModel.profile?.gender ?? "") {
+                        path.append("EditGender")
+                    }
+                    //                profileItem(icon: "changePassword", title: "Change password", value: "") {
+                    //                }
+                }
+                Spacer()
             }
-            .background(Color("EBF0FF1"))
-            VStack(spacing: 0) {
-                profileItem(icon: "name", title: "Tên", value: (viewModel.profile?.name ?? "")) {
-                    path.append("EditNameView")
-                }
-                profileItem(icon: "smartphone", title: "Số điện thoai", value: viewModel.profile?.phone ?? "") {
-                    path.append("EditPhoneView")
-                }
-                profileItem(icon: "gender", title: "Giới tính", value: viewModel.profile?.gender ?? "") {
-                    path.append("EditGender")
-                }
-                //                profileItem(icon: "changePassword", title: "Change password", value: "") {
-                //                }
+            .navigationBarBackButtonHidden(true)
+            .onAppear {
+                viewModel.showProfile()
+                if let image = pickerImageViewModel.selectedImage {}
             }
-            Spacer()
-        }
-        .navigationBarBackButtonHidden(true)
-        .onAppear {
-            viewModel.showProfile()
-            if let image = pickerImageViewModel.selectedImage {}
         }
     }
 }

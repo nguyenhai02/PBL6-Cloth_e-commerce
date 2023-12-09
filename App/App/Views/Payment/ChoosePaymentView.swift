@@ -17,80 +17,85 @@ struct ChoosePaymentView: View, Hashable {
     @State private var isMoneyButtonSelected = false
     @State private var isVnpayButtonSelected = false
     var body: some View {
-        VStack(alignment: .leading, spacing: 0) {
-            Spacer().frame(height: 30)
-            HStack(spacing: 0) {
+        ZStack {
+            Color("F9F9F9")
+                .edgesIgnoringSafeArea(.all)
+            VStack(alignment: .leading, spacing: 0) {
+                Spacer().frame(height: 30)
+                HStack(spacing: 0) {
+                    Button(action: {
+                        path.removeLast()
+                    }) {
+                        Image(systemName: "arrow.left")
+                            .resizable()
+                            .foregroundColor(.black)
+                            .frame(width: 18, height: 18)
+                            .padding(.leading, 25)
+                    }
+                    Text("Chọn phương thức thanh toán ")
+                        .foregroundColor(.black)
+                        .font(.system(size: 20))
+                        .fontWeight(.medium)
+                        .padding(.leading, 15)
+                    Spacer()
+                }
+                Spacer().frame(height: 45)
                 Button(action: {
+                    isMoneyButtonSelected = true
+                    isVnpayButtonSelected = false
+                    viewModel.paymentMethod = Payment.vnpay
+                    print(viewModel.paymentMethod)
+                    path.removeLast()
+                    //                path.append("TransferMoneyView")
+                }) {
+                    HStack {
+                        Image("vnpay")
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .frame(width: 20, height: 20)
+                        Text("Vnpay")
+                            .font(.system(size: 15))
+                            .foregroundColor(.black)
+                            .fontWeight(.medium)
+                            .padding(.leading, 10)
+                        Spacer()
+                    }
+                    .padding(.vertical, 18)
+                    .padding(.leading, 38)
+                    
+                    .frame(width: UIScreen.main.bounds.width)
+                    .overlay(RoundedRectangle(cornerRadius: 0).stroke(Color("EBF0FF")))
+                    .background(isMoneyButtonSelected ? Color("EBF0FF") : Color.clear)
+                    
+                }
+                Button(action: {
+                    isMoneyButtonSelected = false
+                    isVnpayButtonSelected = true
+                    viewModel.paymentMethod = Payment.money
                     path.removeLast()
                 }) {
-                    Image(systemName: "arrow.left")
-                        .resizable()
-                        .foregroundColor(.black)
-                        .frame(width: 18, height: 18)
-                        .padding(.leading, 25)
+                    HStack {
+                        Image("money")
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .frame(width: 28, height: 28)
+                        Text("Thanh toán khi nhận hàng")
+                            .font(.system(size: 15))
+                            .foregroundColor(.black)
+                            .fontWeight(.medium)
+                            .padding(.leading, 10)
+                        Spacer()
+                    }
+                    .padding(.leading, 30)
+                    .padding(.vertical, 18)
+                    .frame(width: UIScreen.main.bounds.width)
+                    .background(isVnpayButtonSelected ? Color("EBF0FF") : Color.clear)
                 }
-                Text("Chọn phương thức thanh toán ")
-                    .font(.system(size: 20))
-                    .fontWeight(.medium)
-                    .padding(.leading, 15)
+                Divider().background(Color("EBF0FF"))
                 Spacer()
             }
-            Spacer().frame(height: 45)
-            Button(action: {
-                isMoneyButtonSelected = true
-                isVnpayButtonSelected = false
-                viewModel.paymentMethod = Payment.vnpay
-                print(viewModel.paymentMethod)
-                path.removeLast()
-                //                path.append("TransferMoneyView")
-            }) {
-                HStack {
-                    Image("vnpay")
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .frame(width: 20, height: 20)
-                    Text("Vnpay")
-                        .font(.system(size: 15))
-                        .foregroundColor(.black)
-                        .fontWeight(.medium)
-                        .padding(.leading, 10)
-                    Spacer()
-                }
-                .padding(.vertical, 18)
-                .padding(.leading, 38)
-                
-                .frame(width: UIScreen.main.bounds.width)
-                .overlay(RoundedRectangle(cornerRadius: 0).stroke(Color("EBF0FF")))
-                .background(isMoneyButtonSelected ? Color("EBF0FF") : Color.clear)
-                
-            }
-            Button(action: {
-                isMoneyButtonSelected = false
-                isVnpayButtonSelected = true
-                viewModel.paymentMethod = Payment.money
-                path.removeLast()
-            }) {
-                HStack {
-                    Image("money")
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .frame(width: 28, height: 28)
-                    Text("Thanh toán khi nhận hàng")
-                        .font(.system(size: 15))
-                        .foregroundColor(.black)
-                        .fontWeight(.medium)
-                        .padding(.leading, 10)
-                    Spacer()
-                }
-                .padding(.leading, 30)
-                .padding(.vertical, 18)
-                .frame(width: UIScreen.main.bounds.width)
-                .background(isVnpayButtonSelected ? Color("EBF0FF") : Color.clear)
-            }
-            Divider().background(Color("EBF0FF"))
-            Spacer()
+            .navigationBarBackButtonHidden(true)
         }
-        .navigationBarBackButtonHidden(true)
     }
 }
 struct ChoosePaymentView_Previews: PreviewProvider {
