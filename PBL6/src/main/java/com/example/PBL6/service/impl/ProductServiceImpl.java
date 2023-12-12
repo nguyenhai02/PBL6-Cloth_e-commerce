@@ -1,6 +1,7 @@
 package com.example.PBL6.service.impl;
 
 import com.example.PBL6.dto.product.*;
+import com.example.PBL6.persistance.product.Category;
 import com.example.PBL6.persistance.product.FavouriteProduct;
 import com.example.PBL6.persistance.product.Product;
 import com.example.PBL6.persistance.product.ProductVariant;
@@ -168,25 +169,21 @@ public class ProductServiceImpl implements ProductService {
     @Override
     @Transactional
     public ProductResponseDto updateProduct(Integer id, UpdateProductDto updateProductDto) {
-//        Optional<Product> product = productRepository.findById(id);
-//        if (product.isPresent()) {
-//            Product productUpdate = productRepository.updateProductByDescriptionAndPriceAndImageAndCategory(product.get().builder()
-//                    .createDate(product.get().getCreateDate())
-//                    .name(updateProductDto.getName())
-//                    .description(updateProductDto.getDescription())
-//                    .price(updateProductDto.getPrice())
-//                    .discount(product.get().getDiscount())
-//                    .image(updateProductDto.getImageUrl())
-//                    .category(categoryRepository.getById(Integer.valueOf(updateProductDto.getCategoryId())))
-//                    .updateDate(LocalDateTime.now())
-//                    .build());
-//            ProductResponseDto productResponseDto = new ProductResponseDto().builder()
-//                    .product(productUpdate)
-//                    .build();
-//            return productResponseDto;
-//        } else {
-//            return null;
-//        }
-        return null;
+        Boolean check = productRepository.existsById(id);
+        if (check) {
+            productRepository.updateProduct(id, updateProductDto.getPrice(), updateProductDto.getDescription(),
+                    updateProductDto.getCategoryId(), updateProductDto.getImageUrl());
+            Optional<Product> newProduct = productRepository.findById(id);
+            if (newProduct.isPresent()) {
+                ProductResponseDto productResponseDto = new ProductResponseDto().builder()
+                        .product(newProduct.get())
+                        .build();
+                return productResponseDto;
+            } else {
+                return null;
+            }
+        } else {
+            return null;
+        }
     }
 }

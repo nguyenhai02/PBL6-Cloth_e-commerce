@@ -48,7 +48,7 @@ const LoginAdmin = () => {
           name="email"
           rules={[
             {
-              type: "email",
+              type: "text",
               message: "The input is not valid E-mail!",
             },
             {

@@ -23,10 +23,10 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
 
     @Modifying
     @Transactional
-    @Query(value = "UPDATE Product p " +
+    @Query(value = "UPDATE products p " +
             "       SET p.price = :newPrice, " +
             "           p.description = :newDescription, " +
-            "           p.category_id = :newCategoryId, " +
+            "           p.categories_id = :newCategoryId, " +
             "           p.image = :newImage " +
             "       WHERE p.id = :productId", nativeQuery = true)
     void updateProduct(

@@ -29,3 +29,10 @@ export const addProduct = (data) => {
     },
   });
 };
+export const updateProduct = (id, data) => {
+  return http.post(`/product/update/${id}`, data, {
+    headers: {
+      Authorization: "Bearer " + getToken(),
+    },
+  });
+};

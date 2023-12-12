@@ -1,6 +1,7 @@
 import { Layout, Row, theme } from "antd";
 import { Content, Footer } from "antd/es/layout/layout";
 import React, { useEffect } from "react";
+import { useNavigate } from "react-router";
 import Banner from "../../components/banner/Banner";
 import CardItem from "../../components/card/CardItem";
 import HeaderPage from "../../components/header/HeaderPage";
@@ -10,6 +11,8 @@ import botImg from "../../assets/images/bot-img.jpg";
 import topImg from "../../assets/images/top-img.jpg";
 import pkImg from "../../assets/images/pk-img.jpg";
 const HomePage = () => {
+  const navigate = useNavigate();
+
   useEffect(() => {
     document.title = "Clothes Store";
   }, []);
@@ -41,7 +44,14 @@ const HomePage = () => {
           <Banner />
         </div>
         <div className="products">
-          <p>PRODUCTS</p>
+          <div className="products">
+            <span
+              onClick={() => navigate("/collections/shirt")}
+              style={{ cursor: "pointer" }}
+            >
+              PRODUCTS
+            </span>
+          </div>
         </div>
         <div style={{ margin: "64px 24px", position: "relative" }}>
           <Row gutter={18}>{renderCart}</Row>
