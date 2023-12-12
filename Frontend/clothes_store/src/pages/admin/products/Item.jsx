@@ -4,6 +4,7 @@ import { Card, Space, Image, Modal, Button } from "antd";
 import "./Item.scss";
 import { useState } from "react";
 import UpdateProduct from "./UpdateProduct";
+import DetailProduct from "./DetailProduct";
 
 const { Meta } = Card;
 
@@ -79,10 +80,20 @@ const Item = (props) => {
             </Button>,
           ]}
         >
-          {/* Content for the ellipsis modal */}
+          <DetailProduct productVariants={productVariants} />
         </Modal>
         <Meta title={product.name} />
-        <Meta description={product.description} style={{ paddingTop: 5 }} />
+        <Meta
+          description={product.description}
+          style={{
+            paddingTop: 5,
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            whiteSpace: "nowrap",
+            maxWidth: "250px",
+            wordWrap: "break-word",
+          }}
+        />
         <Meta
           description={"Giá: " + product.price.toLocaleString("vi-VN") + " VNĐ"}
           style={{ paddingTop: 5 }}

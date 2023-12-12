@@ -1,11 +1,13 @@
 import React from "react";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
-import { Button, Checkbox, Col, Form, Input, Row, Space } from "antd";
+import { Button, Checkbox, Col, Form, Input, Row, Space, message } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { userLogin } from "../../stores/user/user-slice";
 import "./Login.scss";
 const Login = () => {
+  const [messageApi, contextHolder] = message.useMessage();
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const onFinish = (values) => {
@@ -14,6 +16,9 @@ const Login = () => {
       .then((response) => {
         console.log(response);
         navigate("/");
+      })
+      .catch(() => {
+        messageApi.error("Email or password is incorrect");
       });
     console.log("Received values of form: ", values);
   };
@@ -43,6 +48,7 @@ const Login = () => {
             }}
             onFinish={onFinish}
           >
+            {contextHolder}
             <Form.Item
               name="email"
               rules={[

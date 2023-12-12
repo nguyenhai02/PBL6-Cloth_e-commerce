@@ -5,7 +5,7 @@ import { Outlet, useNavigate } from "react-router-dom";
 import AdminHeader from "../../../components/header/AdminHeader";
 import {
   DesktopOutlined,
-  FileOutlined,
+  DollarOutlined,
   HomeOutlined,
   TeamOutlined,
   UserOutlined,
@@ -30,11 +30,8 @@ const items = [
     getItem("Shirt", "/shirts"),
     getItem("Pant", "/pants"),
   ]),
-  getItem("Team", "sub2", <TeamOutlined />, [
-    getItem("Team 1", "6"),
-    getItem("Team 2", "8"),
-  ]),
-  getItem("Files", "9", <FileOutlined />),
+  getItem("Team", "sub2", <TeamOutlined />),
+  getItem("Orders", "9", <DollarOutlined />),
 ];
 const AdminLayout = () => {
   const navigate = useNavigate();

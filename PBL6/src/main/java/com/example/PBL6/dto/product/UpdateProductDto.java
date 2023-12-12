@@ -14,5 +14,5 @@ public class UpdateProductDto {
     private String description;
     private Double price;
     private String imageUrl;
-    private String categoryId;
+    private Integer categoryId;
 }

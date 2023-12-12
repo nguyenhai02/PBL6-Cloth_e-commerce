@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Button, Form, Input, Select, Image, message } from "antd";
 import axios from "axios";
-import { getAllCategories } from "../../../api/products";
+import { getAllCategories, updateProduct } from "../../../api/products";
 import moment from "moment";
 
 const { TextArea } = Input;
@@ -69,14 +69,23 @@ const UpdateProduct = (props) => {
       description: values.description,
       imageUrl: image,
     });
+    console.log(request);
     const newRequest = {
-      name: values.name,
       categoryId: values.categoryId,
       price: values.price,
       description: values.description,
       imageUrl: image,
     };
     console.log(newRequest);
+    try {
+      const response = await updateProduct(props.product?.id, newRequest);
+      console.log(response);
+      messageApi.success("Chỉnh sửa thành công");
+      window.location.reload();
+    } catch (error) {
+      console.log(error);
+      messageApi.error("Chỉnh sửa thất bại");
+    }
   };
 
   return (
