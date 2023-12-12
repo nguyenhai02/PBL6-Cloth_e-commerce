@@ -12,6 +12,9 @@ struct RegisterView: View {
     @Binding var path : NavigationPath
     
     var body: some View {
+        ZStack {
+            Color.white
+                .edgesIgnoringSafeArea(.all)
             VStack(alignment: .leading, spacing: 0) {
                 Spacer().frame(height: 40)
                 Group {
@@ -19,6 +22,7 @@ struct RegisterView: View {
                         .resizable()
                         .frame(width: 72, height: 72)
                     Text("Welcome to E-Com!")
+                        .foregroundColor(.black)
                         .font(.system(size: 18))
                         .padding(.top, 20)
                         .bold()
@@ -68,7 +72,8 @@ struct RegisterView: View {
                 .padding(.top, 20)
                 Spacer()
             }
-        .navigationBarBackButtonHidden()
+            .navigationBarBackButtonHidden()
+        }
     }
 }
 

@@ -17,6 +17,7 @@ class AddressViewModel: ObservableObject {
     @Published var district: String = ""
     @Published var errorMessage: String = ""
     @Published var addresses: [Province] = []
+    @Published var citiesSearch: [Province] = []
     @Published var savedAddessed: [Address] = [] //[2]
     @Published var selectedAddress: Address?  = nil //[2]
     @Published var nameCity: String = ""
@@ -34,6 +35,12 @@ class AddressViewModel: ObservableObject {
         var addresses = savedAddessed //[2]
         addresses.append(address) //[3]
         UserDefaults.standard.setEncodablesAsArrayOfDictionaries(addresses, for: Constanst.savedAddess) //[3]
+        self.name = ""
+        self.phone = ""
+        self.street = ""
+        self.city = ""
+        self.ward = ""
+        self.district = ""
         completed()
     }
     func getAddress() {
@@ -53,13 +60,17 @@ class AddressViewModel: ObservableObject {
         var addresses = savedAddessed //[2]
         addresses.insert(address, at: indexEdit) //[3]
         UserDefaults.standard.setEncodablesAsArrayOfDictionaries(addresses, for: Constanst.savedAddess) //[3]
+        self.name = ""
+        self.phone = ""
+        self.street = ""
+        self.city = ""
+        self.ward = ""
+        self.district = ""
         completed()
     }
     
     func searchCity(name: String) {
-//        getAddressFromURL(complete: { addresses in
-            self.cities  = addresses.filter{$0.name.contains(name)}
-//        })
+        self.citiesSearch  = addresses.filter{$0.name.contains(name)}
     }
     func getAddressFromURL(complete: @escaping ([Province]) -> Void) {
         let provider = MoyaProvider<ProvinceService>()
@@ -73,10 +84,10 @@ class AddressViewModel: ObservableObject {
                     complete(address)
                     print(address)
                 } catch {print("Error mapping response: \(error)")}
-                print("Hien hihi")
             case let .failure(error):
                 print(error)
-                print("Hien hihi Xoa k thanh cong")
+                print("dc")
+                print("get address k thanh cong")
             }
         }
     }

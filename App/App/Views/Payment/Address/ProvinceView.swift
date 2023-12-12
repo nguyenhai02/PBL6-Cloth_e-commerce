@@ -34,10 +34,6 @@ struct ProvinceView: View, Hashable {
                             .frame(width: 18, height: 18)
                             .padding(.leading, 25)
                     }
-                    //                    Text("Chọn Tỉnh")
-                    //                        .font(.system(size: 20))
-                    //                        .fontWeight(.medium)
-                    //                        .padding(.leading, 15)
                     HStack {
                         TextField("Tìm kiếm...", text: $searchText)
                             .padding([.leading], 10)
@@ -75,7 +71,7 @@ struct ProvinceView: View, Hashable {
                     .foregroundColor(.black.opacity(0.6))
                     .padding(.leading, 15)
                 Spacer().frame(height: 10)
-                if viewModel.cities == [] {
+                if viewModel.citiesSearch == [] {
                     List(viewModel.addresses, id: \.code) { province in
                         HStack {
                             Text(province.name)
@@ -101,9 +97,10 @@ struct ProvinceView: View, Hashable {
                     .listStyle(.plain)
                     .background(.white)
                 } else {
-                    List(viewModel.cities, id: \.code) { province in
+                    List(viewModel.citiesSearch, id: \.code) { province in
                         HStack {
                             Text(province.name)
+                                .foregroundColor(.black)
                             Spacer()
                             if selectedProvince?.code == province.code {
                                 Image(systemName: "checkmark")
@@ -112,14 +109,11 @@ struct ProvinceView: View, Hashable {
                         }
                         .contentShape(Rectangle())
                         .onTapGesture {
-                            if selectedProvince?.code == province.code {
-                                selectedProvince = nil
-                            } else {
                                 selectedProvince = province
                                 viewModel.city = province.name
                                 path.append(DistrictView(path: $path, viewModel: viewModel))
+                            viewModel.citiesSearch = []
                                 print( viewModel.city)
-                            }
                         }
                     }
                     .listStyle(.plain)
@@ -131,9 +125,6 @@ struct ProvinceView: View, Hashable {
         .navigationDestination(for: DistrictView.self) { _ in
             DistrictView(path: $path, viewModel: viewModel)
         }
-//        .onAppear {
-//            viewModel.getAddressFromURL() {_ in }
-//        }
     }
 }
 

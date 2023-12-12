@@ -20,122 +20,126 @@ struct CartView: View {
     @State var displayedItems = 5
     @State private  var showingAlert = false
     var body: some View {
-        VStack(alignment: .leading, spacing: 0) {
-            Text("Giỏ hàng")
-                .bold()
-                .frame(maxWidth: .infinity)
-                .font(.system(size: 18))
-                .foregroundColor(.black)
-                .padding([.top, .leading], 20)
-            Spacer().frame(height: 10)
-            VStack(spacing: 0) {
-                ScrollView {
-                    if viewModel.cartItems == [] {
-                        LottieView(lottieFile: "CartAnimation")
-                            .frame(width: UIScreen.main.bounds.width, height: 300)
-                    } else {
-                        ForEach(viewModel.cartItems.prefix(displayedItems), id: \.self) { cartItem in
-                            CartItem(viewModel: viewModel, path: $path, cartItem: cartItem)
-                        }
-                        if displayedItems < viewModel.cartItems.count {
-                            Button(action: {
-                                displayedItems += 5
-                            }) {
-                                Image("expand")
-                                    .resizable()
-                                    .frame(width: 24, height: 24)
+        ZStack(alignment: .trailing){
+            Color.white
+                .edgesIgnoringSafeArea(.all)
+            VStack(alignment: .leading, spacing: 0) {
+                Text("Giỏ hàng")
+                    .bold()
+                    .frame(maxWidth: .infinity)
+                    .font(.system(size: 18))
+                    .foregroundColor(.black)
+                    .padding([.top, .leading], 20)
+                Spacer().frame(height: 10)
+                VStack(spacing: 0) {
+                    ScrollView {
+                        if viewModel.cartItems == [] {
+                            LottieView(lottieFile: "CartAnimation")
+                                .frame(width: UIScreen.main.bounds.width, height: 300)
+                        } else {
+                            ForEach(viewModel.cartItems.prefix(displayedItems), id: \.self) { cartItem in
+                                CartItem(viewModel: viewModel, path: $path, cartItem: cartItem)
                             }
-                        }
-                        VStack {
-                            HStack {
-                                Text("Tổng tiền")
-                                    .font(.system(size: 14))
-                                    .foregroundColor(.gray)
+                            if displayedItems < viewModel.cartItems.count {
+                                Button(action: {
+                                    displayedItems += 5
+                                }) {
+                                    Image("expand")
+                                        .resizable()
+                                        .frame(width: 24, height: 24)
+                                }
+                            }
+                            VStack {
+                                HStack {
+                                    Text("Tổng tiền")
+                                        .font(.system(size: 14))
+                                        .foregroundColor(.gray)
+                                    Spacer()
+                                    Text("\(viewModel.cartItems.reduce(0, { $0 + Int($1.price) * $1.quantity })) VND")
+                                        .font(.system(size: 14))
+                                        .fontWeight(.medium)
+                                        .foregroundColor(.black)
+                                }
+                                .padding(.top, 10)
+                                .padding(.horizontal, 15)
+                                
+                                HStack {
+                                    Text("Phí giao hàng")
+                                        .font(.system(size: 14))
+                                        .foregroundColor(.gray)
+                                    Spacer()
+                                    Text("\(0) VND")
+                                        .font(.system(size: 14))
+                                        .fontWeight(.medium)
+                                        .foregroundColor(.black)
+                                }
+                                .padding(.top, 5)
+                                .padding(.horizontal, 15)
+                                
+                                HStack {
+                                    Text("Discount")
+                                        .font(.system(size: 13))
+                                        .foregroundColor(.gray)
+                                    Spacer()
+                                    Text("\(0) VND")
+                                        .font(.system(size: 14))
+                                        .fontWeight(.medium)
+                                        .foregroundColor(.black)
+                                    //                            Text("-VND\(viewModel.cartItems.reduce(0, { $0 + ($1.price * $1.discount)/100}))")
+                                    //                                .font(.system(size: 14))
+                                    //                                .foregroundColor(.black)
+                                }
+                                .padding(.top, 5)
+                                .padding(.horizontal, 15)
+                                
+                                Divider()
+                                    .padding(.vertical, 5)
+                                
+                                HStack {
+                                    Text("Tổng tiền")
+                                        .font(.system(size: 13))
+                                        .foregroundColor(.gray)
+                                    Spacer()
+                                    //                            Text("VND\(viewModel.cartItems.reduce(0, { $0 + ($1.price - ($1.price * $1.price)/100)}))")
+                                    Text("\(viewModel.cartItems.reduce(0, { $0 + Int($1.price) * $1.quantity })) VND")
+                                        .font(.system(size: 13))
+                                        .fontWeight(.medium)
+                                        .foregroundColor(.black)
+                                }
+                                .padding(.horizontal, 15)
+                                .padding(.bottom, 5)
+                                TLButton(title: "Đặt hàng", background: Color("FF3300").opacity(0.7)) {
+                                    showingAlert = true
+                                }
+                                .padding(.horizontal, 25)
+                                .padding(.vertical, 15)
+                                .alert(isPresented: $showingAlert) {
+                                    Alert(
+                                        title: Text("Bạn có chắc muốn đặt hàng"),
+                                        message: Text(""),
+                                        primaryButton: .default( Text("Có")){
+                                            //                                    viewModel.CreateCOD(amount: viewModel.total) {
+                                            //                                        path.append("MyOrdersView")
+                                            //                                    }
+                                            path.append(ProductListPaymentView(path: $path, addressViewModel: addressViewModel, viewModel: paymentViewModel))
+                                        }, secondaryButton: .cancel(Text("Huỷ")) {
+                                            showingAlert = false
+                                        })
+                                }
                                 Spacer()
-                                Text("\(viewModel.cartItems.reduce(0, { $0 + Int($1.price) * $1.quantity })) VND")
-                                    .font(.system(size: 14))
-                                    .fontWeight(.medium)
-                                    .foregroundColor(.black)
                             }
-                            .padding(.top, 10)
-                            .padding(.horizontal, 15)
-                            
-                            HStack {
-                                Text("Phí giao hàng")
-                                    .font(.system(size: 14))
-                                    .foregroundColor(.gray)
-                                Spacer()
-                                Text("\(0) VND")
-                                    .font(.system(size: 14))
-                                    .fontWeight(.medium)
-                                    .foregroundColor(.black)
-                            }
-                            .padding(.top, 5)
-                            .padding(.horizontal, 15)
-                            
-                            HStack {
-                                Text("Discount")
-                                    .font(.system(size: 13))
-                                    .foregroundColor(.gray)
-                                Spacer()
-                                Text("\(0) VND")
-                                    .font(.system(size: 14))
-                                    .fontWeight(.medium)
-                                    .foregroundColor(.black)
-                                //                            Text("-VND\(viewModel.cartItems.reduce(0, { $0 + ($1.price * $1.discount)/100}))")
-                                //                                .font(.system(size: 14))
-                                //                                .foregroundColor(.black)
-                            }
-                            .padding(.top, 5)
-                            .padding(.horizontal, 15)
-                            
-                            Divider()
-                                .padding(.vertical, 5)
-                            
-                            HStack {
-                                Text("Tổng tiền")
-                                    .font(.system(size: 13))
-                                    .foregroundColor(.gray)
-                                Spacer()
-                                //                            Text("VND\(viewModel.cartItems.reduce(0, { $0 + ($1.price - ($1.price * $1.price)/100)}))")
-                                Text("\(viewModel.cartItems.reduce(0, { $0 + Int($1.price) * $1.quantity })) VND")
-                                    .font(.system(size: 13))
-                                    .fontWeight(.medium)
-                                    .foregroundColor(.black)
-                            }
-                            .padding(.horizontal, 15)
-                            .padding(.bottom, 5)
-                            TLButton(title: "Đặt hàng", background: Color("FF3300").opacity(0.7)) {
-                                showingAlert = true
-                            }
-                            .padding(.horizontal, 25)
-                            .padding(.vertical, 15)
-                            .alert(isPresented: $showingAlert) {
-                                Alert(
-                                    title: Text("Bạn có chắc muốn đặt hàng"),
-                                    message: Text(""),
-                                    primaryButton: .default( Text("Có")){
-//                                    viewModel.CreateCOD(amount: viewModel.total) {
-//                                        path.append("MyOrdersView")
-//                                    }
-                                        path.append(ProductListPaymentView(path: $path, addressViewModel: addressViewModel, viewModel: paymentViewModel))
-                                    }, secondaryButton: .cancel(Text("Huỷ")) {
-                                        showingAlert = false
-                                    })
-                            }
-                            Spacer()
                         }
                     }
+                    .background(.white)
                 }
-                .background(.white)
+                .onAppear {
+                    viewModel.getCartItems()
+                }
+                .navigationDestination(for: ProductListPaymentView.self) { _ in
+                    ProductListPaymentView(path: $path, addressViewModel: addressViewModel, viewModel: paymentViewModel)
+                }
+                Spacer()
             }
-            .onAppear {
-                viewModel.getCartItems()
-            }
-            .navigationDestination(for: ProductListPaymentView.self) { _ in
-                ProductListPaymentView(path: $path, addressViewModel: addressViewModel, viewModel: paymentViewModel)
-            }
-            Spacer()
         }
     }
 }

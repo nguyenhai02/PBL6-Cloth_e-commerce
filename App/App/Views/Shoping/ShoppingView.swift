@@ -11,22 +11,18 @@ struct ShoppingView: View {
     @ObservedObject var viewModel = HomeViewModel()
     @Binding var path: NavigationPath
     @State var searchText: String = ""
-    @State var selectedOption = 0
     @State var showSlideMenu = false
     let columns: [GridItem] = Array(repeating: .init(.flexible(minimum: 10, maximum: 170)), count: 2)
     var body: some View {
         ZStack(alignment: .trailing){
             NavigationView {
                 ZStack {
-                    //                Color("F9F9F9")
-                    //            Color.black
-                    //                    .edgesIgnoringSafeArea(.all)
                     VStack(alignment: .leading, spacing: 0) {
                         Spacer().frame(height: 5)
                         ScrollView(.horizontal, showsIndicators: false) {
                             HStack(spacing: 10) {
                                 Button(action: {
-                                    self.selectedOption = 0
+                                    viewModel.categoryId = -1
                                 }) {
                                     Text("Tất cả")
                                         .font(.system(size: 16))
@@ -35,8 +31,7 @@ struct ShoppingView: View {
                                 }
                                 ForEach(viewModel.categories, id: \.id) { category in
                                     Button(action: {
-                                        self.selectedOption = 1
-                                        viewModel.showCategoryProduct(categoryId: category.id)
+                                        viewModel.categoryId = category.id
                                         print(category.id)
                                         print("category.id")
                                     }) {
@@ -51,44 +46,24 @@ struct ShoppingView: View {
                             .padding(.vertical, 10)
                             .background(.white)
                         }
-                        if selectedOption == 0 {
-                            ScrollView {
-                                LazyVGrid(columns: columns, spacing: 15) {
-                                    ForEach(viewModel.products, id: \.self) { productDetail in
-                                        ItemRow(path: $path, product: productDetail)
-                                            .padding(.leading, 15)
-                                            .background(.white)
-                                    }
-                                }
-                            }
-                        } else if selectedOption == 1{
-                            ScrollView {
-                                LazyVGrid(columns: columns, spacing: 15) {
-                                    ForEach(viewModel.categoryProduct, id: \.self) {
-                                        productDetail in
-                                        ItemRow(path: $path, product: productDetail)
-                                    }
-                                }
-                            }
-                        } else {
-                            ScrollView {
-                                LazyVGrid(columns: columns, spacing: 15) {
-                                    ForEach(viewModel.categoryProductByName, id: \.self) { productDetail in
-                                        ItemRow(path: $path, product: productDetail)
-                                    }
-                                }
-                            }
-                        }
+                        ScrollView {
+                         LazyVGrid(columns: columns, spacing: 15) {
+                             ForEach(viewModel.categoryProduct, id: \.self) {
+                                 productDetail in
+                                 ItemView(path: $path, product: productDetail)
+                                     .padding(.leading, 15)
+                             }
+                         }
+                     }
                         Spacer()
                     }
                 }
                 .navigationBarItems(leading: (
                     HStack {
-                        HeadView(showSlideMenu: showSlideMenu, searchText: $searchText) {
-                            viewModel.searchByName(text: searchText)
-                            self.selectedOption = 3
+                        HeadView(showSlideMenu: showSlideMenu, searchText: $searchText) {value in
+                            viewModel.searchText = value
+                            viewModel.showCategoryProduct()
                         }
-                        //                    Text("HIHI")
                         Button(action: {
                             withAnimation {
                                 self.showSlideMenu.toggle()
@@ -107,7 +82,13 @@ struct ShoppingView: View {
                 navigationView
             }
         }
-        .padding(.top, 15) 
+        .onReceive(viewModel.$categoryId) { value in
+            viewModel.showCategoryProduct()
+        }
+        .onReceive(viewModel.$sort) { _ in
+            viewModel.showCategoryProduct()
+        }
+        .padding(.top, 15)
     }
 }
 
@@ -115,13 +96,20 @@ struct HeadView: View {
     @ObservedObject var viewModel = HomeViewModel()
     @State var showSlideMenu: Bool
     @Binding var searchText: String
-    let onSearch : () -> Void
+    let onSearch : (String) -> Void
     var body: some View {
         Spacer().frame(height: 25)
         HStack {
             TextField("Tìm kiếm...", text: $searchText)
                 .padding([.leading], 10)
                 .foregroundColor(.black)
+                .onChange(of: searchText) { newValue in
+                    viewModel.searchPublicsher.send(newValue)
+                }
+                .onReceive(viewModel.searchPublicsher
+                    .debounce(for: .milliseconds(500) , scheduler: DispatchQueue.main)) { newValue in
+                        onSearch(newValue)
+                    }
             if !searchText.isEmpty {
                 Button(action: {
                     searchText = ""
@@ -130,14 +118,7 @@ struct HeadView: View {
                         .foregroundColor(.gray)
                 }
             }
-            Button(action: {
-                onSearch()
-            }) {
-                Image(systemName: "magnifyingglass")
-                    .foregroundColor(Color("002482").opacity(0.5))
-            }
-            .padding(10)
-          
+            
         }
         .frame(width: 300 , height: 40)
         .overlay(
@@ -182,12 +163,10 @@ extension ShoppingView {
                     .foregroundColor(.black)
                     .padding([.top, .leading], 15)
                     .padding(.bottom, 10)
-//                Divider()
-//                    .background(Color.white)
                 HStack {
                     Button(action: {
                         viewModel.sort = "price,asc"
-                        viewModel.showProduct()
+                        //viewModel.showProduct()
                         showSlideMenu = false
                     }) {
                         HStack{
@@ -202,7 +181,7 @@ extension ShoppingView {
                     Spacer()
                     Button(action: {
                         viewModel.sort = "price,desc"
-                        viewModel.showProduct()
+                        //viewModel.showProduct()
                         showSlideMenu = false
                     }) {
                         HStack{

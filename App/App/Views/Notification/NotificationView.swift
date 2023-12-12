@@ -10,17 +10,21 @@ import SwiftUI
 struct NotificationView: View {
     @Binding var path: NavigationPath
     var body: some View {
+        ZStack(alignment: .trailing){
+            Color.white
+                .edgesIgnoringSafeArea(.all)
         VStack(spacing: 0) {
-            Spacer().frame(height: 19)
-            Text("Thông báo")
-                .font(.system(size: 22))
-                .fontWeight(.medium)
-                .padding(.leading, 15)
-            Spacer().frame(height: 10)
-            ScrollView  {
-                Spacer().frame(height: 20)
-                ForEach(1..<10) { _ in
-                    NotificationRow()
+                Spacer().frame(height: 19)
+                Text("Thông báo")
+                    .font(.system(size: 22))
+                    .fontWeight(.medium)
+                    .padding(.leading, 15)
+                Spacer().frame(height: 10)
+                ScrollView  {
+                    Spacer().frame(height: 20)
+                    ForEach(1..<10) { _ in
+                        NotificationRow()
+                    }
                 }
             }
         }

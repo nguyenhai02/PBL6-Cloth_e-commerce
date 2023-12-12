@@ -11,6 +11,9 @@ struct NewPasswordView: View {
     @ObservedObject var viewModel = NewPasswordViewModel()
     @Environment(\.presentationMode) var presentationMode
     var body: some View {
+        ZStack(alignment: .trailing){
+            Color.white
+                .edgesIgnoringSafeArea(.all)
             VStack(alignment: .leading, spacing: 0) {
                 Spacer().frame(height: 100)
                 Group {
@@ -33,17 +36,17 @@ struct NewPasswordView: View {
                         .padding(.top, 30)
                     TLTextField(title: "Confirm Password", color: Color("002482"), imageURL: "password", text: $viewModel.confirmPassword)
                     TLButton(title: "Send Verification", background: Color("002482"), action: {
-//                        viewModel.forgotPassword()
+                        //                        viewModel.forgotPassword()
                     })
                     .padding(.top, 42)
                 }
                 .padding([.leading, .trailing], 30)
                 Spacer()
             }
-        .navigationBarBackButtonHidden()
+            .navigationBarBackButtonHidden()
+        }
     }
 }
-
 struct NewPasswordView_Previews: PreviewProvider {
     static var previews: some View {
         NewPasswordView()

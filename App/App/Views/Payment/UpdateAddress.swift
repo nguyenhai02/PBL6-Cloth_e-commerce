@@ -34,6 +34,7 @@ struct UpdateAddressView: View, Hashable {
                             .padding(.leading, 25)
                     }
                     Text("Sửa địa chỉ")
+                        .foregroundColor(.black)
                         .font(.system(size: 20))
                         .fontWeight(.medium)
                         .padding(.leading, 15)
@@ -129,6 +130,11 @@ struct UpdateAddressView: View, Hashable {
         .onReceive(viewModel.$ward) { ward in
             if !ward.isEmpty{
                 itemAddess.ward = ward
+            }
+        }
+        .onAppear {
+            if viewModel.addresses.isEmpty {
+                viewModel.getAddressFromURL() {_ in}
             }
         }
     }

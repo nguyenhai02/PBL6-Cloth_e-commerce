@@ -32,6 +32,7 @@ struct TLTextField: View {
                         .frame(width: 24, height: 24)
                         .padding([.leading,.trailing], 12)
                    TextField("Enter \(title.lowercased())", text: $text)
+                        .foregroundColor(Color("323232"))
                        .padding(.leading, 50)
                        .frame(height: 48)
                        .overlay(
@@ -44,7 +45,6 @@ struct TLTextField: View {
                        .onChange(of: text) { newValue in
                            onTextChange?(newValue)
                        }
-            
                }
         .padding(.top, 10)
     }

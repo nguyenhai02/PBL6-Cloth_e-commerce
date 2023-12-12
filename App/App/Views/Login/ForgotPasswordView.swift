@@ -11,6 +11,9 @@ struct ForgotPasswordView: View {
     @ObservedObject var viewModel = ForgotPasswordViewModel()
     @Binding var path: NavigationPath
     var body: some View {
+        ZStack(alignment: .trailing){
+            Color.white
+                .edgesIgnoringSafeArea(.all)
             VStack(alignment: .leading, spacing: 0) {
                 Spacer().frame(height: 100)
                 Group {
@@ -32,22 +35,23 @@ struct ForgotPasswordView: View {
                     TLTextField(title: "Email", color: Color("002482"), imageURL: "person", text: $viewModel.email)
                         .padding(.top, 30)
                     TLButton(title: "Send Verification", background: Color("002482"), action: {
-//                        viewModel.forgotPassword()
+                        //                        viewModel.forgotPassword()
                     })
                     .padding(.top, 42)
                 }
                 .padding([.leading, .trailing], 30)
                 Spacer()
             }
-        .navigationBarBackButtonHidden()
-        .navigationBarItems(leading: Button(action: {
-            path.removeLast()
-        }) {
-            HStack {
-                Image(systemName: "arrow.left")
-                    .foregroundColor(.gray)
-            }
-        })
+            .navigationBarBackButtonHidden()
+            .navigationBarItems(leading: Button(action: {
+                path.removeLast()
+            }) {
+                HStack {
+                    Image(systemName: "arrow.left")
+                        .foregroundColor(.gray)
+                }
+            })
+        }
     }
 }
 
