@@ -23,6 +23,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -186,4 +187,24 @@ public class ProductServiceImpl implements ProductService {
             return null;
         }
     }
+
+    @Override
+    public List<ProductSellDto> getBestSeller() {
+        List<Object[]> productSell = productRepository.getBestSeller();
+
+        return productSell.stream()
+                .map(result -> {
+                    Integer productId = (Integer) result[0];
+                    String productName = (String) result[1];
+                    Long sellQuantity = (Long) result[2];
+
+                    return ProductSellDto.builder()
+                            .id(productId)
+                            .name(productName)
+                            .sellQuantity(sellQuantity.intValue())
+                            .build();
+                })
+                .collect(Collectors.toList());
+    }
+
 }

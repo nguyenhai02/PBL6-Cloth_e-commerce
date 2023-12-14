@@ -22,6 +22,9 @@ export const getDetailProduct = (id) => {
 export const getAllCategories = () => {
   return http.get("/category/all");
 };
+export const getProductBestSeller = () => {
+  return http.get("/product/bestSeller");
+};
 export const addProduct = (data) => {
   return http.post("/product/add", data, {
     headers: {

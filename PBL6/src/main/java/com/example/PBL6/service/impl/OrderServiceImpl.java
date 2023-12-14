@@ -177,4 +177,14 @@ public class OrderServiceImpl implements OrderService {
         }
         return orderResponseDtos;
     }
+
+    @Override
+    public List<Order> getAllOrdersAdmin() {
+        List<Order> orders = orderRepository.findAll();
+        if (orders == null || orders.isEmpty()) {
+            return null;
+        } else {
+            return orders;
+        }
+    }
 }

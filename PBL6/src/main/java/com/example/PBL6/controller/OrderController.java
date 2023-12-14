@@ -31,8 +31,8 @@ public class OrderController {
             String addressDelivery = orderRequestDto.getAddressDelivery();
             if (amount != null) {
                 OrderDto orderDto;
-                if(orderRequestDto.getProductId() != null) {
-                    orderDto = orderService.saveOrderBuyNow(user, orderRequestDto, "UN-COMPLETE","COD");
+                if (orderRequestDto.getProductId() != null) {
+                    orderDto = orderService.saveOrderBuyNow(user, orderRequestDto, "UN-COMPLETE", "COD");
                 } else {
                     orderDto = orderService.saveOrder(user, "COD", amount, "UN-COMPLETE", addressDelivery);
                 }
@@ -54,7 +54,22 @@ public class OrderController {
         User user = AuthenticationUtils.getUserFromSecurityContext();
         if (user != null) {
             List<OrderResponseDto> orders = orderService.getAllOrders(user);
-            if(orders == null || orders.isEmpty()) {
+            if (orders == null || orders.isEmpty()) {
+                return ResponseEntity.ok("Chưa có đơn hàng nào");
+            } else {
+                return ResponseEntity.ok(orders);
+            }
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<Object> getAllOrdersAdmin() {
+        User user = AuthenticationUtils.getUserFromSecurityContext();
+        if (user != null) {
+            List<Order> orders = orderService.getAllOrdersAdmin();
+            if (orders == null || orders.isEmpty()) {
                 return ResponseEntity.ok("Chưa có đơn hàng nào");
             } else {
                 return ResponseEntity.ok(orders);

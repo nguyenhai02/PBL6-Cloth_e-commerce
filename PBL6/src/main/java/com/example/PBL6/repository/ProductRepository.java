@@ -10,6 +10,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 
@@ -36,4 +37,16 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
             @Param("newCategoryId") Integer newCategoryId,
             @Param("newImage") String newImage
     );
+
+    @Query(value = "SELECT p.id AS product_id,\n" +
+            "       p.name AS product_name,\n" +
+            "       COUNT(oi.id) AS order_count\n" +
+            "  FROM clothes_store.products p\n" +
+            "  JOIN clothes_store.product_variants pv \n" +
+            "    ON p.id = pv.product_id\n" +
+            "  JOIN clothes_store.order_items oi \n" +
+            "    ON pv.id = oi.product_variant_id\n" +
+            " GROUP BY p.id\n" +
+            " ORDER BY order_count DESC;", nativeQuery = true)
+    List<Object[]> getBestSeller();
 }

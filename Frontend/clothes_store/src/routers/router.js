@@ -10,18 +10,13 @@ import Register from "../pages/register/Register";
 import CheckOut from "../components/checkout/CheckOut";
 import Success from "../pages/resultPayment/Success";
 // import User from "../components/user/User";
-import AdminPage from "../pages/admin/AdminPage";
 import Fail from "../pages/resultPayment/Fail";
 import Order from "../pages/order/Order";
 import LoginAdmin from "../pages/admin/login/LoginAdmin";
-import {
-  createRoutesFromElements,
-  Route,
-  RouterProvider,
-} from "react-router-dom";
 import AdminLayout from "../pages/admin/layout/AdminLayout";
 import Customers from "../pages/admin/customers/Customers";
 import AdminProducts from "../pages/admin/products/AdminProducts";
+import Overview from "../pages/admin/overview/Overview";
 
 const routers = createBrowserRouter([
   {
@@ -38,7 +33,7 @@ const routers = createBrowserRouter([
     children: [
       {
         path: "",
-        element: <AdminPage />,
+        element: <Overview />,
       },
       {
         path: "users",

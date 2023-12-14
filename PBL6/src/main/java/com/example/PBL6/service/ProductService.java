@@ -29,4 +29,5 @@ public interface ProductService {
 
     ProductResponseDto updateProduct(Integer id, UpdateProductDto updateProductDto);
 
+    List<ProductSellDto> getBestSeller();
 }

@@ -42,15 +42,15 @@ public class UserController {
 
     @PostMapping("/login")
     public ResponseEntity<Object> authenticate(@RequestBody UserLoginDto userLoginDto) {
-        AuthResponse authResponse =  authService.login(userLoginDto);
+        AuthResponse authResponse = authService.login(userLoginDto);
         return ResponseEntity.ok(authResponse);
     }
 
     @GetMapping("/profile")
-    public ResponseEntity<Object> getUserProfile(@RequestHeader(HttpHeaders.AUTHORIZATION) String token){
+    public ResponseEntity<Object> getUserProfile(@RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
         String email = JwtUtils.getUserEmailFromJwt(token);
-        Optional<User> user =  userService.getUserProfile(email);
-        if(user.isPresent()) {
+        Optional<User> user = userService.getUserProfile(email);
+        if (user.isPresent()) {
             return ResponseEntity.ok(user.get());
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Can't find user");
@@ -59,11 +59,11 @@ public class UserController {
 
     @PostMapping("/profile/edit")
     public ResponseEntity<Object> editProfile(@RequestHeader(HttpHeaders.AUTHORIZATION) String token,
-                                            @RequestBody UserEditProfileDto userEditProfileDto) {
+                                              @RequestBody UserEditProfileDto userEditProfileDto) {
         String email = JwtUtils.getUserEmailFromJwt(token);
-        User user =  userService.getUserProfile(email).orElse(null);
+        User user = userService.getUserProfile(email).orElse(null);
         System.out.println(userEditProfileDto);
-        if(user != null) {
+        if (user != null) {
             try {
                 User userUpdate = userService.editProfile(user.getId(), userEditProfileDto);
                 return ResponseEntity.ok(userUpdate);
@@ -82,10 +82,25 @@ public class UserController {
         User user = AuthenticationUtils.getUserFromSecurityContext();
         if (user != null) {
             List<UserOrderDto> userOrderDtos = userService.getAllUserOrder();
-            if(userOrderDtos == null || userOrderDtos.isEmpty()) {
+            if (userOrderDtos == null || userOrderDtos.isEmpty()) {
                 return ResponseEntity.ok("Chưa có khách hàng");
             } else {
                 return ResponseEntity.ok(userOrderDtos);
+            }
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+    }
+
+    @GetMapping("/bestCustomers")
+    public ResponseEntity<Object> getBestCustomers() {
+        User user = AuthenticationUtils.getUserFromSecurityContext();
+        if (user != null) {
+            List<BestCustomerDto> bestCustomers = userService.getBestCustomers();
+            if (bestCustomers == null || bestCustomers.isEmpty()) {
+                return ResponseEntity.ok("Chưa có khách hàng");
+            } else {
+                return ResponseEntity.ok(bestCustomers);
             }
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();

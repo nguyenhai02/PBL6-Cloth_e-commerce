@@ -77,6 +77,7 @@ const Detail = (props) => {
         message: "Error",
         description: "Please login to add cart item",
         placement: "top",
+        duration: 1,
       });
       return;
     }
@@ -85,6 +86,7 @@ const Detail = (props) => {
         message: "Error",
         description: "Please select size and color before adding to cart",
         placement: "top",
+        duration: 1,
       });
       return;
     }
@@ -105,6 +107,7 @@ const Detail = (props) => {
           message: "Warning",
           description: "Sản phẩm tạm thời hết hàng",
           placement: "top",
+          duration: 3,
         });
         return;
       }
@@ -114,6 +117,7 @@ const Detail = (props) => {
     notification.success({
       message: "Success",
       description: "Item added to cart successfully!",
+      duration: 1,
     });
     setTimeout(() => {
       window.location.reload();
@@ -227,6 +231,7 @@ const Detail = (props) => {
         message: "Error",
         description: "Please login to buy now",
         placement: "top",
+        duration: 1,
       });
       return;
     }
@@ -235,6 +240,7 @@ const Detail = (props) => {
         message: "Error",
         description: "Please select size and color before buying",
         placement: "top",
+        duration: 1,
       });
       return;
     }
