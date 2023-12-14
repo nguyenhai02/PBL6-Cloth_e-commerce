@@ -53,7 +53,7 @@ public class PaymentController {
             vnp_Params.put("vnp_TmnCode", VNPayConfig.vnp_TmnCode);
             vnp_Params.put("vnp_Amount", String.valueOf(amountAsLong));
             vnp_Params.put("vnp_CurrCode", VNPayConfig.moneyUnit);
-            vnp_Params.put("vnp_BankCode", VNPayConfig.bank);
+//            vnp_Params.put("vnp_BankCode", VNPayConfig.bank);
 
             vnp_Params.put("vnp_TxnRef", vnp_TxnRef);
             vnp_Params.put("vnp_OrderInfo", "Thanh toan don hang:" + vnp_TxnRef);

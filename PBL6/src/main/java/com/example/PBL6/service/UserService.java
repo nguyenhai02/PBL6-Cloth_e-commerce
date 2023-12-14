@@ -1,5 +1,6 @@
 package com.example.PBL6.service;
 
+import com.example.PBL6.dto.user.BestCustomerDto;
 import com.example.PBL6.dto.user.UserEditProfileDto;
 import com.example.PBL6.dto.user.UserOrderDto;
 import com.example.PBL6.persistance.user.User;
@@ -16,4 +17,5 @@ public interface UserService {
 
     List<UserOrderDto> getAllUserOrder();
 
+    List<BestCustomerDto> getBestCustomers();
 }

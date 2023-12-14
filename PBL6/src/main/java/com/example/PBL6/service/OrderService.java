@@ -14,4 +14,6 @@ public interface OrderService {
     OrderDto saveOrderBuyNow(User user, OrderRequestDto orderRequestDto, String status, String paymentMethod);
 
     List<OrderResponseDto> getAllOrders(User user);
+
+    List<Order> getAllOrdersAdmin();
 }

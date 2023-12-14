@@ -2,19 +2,18 @@ package com.example.PBL6.controller;
 
 import com.example.PBL6.dto.product.ProductRequestDto;
 import com.example.PBL6.dto.product.ProductResponseDto;
+import com.example.PBL6.dto.product.ProductSellDto;
 import com.example.PBL6.dto.product.UpdateProductDto;
 import com.example.PBL6.persistance.product.Product;
 import com.example.PBL6.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Objects;
 
 
 @RestController
@@ -53,6 +52,16 @@ public class ProductController {
         ProductResponseDto product = productService.updateProduct(id, updateProductDto);
         if(product != null) {
             return ResponseEntity.ok(product);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not found");
+        }
+    }
+
+    @GetMapping("/bestSeller")
+    public ResponseEntity<Object> getBestSeller() {
+        List<ProductSellDto> products = productService.getBestSeller();
+        if(products != null) {
+            return ResponseEntity.ok(products);
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not found");
         }

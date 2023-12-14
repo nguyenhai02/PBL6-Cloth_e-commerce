@@ -1,5 +1,7 @@
 package com.example.PBL6.service.impl;
 
+import com.example.PBL6.dto.product.ProductSellDto;
+import com.example.PBL6.dto.user.BestCustomerDto;
 import com.example.PBL6.dto.user.UserEditProfileDto;
 import com.example.PBL6.dto.user.UserOrderDto;
 import com.example.PBL6.persistance.user.User;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -65,5 +68,23 @@ public class UserServiceImpl implements UserService {
         }
 
         return userOrderDtoList;
+    }
+
+    @Override
+    public List<BestCustomerDto> getBestCustomers() {
+        List<Object[]> bestCustomers = userRepository.getBestCustomers();
+        return bestCustomers.stream()
+                .map(result -> {
+                    Integer id = (Integer) result[0];
+                    String name = (String) result[1];
+                    Double totalMoney = (Double) result[2];
+
+                    return BestCustomerDto.builder()
+                            .id(id)
+                            .name(name)
+                            .totalMoney(totalMoney)
+                            .build();
+                })
+                .collect(Collectors.toList());
     }
 }

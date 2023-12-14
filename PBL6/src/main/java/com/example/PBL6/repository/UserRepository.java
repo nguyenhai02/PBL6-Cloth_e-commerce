@@ -47,4 +47,15 @@ public interface UserRepository extends JpaRepository<User, Integer> {
             "GROUP BY\n" +
             "    u.id, u.name, u.email;", nativeQuery = true)
     List<Object[]> getAllUserOrder();
+
+    @Query(value = "SELECT u.id AS id,\n" +
+            "       u.name AS name,\n" +
+            "       SUM(o.total_price) AS money\n" +
+            "  FROM users u\n" +
+            "  JOIN orders o\n" +
+            "    ON u.id = o.users_id\n" +
+            " GROUP BY u.id\n" +
+            " ORDER BY money DESC\n" +
+            " LIMIT 3;", nativeQuery = true)
+    List<Object[]> getBestCustomers();
 }
