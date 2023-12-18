@@ -30,8 +30,8 @@ const items = [
     getItem("Shirt", "/shirts"),
     getItem("Pant", "/pants"),
   ]),
-  getItem("Team", "sub2", <TeamOutlined />),
-  getItem("Orders", "9", <DollarOutlined />),
+  getItem("Orders", "/admin/orders", <DollarOutlined />),
+  getItem("Team", "/teams", <TeamOutlined />),
 ];
 const AdminLayout = () => {
   const navigate = useNavigate();

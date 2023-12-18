@@ -3,6 +3,7 @@ package com.example.PBL6.service;
 import com.example.PBL6.dto.order.OrderDto;
 import com.example.PBL6.dto.order.OrderRequestDto;
 import com.example.PBL6.dto.order.OrderResponseDto;
+import com.example.PBL6.dto.order.OrderUpdateStatusDto;
 import com.example.PBL6.persistance.order.Order;
 import com.example.PBL6.persistance.user.User;
 
@@ -15,5 +16,7 @@ public interface OrderService {
 
     List<OrderResponseDto> getAllOrders(User user);
 
-    List<Order> getAllOrdersAdmin();
+    List<OrderResponseDto> getAllOrdersAdmin();
+
+    String updateOrder(Integer orderId, OrderUpdateStatusDto status);
 }

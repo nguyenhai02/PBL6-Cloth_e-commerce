@@ -37,7 +37,7 @@ public class SecurityConfiguration {
                 .hasAnyAuthority(UserRole.CUSTOMER.name(), UserRole.ADMIN.name())
                 .requestMatchers("/user/all/**", "/category/add/**", "/category/delete/**",
                         "/product/add/**", "/product/update/**", "/user/customerOrders",
-                        "/order/all/**", "/user/bestCustomer/**")
+                        "/order/all/**", "/user/bestCustomer/**", "/oder/updateStatus/**")
                 .hasAuthority(UserRole.ADMIN.name())
                 .anyRequest()
                 .authenticated()

@@ -24,3 +24,14 @@ export const getAllOrders = () => {
     },
   });
 };
+
+export const updateStatusOrder = (orderId, status) => {
+  return http.put("/order/updateStatus", status, {
+    headers: {
+      Authorization: "Bearer " + getToken(),
+    },
+    params: {
+      orderId: orderId,
+    },
+  });
+};

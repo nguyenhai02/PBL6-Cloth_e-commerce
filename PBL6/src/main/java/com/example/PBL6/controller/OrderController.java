@@ -1,9 +1,6 @@
 package com.example.PBL6.controller;
 
-import com.example.PBL6.dto.order.OrderDto;
-import com.example.PBL6.dto.order.OrderItemResponseDto;
-import com.example.PBL6.dto.order.OrderRequestDto;
-import com.example.PBL6.dto.order.OrderResponseDto;
+import com.example.PBL6.dto.order.*;
 import com.example.PBL6.persistance.order.Order;
 import com.example.PBL6.persistance.user.User;
 import com.example.PBL6.service.OrderService;
@@ -68,11 +65,26 @@ public class OrderController {
     public ResponseEntity<Object> getAllOrdersAdmin() {
         User user = AuthenticationUtils.getUserFromSecurityContext();
         if (user != null) {
-            List<Order> orders = orderService.getAllOrdersAdmin();
+            List<OrderResponseDto> orders = orderService.getAllOrdersAdmin();
             if (orders == null || orders.isEmpty()) {
                 return ResponseEntity.ok("Chưa có đơn hàng nào");
             } else {
                 return ResponseEntity.ok(orders);
+            }
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+    }
+
+    @PutMapping("/updateStatus")
+    public ResponseEntity<Object> updateOrder(@RequestBody OrderUpdateStatusDto status, @RequestParam Integer orderId) {
+        User user = AuthenticationUtils.getUserFromSecurityContext();
+        if (user != null) {
+            String result = orderService.updateOrder(orderId, status);
+            if (result.equals("OK")) {
+                return ResponseEntity.ok(result);
+            } else {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
             }
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
