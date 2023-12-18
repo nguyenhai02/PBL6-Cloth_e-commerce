@@ -15,7 +15,7 @@ const Overview = () => {
   const [orders, setOrders] = useState([]);
   const [bestSellers, setBestSellers] = useState([]);
   const [bestCustomer, setBestCustomer] = useState([]);
-
+  console.log(orders);
   useEffect(() => {
     const fetchOrders = async () => {
       try {
@@ -61,29 +61,47 @@ const Overview = () => {
   };
 
   const groupedOrders = orders.reduce((acc, order) => {
+    console.log(order.order.orderDate);
     let orderDate;
     if (timePeriod === "month") {
-      orderDate = new Date(order.orderDate).toLocaleDateString("vi-VN", {
-        year: "numeric",
-        month: "long",
-      });
+      const date = new Date(order.order.orderDate);
+      orderDate = `${date.getFullYear()}/${date.getMonth() + 1}`;
     } else if (timePeriod === "year") {
-      orderDate = new Date(order.orderDate).getFullYear().toString();
+      orderDate = new Date(order.order.orderDate).getFullYear().toString();
     } else {
-      orderDate = new Date(order.orderDate).toLocaleDateString("vi-VN");
+      orderDate = new Date(order.order.orderDate).toLocaleDateString("vi-VN");
     }
 
     if (!acc[orderDate]) {
       acc[orderDate] = 0;
     }
-    acc[orderDate] += order.totalPrice;
+    if (order.order.status === "COMPLETE") {
+      acc[orderDate] += order.order.totalPrice;
+    }
+    // acc[orderDate] += order.order.totalPrice;
     return acc;
   }, {});
 
-  const firstDate = new Date(Object.keys(groupedOrders)[0]);
+  let firstDate = new Date(Object.keys(groupedOrders)[0]);
 
-  firstDate.setDate(firstDate.getDate() - 1);
-  const dayBeforeFirstDate = firstDate.toLocaleDateString("vi-VN");
+  if (timePeriod === "day") {
+    firstDate.setDate(firstDate.getDate() - 1);
+  } else if (timePeriod === "month") {
+    firstDate.setMonth(firstDate.getMonth() - 1);
+  } else if (timePeriod === "year") {
+    firstDate.setFullYear(firstDate.getFullYear() - 1);
+  }
+
+  let dayBeforeFirstDate;
+  if (timePeriod === "month") {
+    dayBeforeFirstDate = `${firstDate.getFullYear()}/${
+      firstDate.getMonth() + 1
+    }`;
+  } else if (timePeriod === "year") {
+    dayBeforeFirstDate = firstDate.getFullYear().toString();
+  } else {
+    dayBeforeFirstDate = firstDate.toLocaleDateString("vi-VN");
+  }
 
   const lineChartData = {
     labels: [dayBeforeFirstDate, ...Object.keys(groupedOrders)],
@@ -99,7 +117,13 @@ const Overview = () => {
     ],
   };
 
-  const totalRevenue = orders.reduce((acc, order) => acc + order.totalPrice, 0);
+  const totalRevenue = orders.reduce((acc, order) => {
+    if (order.order.status === "COMPLETE") {
+      return acc + order.order.totalPrice;
+    } else {
+      return acc;
+    }
+  }, 0);
 
   const today = new Date().toLocaleDateString("vi-VN");
   const todayRevenue = groupedOrders[today] || 0;
@@ -175,7 +199,7 @@ const Overview = () => {
           </Select>
         </Col>
         <Col span={5} style={{ margin: "auto" }}>
-          <Card title="Tổng doanh thu" bordered={false}>
+          <Card title="Tổng doanh thu" bordered={false} style={{ width: 200 }}>
             <CountUp
               start={0}
               end={totalRevenue}
@@ -185,13 +209,27 @@ const Overview = () => {
           </Card>
         </Col>
         <Col span={5} offset={1} style={{ margin: "auto" }}>
-          <Card title="Doanh thu hôm nay" bordered={false}>
-            <CountUp
-              start={0}
-              end={todayRevenue}
-              duration={2.75}
-              suffix=" VNĐ"
-            />
+          <Card
+            title={`Doanh thu ${
+              timePeriod === "day"
+                ? "ngày"
+                : timePeriod === "month"
+                ? "tháng"
+                : "năm"
+            }`}
+            bordered={false}
+            style={{ width: 200 }}
+          >
+            {todayRevenue === 0 ? (
+              "Chưa có thống kê"
+            ) : (
+              <CountUp
+                start={0}
+                end={todayRevenue}
+                duration={2.75}
+                suffix=" VNĐ"
+              />
+            )}
           </Card>
         </Col>
       </div>
@@ -200,9 +238,9 @@ const Overview = () => {
           data={barChartData}
           options={{
             animation: {
-              duration: 2000, // general animation time
+              duration: 2000,
             },
-            responsiveAnimationDuration: 2000, // animation duration after a resize
+            responsiveAnimationDuration: 2000,
           }}
         />
       </div>

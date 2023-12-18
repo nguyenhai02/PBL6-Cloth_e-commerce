@@ -1,10 +1,7 @@
 package com.example.PBL6.service.impl;
 
 import com.example.PBL6.dto.cart.CartItemDetail;
-import com.example.PBL6.dto.order.OrderDto;
-import com.example.PBL6.dto.order.OrderItemResponseDto;
-import com.example.PBL6.dto.order.OrderRequestDto;
-import com.example.PBL6.dto.order.OrderResponseDto;
+import com.example.PBL6.dto.order.*;
 import com.example.PBL6.persistance.order.Order;
 import com.example.PBL6.persistance.order.OrderItem;
 import com.example.PBL6.persistance.product.Product;
@@ -179,12 +176,52 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<Order> getAllOrdersAdmin() {
+    public List<OrderResponseDto> getAllOrdersAdmin() {
         List<Order> orders = orderRepository.findAll();
+        List<OrderResponseDto> orderResponseDtos = new ArrayList<>();
         if (orders == null || orders.isEmpty()) {
             return null;
         } else {
-            return orders;
+            for (Order order : orders) {
+                List<OrderItem> orderItems = orderItemRepository.getOrderItemByOrder(order);
+                List<OrderItemResponseDto> orderItemResponseDtos = new ArrayList<>();
+                for (OrderItem orderItem : orderItems) {
+                    ProductVariant productVariant = orderItem.getProductVariant();
+                    Product product = productRepository.getById(productVariant.getProduct().getId());
+                    OrderItemResponseDto dto = new OrderItemResponseDto().builder()
+                            .quantity(orderItem.getQuantity())
+                            .product(product)
+                            .productVariant(orderItem.getProductVariant())
+                            .build();
+
+                    orderItemResponseDtos.add(dto);
+                }
+                OrderResponseDto orderResponseDto = new OrderResponseDto().builder()
+                        .order(order)
+                        .orderItems(orderItemResponseDtos)
+                        .build();
+                orderResponseDtos.add(orderResponseDto);
+            }
+        }
+        return orderResponseDtos;
+    }
+
+    @Override
+    @Transactional
+    public String updateOrder(Integer orderId, OrderUpdateStatusDto status) {
+        Optional<Order> order = orderRepository.findById(orderId);
+        String statusOrder = status.getStatus();
+        if (order.isPresent()) {
+            if(statusOrder.equals("CANCELLED")){
+                List<OrderItem> orderItems = orderItemRepository.getOrderItemByOrder(order.get());
+                for(OrderItem orderItem : orderItems) {
+                    productVariantRepository.addProductVariantQuantity(orderItem.getProductVariant().getId(), orderItem.getQuantity());
+                }
+            }
+            orderRepository.updateStatusOrder(orderId, statusOrder);
+            return "OK";
+        } else {
+            return "FAIL";
         }
     }
 }

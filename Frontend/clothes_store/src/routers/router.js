@@ -12,6 +12,7 @@ import Success from "../pages/resultPayment/Success";
 // import User from "../components/user/User";
 import Fail from "../pages/resultPayment/Fail";
 import Order from "../pages/order/Order";
+import AdminOrder from "../pages/admin/orders/AdminOrder";
 import LoginAdmin from "../pages/admin/login/LoginAdmin";
 import AdminLayout from "../pages/admin/layout/AdminLayout";
 import Customers from "../pages/admin/customers/Customers";
@@ -48,6 +49,10 @@ const routers = createBrowserRouter([
             element: <AdminProducts />,
           },
         ],
+      },
+      {
+        path: "orders",
+        element: <AdminOrder />,
       },
     ],
   },

@@ -5,8 +5,8 @@ import { useState, useEffect } from "react";
 import { getCustomersOrders } from "../../../api/users";
 // import moment from "moment";
 
-const Order = () => {
-  const [orders, setOrders] = useState([]); // Add this line
+const Customer = () => {
+  const [orders, setOrders] = useState([]);
   const columns = [
     {
       title: "Số thứ tự",
@@ -94,4 +94,4 @@ const Order = () => {
     </>
   );
 };
-export default Order;
+export default Customer;
