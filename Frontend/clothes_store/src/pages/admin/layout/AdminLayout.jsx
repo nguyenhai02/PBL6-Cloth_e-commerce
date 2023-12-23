@@ -7,8 +7,7 @@ import {
   DesktopOutlined,
   DollarOutlined,
   HomeOutlined,
-  TeamOutlined,
-  UserOutlined,
+  ShopOutlined,
 } from "@ant-design/icons";
 import Sider from "antd/es/layout/Sider";
 import Authenticate from "../../../guards/Authenticate";
@@ -25,13 +24,8 @@ function getItem(label, key, icon, children) {
 const items = [
   getItem("Home", "/admin", <HomeOutlined />),
   getItem("Customer", "/admin/users", <DesktopOutlined />),
-  getItem("Product", "/admin/products", <UserOutlined />, [
-    getItem("All", "/admin/products/all"),
-    getItem("Shirt", "/shirts"),
-    getItem("Pant", "/pants"),
-  ]),
+  getItem("Product", "/admin/products/all", <ShopOutlined />),
   getItem("Orders", "/admin/orders", <DollarOutlined />),
-  getItem("Team", "/teams", <TeamOutlined />),
 ];
 const AdminLayout = () => {
   const navigate = useNavigate();
