@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Row, Col, Button, Pagination, Input, Modal } from "antd";
+import { Row, Col, Button, Pagination, Input, Modal, Select } from "antd";
 import Item from "./Item";
 import { getAllProducts } from "../../../api/products";
 import AddProduct from "./AddProduct";
@@ -10,6 +10,8 @@ const AdminProducts = () => {
   const [products, setProducts] = useState([]);
   const [totalProducts, setTotalProducts] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedType, setSelectedType] = useState("all"); // New state for selected type
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
@@ -25,7 +27,17 @@ const AdminProducts = () => {
     fetchProducts();
   }, [currentPage]);
 
-  const onSearch = (value, _e, info) => console.log(info?.source, value);
+  console.log(products);
+
+  const onSearch = (value, _e, info) => {
+    console.log(value);
+    setSearchTerm(value);
+  };
+
+  const handleChange = (value) => {
+    setSelectedType(value);
+    console.log(`selected ${value}`);
+  };
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const showModal = () => {
@@ -51,14 +63,16 @@ const AdminProducts = () => {
       </Col>
 
       <Row>
-        <Col span={6}>
-          <Button
-            type="primary"
-            onClick={showModal}
-            style={{ marginBottom: 16 }}
-          >
-            THÊM SẢN PHẨM MỚI
-          </Button>
+        <Col span={8}>
+          <div>
+            <Button
+              type="primary"
+              onClick={showModal}
+              style={{ marginBottom: 16, marginTop: 16 }}
+            >
+              THÊM SẢN PHẨM MỚI
+            </Button>
+          </div>
           <Modal
             title="Thêm sản phẩm mới"
             open={isModalOpen}
@@ -73,10 +87,48 @@ const AdminProducts = () => {
             <AddProduct />
           </Modal>
         </Col>
+        <Col span={8} style={{ display: "flex", justifyContent: "center" }}>
+          <Select
+            defaultValue="all"
+            style={{
+              width: 120,
+              display: "flex",
+              justifyContent: "center",
+              flexDirection: "column",
+            }}
+            onChange={handleChange}
+            options={[
+              {
+                value: "all",
+                label: "Tất cả",
+              },
+              {
+                value: "áo",
+                label: "Áo",
+              },
+              {
+                value: "quần",
+                label: "Quần",
+              },
+              {
+                value: "phụ kiện",
+                label: "Phụ kiện",
+              },
+              {
+                value: "khác",
+                label: "Khác",
+              },
+            ]}
+          />
+        </Col>
         <Col
-          span={6}
-          offset={12}
-          style={{ display: "flex", justifyContent: "flex-end" }}
+          span={8}
+          style={{
+            display: "flex",
+            justifyContent: "flex-end",
+            marginTop: 16,
+            marginBottom: 16,
+          }}
         >
           <Search
             placeholder="Nhập tên sản phẩm"
@@ -88,17 +140,38 @@ const AdminProducts = () => {
           />
         </Col>
       </Row>
+
       <Row gutter={15}>
-        {products.map((product) => (
-          <Col
-            span={8}
-            key={product.id}
-            style={{ display: "flex", justifyContent: "center", marginTop: 15 }}
-          >
-            <Item product={product} />
-          </Col>
-        ))}
+        {products
+          .filter((product) =>
+            searchTerm
+              ? product.product.name
+                  .toLowerCase()
+                  .includes(searchTerm.toLowerCase())
+              : true
+          )
+          .filter(
+            (
+              product // New filter for product type
+            ) =>
+              selectedType === "all" ||
+              product.product.category.name.toLowerCase() === selectedType
+          )
+          .map((product) => (
+            <Col
+              span={8}
+              key={product.id}
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                marginTop: 15,
+              }}
+            >
+              <Item product={product} />
+            </Col>
+          ))}
       </Row>
+
       <Row
         style={{ marginTop: 20, display: "flex", justifyContent: "flex-end" }}
       >
