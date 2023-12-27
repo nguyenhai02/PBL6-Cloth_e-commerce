@@ -14,9 +14,11 @@ class Http {
         return response.data;
       },
       ({ response }) => {
-        if (response.status === 401) {
+        if (response && response.status === 401) {
         }
-        const result = { ...response.data, status: response.status };
+        const result = response
+          ? { ...response.data, status: response.status }
+          : {};
         return Promise.reject(result);
       }
     );

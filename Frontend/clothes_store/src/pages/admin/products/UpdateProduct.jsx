@@ -81,7 +81,7 @@ const UpdateProduct = (props) => {
       const response = await updateProduct(props.product?.id, newRequest);
       console.log(response);
       messageApi.success("Chỉnh sửa thành công");
-      window.location.reload();
+      // window.location.reload();
     } catch (error) {
       console.log(error);
       messageApi.error("Chỉnh sửa thất bại");
@@ -122,7 +122,7 @@ const UpdateProduct = (props) => {
             {moment(product?.updateDate).format("HH:mm:ss DD/MM/YYYY")}
           </Form.Item>
           <Form.Item label="Tên" name="name">
-            <Input value={product?.name} />
+            <Input value={product?.name} disabled />
           </Form.Item>
           <Form.Item
             label="Phân loại"

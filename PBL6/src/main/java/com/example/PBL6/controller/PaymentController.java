@@ -1,18 +1,15 @@
 package com.example.PBL6.controller;
 
 import com.example.PBL6.configuration.VNPayConfig;
-
 import com.example.PBL6.dto.order.OrderRequestDto;
 import com.example.PBL6.dto.payment.PaymentCreateDto;
 import com.example.PBL6.dto.payment.PaymentResultDto;
-
 import com.example.PBL6.persistance.user.User;
-
 import com.example.PBL6.service.OrderService;
 import com.example.PBL6.util.AuthenticationUtils;
+import com.example.PBL6.util.HttpUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +19,6 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
-
 import java.util.*;
 
 @RestController
@@ -71,6 +67,15 @@ public class PaymentController {
             cld.add(Calendar.MINUTE, 15);
             String vnp_ExpireDate = formatter.format(cld.getTime());
             vnp_Params.put("vnp_ExpireDate", vnp_ExpireDate);
+
+//            Calendar cld = Calendar.getInstance(TimeZone.getTimeZone("Asia/Ho_Chi_Minh"));
+//            SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
+//            String vnp_CreateDate = formatter.format(cld.getTime());
+//            vnp_Params.put("vnp_CreateDate", vnp_CreateDate);
+//
+//            cld.add(Calendar.HOUR, 15);
+//            String vnp_ExpireDate = formatter.format(cld.getTime());
+//            vnp_Params.put("vnp_ExpireDate", vnp_ExpireDate);
 
 //            vnp_Params.put("address_delivery", orderRequestDto.getAddressDelivery());
 
@@ -127,29 +132,29 @@ public class PaymentController {
                     if (userAgent.contains("Mobile")) {
                         HttpHeaders httpHeaders = new HttpHeaders();
                         httpHeaders.add("location", "myapp://paymentResult?vnp_ResponseCode=00");
-                        if(orderRequest.getProductId() != null) {
-                            orderService.saveOrderBuyNow(user, orderRequest, "COMPLETE","VNPAY");
+                        if (orderRequest.getProductId() != null) {
+                            orderService.saveOrderBuyNow(user, orderRequest, "COMPLETE", "VNPAY");
                         } else {
-                            orderService.saveOrder(user, "VNPAY", amount/100, "COMPLETE", addressDelivery);
+                            orderService.saveOrder(user, "VNPAY", amount / 100, "COMPLETE", addressDelivery);
                         }
 //                        orderService.saveOrder(user, "VNPAY", amount/100, "COMPLETE", addressDelivery);
                         return new ResponseEntity<>(httpHeaders, HttpStatus.FOUND);
                     }
                 } else if (userAgent.contains("Mozilla")) {
                     HttpHeaders httpHeaders = new HttpHeaders();
-                    httpHeaders.add("location", "http://localhost:3000/payment/success");
-                    if(orderRequest.getProductId() != null) {
-                        orderService.saveOrderBuyNow(user, orderRequest, "COMPLETE","VNPAY");
+                    httpHeaders.add("location", HttpUtils.WEB_URL + "/payment/success");
+                    if (orderRequest.getProductId() != null) {
+                        orderService.saveOrderBuyNow(user, orderRequest, "COMPLETE", "VNPAY");
                     } else {
-                        orderService.saveOrder(user, "VNPAY", amount/100, "COMPLETE", addressDelivery);
+                        orderService.saveOrder(user, "VNPAY", amount / 100, "COMPLETE", addressDelivery);
                     }
 //                    orderService.saveOrder(user, "VNPAY", amount, "COMPLETE", addressDelivery);
                     return new ResponseEntity<>(httpHeaders, HttpStatus.FOUND);
                 }
             } else {
-                if(userAgent.contains("Mozilla")) {
+                if (userAgent.contains("Mozilla")) {
                     HttpHeaders httpHeaders = new HttpHeaders();
-                    httpHeaders.add("location", "http://localhost:3000/payment/fail");
+                    httpHeaders.add("location", HttpUtils.WEB_URL + "/payment/fail");
                     return new ResponseEntity<>(httpHeaders, HttpStatus.FOUND);
                 }
                 paymentResultDto.setStatus("FAIL");

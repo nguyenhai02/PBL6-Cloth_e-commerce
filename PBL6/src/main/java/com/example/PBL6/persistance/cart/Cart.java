@@ -1,6 +1,5 @@
 package com.example.PBL6.persistance.cart;
 
-import com.example.PBL6.persistance.product.ProductVariant;
 import com.example.PBL6.persistance.user.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;

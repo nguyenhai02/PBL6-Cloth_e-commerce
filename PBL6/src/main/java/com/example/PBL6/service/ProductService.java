@@ -13,6 +13,8 @@ public interface ProductService {
 
     List<Product> getAllProducts();
 
+    Page<ProductResponseDto> getAllProductsByCategory(String category, Pageable pageable);
+
     ProductResponseDto addProduct(ProductRequestDto productRequestDto);
 
     Page<ProductResponseDto> getAllProducts(Pageable pageable);

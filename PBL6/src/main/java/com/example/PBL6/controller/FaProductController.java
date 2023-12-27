@@ -2,7 +2,6 @@ package com.example.PBL6.controller;
 
 import com.example.PBL6.dto.product.FaProductRespDto;
 import com.example.PBL6.dto.product.FaProductRespMesDto;
-import com.example.PBL6.persistance.product.Product;
 import com.example.PBL6.persistance.user.User;
 import com.example.PBL6.service.ProductService;
 import com.example.PBL6.util.AuthenticationUtils;

@@ -32,6 +32,11 @@ public class ProductController {
         return productService.getAllProducts(pageable);
     }
 
+    @GetMapping("/all/category/{category}")
+    public Page<ProductResponseDto> getAllProductsByCategory(@PathVariable(name = "category") String category, Pageable pageable) {
+        return productService.getAllProductsByCategory(category, pageable);
+    }
+
     @PostMapping("/add")
     public ProductResponseDto addProduct(@RequestBody ProductRequestDto productRequestDto) {
         return productService.addProduct(productRequestDto);

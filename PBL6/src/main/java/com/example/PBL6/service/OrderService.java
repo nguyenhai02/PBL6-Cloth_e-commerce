@@ -4,7 +4,6 @@ import com.example.PBL6.dto.order.OrderDto;
 import com.example.PBL6.dto.order.OrderRequestDto;
 import com.example.PBL6.dto.order.OrderResponseDto;
 import com.example.PBL6.dto.order.OrderUpdateStatusDto;
-import com.example.PBL6.persistance.order.Order;
 import com.example.PBL6.persistance.user.User;
 
 import java.util.List;

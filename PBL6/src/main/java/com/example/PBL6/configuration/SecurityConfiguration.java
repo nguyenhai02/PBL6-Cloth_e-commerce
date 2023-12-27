@@ -29,7 +29,8 @@ public class SecurityConfiguration {
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests()
                 .requestMatchers("/user/register/**", "/user/login/**", "/category/all/**",
-                        "/product/all", "/product/detail/**", "/payment/paymentResult/**",
+                        "/product/all", "/product/all/category/**","/product/detail/**",
+                        "/payment/paymentResult/**",
                         "/product/bestSeller/**")
                 .permitAll()
                 .requestMatchers("/user/profile/**", "/cart/**", "/favouriteProduct/**",

@@ -1,5 +1,6 @@
 package com.example.PBL6.configuration;
 
+import com.example.PBL6.util.HttpUtils;
 import jakarta.servlet.http.HttpServletRequest;
 
 import javax.crypto.Mac;
@@ -14,7 +15,7 @@ public class VNPayConfig {
     public static String vnp_PayUrl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
 
     // call request get status
-    public static String vnp_ReturnUrl = "http://localhost:8080/payment/paymentResult";
+    public static String vnp_ReturnUrl = HttpUtils.BASE_URL +  "/payment/paymentResult";
     public static String vnp_TmnCode = "ZP5F7WML";
     public static String vnp_Version = "2.1.0";
     public static String vnp_Command = "pay";

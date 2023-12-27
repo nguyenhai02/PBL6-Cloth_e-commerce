@@ -14,7 +14,7 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
     @Query
     List<Order> getOrdersByUser(User user);
 
-    @Query(value = "UPDATE clothes_store.orders\n" +
+    @Query(value = "UPDATE orders\n" +
                    "   SET status = :status \n" +
                    " WHERE id = :orderId", nativeQuery = true)
     @Modifying
