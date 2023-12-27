@@ -3,6 +3,8 @@ package com.example.PBL6.repository;
 import com.example.PBL6.persistance.product.Category;
 import com.example.PBL6.persistance.product.Product;
 import jakarta.transaction.Transactional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -18,6 +20,8 @@ import java.util.Optional;
 public interface ProductRepository extends JpaRepository<Product, Integer> {
     @Query
     Optional<Product> findProductByName(String name);
+
+    Page<Product> findProductByCategory(Category category, Pageable pageable);
 
     @Query
     Product getById(Integer id);
@@ -41,10 +45,10 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
     @Query(value = "SELECT p.id AS product_id,\n" +
             "       p.name AS product_name,\n" +
             "       COUNT(oi.id) AS order_count\n" +
-            "  FROM clothes_store.products p\n" +
-            "  JOIN clothes_store.product_variants pv \n" +
+            "  FROM products p\n" +
+            "  JOIN product_variants pv \n" +
             "    ON p.id = pv.product_id\n" +
-            "  JOIN clothes_store.order_items oi \n" +
+            "  JOIN order_items oi \n" +
             "    ON pv.id = oi.product_variant_id\n" +
             " GROUP BY p.id\n" +
             " ORDER BY order_count DESC;", nativeQuery = true)

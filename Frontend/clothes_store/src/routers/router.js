@@ -156,6 +156,10 @@ const routers = createBrowserRouter([
         path: "accessories",
         element: <Products />,
       },
+      {
+        path: "others",
+        element: <Products />,
+      },
     ],
     default: true,
   },

@@ -1,7 +1,6 @@
 package com.example.PBL6.util;
 
 import com.example.PBL6.persistance.user.UserGender;
-import com.fasterxml.jackson.core.JacksonException;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;

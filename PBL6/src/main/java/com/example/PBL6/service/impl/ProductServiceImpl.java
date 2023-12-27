@@ -46,6 +46,29 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public Page<ProductResponseDto> getAllProductsByCategory(String category, Pageable pageable) {
+        String categoryName = category.toLowerCase();
+        String categoryQuery = "";
+        switch (categoryName) {
+            case "shirt":
+                categoryQuery = "Áo";
+                break;
+            case "pants":
+                categoryQuery = "Quần";
+                break;
+            case "accessories":
+                categoryQuery = "Phụ Kiện";
+                break;
+            default:
+                categoryQuery = "Khác";
+                break;
+        }
+        Category category1 = categoryRepository.findCategoryByName(categoryQuery);
+        Page<Product> productPage = productRepository.findProductByCategory(category1, pageable);
+        return productPage.map(product -> modelMapper.map(product, ProductResponseDto.class));
+    }
+
+    @Override
     public Page<ProductResponseDto> getAllProducts(@PageableDefault(size = 4) Pageable pageable) {
         Page<Product> productPage = productRepository.findAll(pageable);
         return productPage.map(product -> modelMapper.map(product, ProductResponseDto.class));

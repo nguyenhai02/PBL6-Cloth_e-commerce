@@ -7,6 +7,17 @@ import { getToken } from "./users";
 export const getAllProductNonPagination = () => {
   return http.get("/product/all");
 };
+
+export const getProductByCategory = (category, page, size = 6, sort) => {
+  return http.get(`/product/all/category/${category}`, {
+    params: {
+      page: page,
+      size: size,
+      sort: sort,
+    },
+  });
+};
+
 export const getAllProducts = (page, size = 6, sort) => {
   return http.get("/product/all", {
     params: {

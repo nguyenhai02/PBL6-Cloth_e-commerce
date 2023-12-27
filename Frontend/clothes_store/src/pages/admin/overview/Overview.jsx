@@ -100,7 +100,7 @@ const Overview = () => {
   } else if (timePeriod === "year") {
     dayBeforeFirstDate = firstDate.getFullYear().toString();
   } else {
-    dayBeforeFirstDate = firstDate.toLocaleDateString("vi-VN");
+    dayBeforeFirstDate = firstDate ? firstDate.toLocaleDateString("vi-VN") : "";
   }
 
   const lineChartData = {
@@ -174,7 +174,10 @@ const Overview = () => {
     data.push({
       index: i,
       name: bestCustomer[i - 1].name,
-      totalMoney: bestCustomer[i - 1].totalMoney.toLocaleString("vi-VN"),
+      totalMoney:
+        bestCustomer[i - 1] && bestCustomer[i - 1].totalMoney
+          ? bestCustomer[i - 1].totalMoney.toLocaleString("vi-VN")
+          : "",
     });
   }
 

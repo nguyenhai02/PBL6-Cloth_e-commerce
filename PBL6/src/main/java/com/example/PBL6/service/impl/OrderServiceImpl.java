@@ -14,7 +14,6 @@ import com.example.PBL6.repository.ProductVariantRepository;
 import com.example.PBL6.service.CartService;
 import com.example.PBL6.service.OrderService;
 import jakarta.transaction.Transactional;
-import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

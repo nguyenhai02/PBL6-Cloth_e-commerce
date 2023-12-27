@@ -22,7 +22,7 @@ const Product = (props) => {
     navigate(`/products/${id}`);
   };
   return (
-    <Col xs={12} md={8}>
+    <Col xs={12} md={8} style={{ width: "400px" }}>
       <Space
         className="product"
         direction="vertical"

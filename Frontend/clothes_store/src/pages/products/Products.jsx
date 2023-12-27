@@ -5,21 +5,27 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Product from "../../components/product/Product";
 import SideBar from "../../components/sidebar/SideMenu";
-import { getAllProduct } from "../../stores/products/product-slice";
+import {
+  getAllProduct,
+  getAllProductByCategory,
+} from "../../stores/products/product-slice";
 import LoadingPage from "../loading/LoadingPage";
+import { useLocation } from "react-router-dom";
+import { get } from "lodash";
+import { ArrowDownOutlined, ArrowUpOutlined } from "@ant-design/icons";
 const Products = (props) => {
   const dispatch = useDispatch();
   const { products, loading, total } = useSelector((state) => state.products);
   // const [productSort, setProductSort] = useState([]);
   const [currentPage, setCurrentPage] = useState(1); // new line
-
+  const location = useLocation();
   useEffect(() => {
-    dispatch(getAllProduct({ page: currentPage - 1 })); // modified line
-  }, [dispatch, currentPage]);
-
-  // useEffect(() => {
-  //   setProductSort(products);
-  // }, [products]);
+    const endpoint = location.pathname.split("/")[2];
+    dispatch(
+      getAllProductByCategory({ category: endpoint, page: currentPage - 1 })
+      // getAllProduct({ page: currentPage - 1 })
+    );
+  }, [dispatch, currentPage, location]);
 
   const {
     token: { colorBgContainer },
@@ -85,44 +91,60 @@ const Products = (props) => {
             options={[
               {
                 value: "none",
-                label: "Măc định",
+                label: "Default",
               },
               {
                 value: "sortAZ",
-                label: "Tên: A-Z",
+                label: "A-Z",
               },
               {
                 value: "sortZA",
-                label: "Tên: Z-A",
+                label: "Z-A",
               },
               {
                 value: "Decrease",
-                label: "Giá: Giảm dần",
+                label: (
+                  <Space>
+                    <ArrowDownOutlined /> Price
+                  </Space>
+                ),
               },
               {
                 value: "Increase",
-                label: "Giá: Tăng dần",
+                label: (
+                  <Space>
+                    <ArrowUpOutlined /> Price
+                  </Space>
+                ),
               },
             ]}
           />
         </Space>
         <Space style={{ marginTop: 32 }}>
           {loading ? (
-            <LoadingPage />
+            <div>
+              <LoadingPage />
+              <Row>
+                <Pagination
+                  current={currentPage}
+                  pageSize={6}
+                  total={total}
+                  onChange={handlePageChange}
+                />
+              </Row>
+            </div>
           ) : (
             <>
-              <Row gutter={16}>{renderProducts}</Row>
+              {products && products.length > 0 ? (
+                <Row gutter={16}>{renderProducts}</Row>
+              ) : (
+                <div style={{ fontWeight: "bold" }}>
+                  <h1>CHƯA CÓ SẢN PHẨM NÀO</h1>
+                </div>
+              )}
             </>
           )}
         </Space>
-        <Row>
-          <Pagination
-            current={currentPage}
-            pageSize={6}
-            total={total}
-            onChange={handlePageChange}
-          />
-        </Row>
       </Content>
     </>
   );

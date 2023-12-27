@@ -77,7 +77,6 @@ const Order = () => {
     };
     fetchOrders();
   }, []);
-  console.log(orders);
 
   const getStatus = (status) => {
     if (status === "COMPLETE") {
@@ -90,16 +89,21 @@ const Order = () => {
   };
 
   const data = [];
-  for (let i = 1; i < orders.length + 1; i++) {
-    data.push({
-      index: i,
-      id: `DH${orders[i - 1].order.id}`,
-      date: moment(orders[i - 1].order.orderDate).format("HH:mm:ss DD/MM/YYYY"),
-      money: orders[i - 1].order.totalPrice.toLocaleString("vi-VN"),
-      paymentMethod: orders[i - 1].order.paymentMethod,
-      address: orders[i - 1].order.addressDelivery,
-      status: getStatus(orders[i - 1].order.status),
-    });
+  if (orders) {
+    for (let i = 1; i < orders.length + 1; i++) {
+      const order = orders[i - 1].order;
+      if (order) {
+        data.push({
+          index: i,
+          id: `DH${order.id}`,
+          date: moment(order.orderDate).format("HH:mm:ss DD/MM/YYYY"),
+          money: order.totalPrice.toLocaleString("vi-VN"),
+          paymentMethod: order.paymentMethod,
+          address: order.addressDelivery,
+          status: getStatus(order.status),
+        });
+      }
+    }
   }
 
   return getToken() === null ? (
@@ -123,17 +127,23 @@ const Order = () => {
     </>
   ) : (
     <>
-      <div className="item__title" style={{ marginTop: 40 }}>
-        DANH SÁCH ĐƠN HÀNG
-      </div>
-      <div>
-        <div
-          style={{
-            marginBottom: 16,
-          }}
-        ></div>
-        <Table columns={columns} dataSource={data} />
-      </div>
+      {Array.isArray(orders) && orders.length > 0 ? (
+        <div>
+          <div className="item__title" style={{ marginTop: 40 }}>
+            DANH SÁCH ĐƠN HÀNG
+          </div>
+          <div
+            style={{
+              marginBottom: 16,
+            }}
+          ></div>
+          <Table columns={columns} dataSource={data} />
+        </div>
+      ) : (
+        <div className="item__title" style={{ marginTop: 40 }}>
+          BẠN CHƯA CÓ ĐƠN HÀNG NÀO
+        </div>
+      )}
     </>
   );
 };

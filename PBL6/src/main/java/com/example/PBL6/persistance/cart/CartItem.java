@@ -1,6 +1,5 @@
 package com.example.PBL6.persistance.cart;
 
-import com.example.PBL6.persistance.product.Product;
 import com.example.PBL6.persistance.product.ProductVariant;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

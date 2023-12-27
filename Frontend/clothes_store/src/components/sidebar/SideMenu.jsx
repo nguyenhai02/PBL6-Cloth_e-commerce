@@ -21,6 +21,7 @@ const items = [
     getItem("SHIRT", "shirt"),
     getItem("PANT", "pants"),
     getItem("ACCESSORIES", "accessories"),
+    getItem("OTHERS", "others"),
   ]),
   // getItem("SMART DEVICE", "smart-devices", <MobileOutlined />, [
   //   getItem("PHONES", "PHONES"),

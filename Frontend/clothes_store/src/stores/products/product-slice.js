@@ -1,10 +1,22 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { getAllProducts, getDetailProduct } from "../../api/products";
+import {
+  getAllProducts,
+  getDetailProduct,
+  getProductByCategory,
+} from "../../api/products";
 
 export const getAllProduct = createAsyncThunk(
   "getAllProducts",
   async ({ page, size = 6, sort }) => {
     const response = await getAllProducts(page, size, sort);
+    return response;
+  }
+);
+
+export const getAllProductByCategory = createAsyncThunk(
+  "getAllProductByCategory",
+  async ({ category, page, size = 6, sort }) => {
+    const response = await getProductByCategory(category, page, size, sort);
     return response;
   }
 );
@@ -18,7 +30,7 @@ export const getProductDetail = createAsyncThunk(
 );
 
 const initialState = {
-  products: null,
+  products: [],
   productDetail: null,
   loading: false,
   error: null,
@@ -43,6 +55,22 @@ const productsSlice = createSlice({
         state.loading = false;
         state.error = action.error.message;
       })
+      // //////////////////////////////////////////
+      .addCase(getAllProductByCategory.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getAllProductByCategory.fulfilled, (state, action) => {
+        state.loading = false;
+        state.products = action.payload.content;
+        state.total = action.payload.totalElements; // new line
+      })
+      .addCase(getAllProductByCategory.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
+
+      // //////////////////////////////////////////
       .addCase(getProductDetail.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -63,4 +91,5 @@ export const productsAction = {
   ...productsSlice.actions,
   getAllProduct,
   getProductDetail,
+  getAllProductByCategory,
 };

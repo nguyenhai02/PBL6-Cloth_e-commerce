@@ -24,9 +24,11 @@ const PaymentMethod = ({ orderInfo }) => {
       } else if (paymentMethod === "VNPAY") {
         // Thanh toán VNPAY
         const response = await createPaymentVNPay(orderInfo);
-        console.log(response);
+        console.log("Expire ----- ", response.vnp_ExpireDate);
+        console.log("create -----", response.vnp_CreateDate);
         // Redirect đến trang thanh toán VNPAY
-        window.location.href = response.redirect_url;
+        // window.location.href = response.redirect_url;
+        window.open(response.redirect_url, "_blank");
       } else {
         console.error("Phương thức thanh toán không hợp lệ");
       }
