@@ -69,15 +69,15 @@ struct HomeView: View {
                         .fontWeight(.medium)
                         .padding(.leading, 13)
                     Spacer()
-                    Button(action: {
-                        path.append("FavoriteView")
-                    }) {
-                        Image(systemName: "heart")
-                            .resizable()
-                            .foregroundColor(.black)
-                            .frame(width: 20, height: 20)
-                            .padding(.trailing, 20)
-                    }
+//                    Button(action: {
+//                        path.append("FavoriteView")
+//                    }) {
+//                        Image(systemName: "heart")
+//                            .resizable()
+//                            .foregroundColor(.black)
+//                            .frame(width: 20, height: 20)
+//                            .padding(.trailing, 20)
+//                    }
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.bottom, 6)
@@ -85,6 +85,17 @@ struct HomeView: View {
                     Spacer().frame(height: 20)
                     ScrollView(.horizontal,showsIndicators: false, content:  {
                         HStack(spacing: 30) {
+//                            VStack(spacing: 0) {
+//                                Image("categories")
+//                                    .resizable()
+//                                    .aspectRatio(contentMode: .fill)
+//                                    .frame(width: 73, height: 73)
+//                                    .clipShape(Circle())
+//                            Text("Categories")
+//                                .foregroundColor(Color("272727"))
+//                                .font(.system(size: 14))
+//                                .padding(.top, 5)
+//                            }
                             ForEach(viewModel.categories, id: \.self) { categories in
                                 CategoriesItem(path: $path, viewModel: viewModel, categories: categories)
                             }
@@ -169,7 +180,6 @@ struct CategoriesItem: View {
         VStack(spacing: 0) {
             Button(action: {
                 viewModel.categoryId = categories.id
-                print("viewModel.categoryId")
                 print( viewModel.categoryId)
                 path.append(CategoryProductView(viewModel: viewModel, path: $path, category: categories))
                 print("categories.id")
@@ -185,7 +195,7 @@ struct CategoriesItem: View {
             Text(categories.name)
                 .foregroundColor(Color("272727"))
                 .font(.system(size: 14))
-                .padding(.top, 8)
+                .padding(.top, 14)
         }
         .onTapGesture {
             self.showView = true

@@ -24,12 +24,14 @@ struct TagBarView: View {
                             Image(systemName: "magnifyingglass")
                             Text("Tìm kiếm")
                         }.tag(1)
-                    NotificationView(path: $path)
+                    FavoriteView(path: $path)
                         .tabItem {
-                            Image(systemName: "bell.fill")
-                            Text("Thông báo")
+                            Image(systemName: "heart")
+                            Text("Yêu thích")
+//                            Image(systemName: "bell.fill")
+//                            Text("Thông báo")
                         }.tag(2)
-                    CartView(path: $path, productDetail: ProductDetail(product: Product(id: 1, name: "Quần áo là quần áo là quần áo", description: "Green printed woven fit and flare dress, has a notched lapel collar and sleevesless.", price: 10, discount: 10, createDate: "1/1/2023", updateDate: "1/2/2023", category: Categories(id: 3, name: "Quần", description: "Quần jeans nam nữ", createDate: "2023-10-21T00:55:48", updateDate: "2023-10-21T00:55:48")), productVariants: [ProductVariant(id: 1, color: "red", size: "M", quantity: 40)]))
+                    CartView(path: $path, productDetail: ProductDetail(product: Product(id: 1, name: "Quần áo là quần áo là quần áo", description: "Green printed woven fit and flare dress, has a notched lapel collar and sleevesless.", discount: 10, price: 10, createDate: "1/1/2023", updateDate: "1/2/2023", category: Categories(id: 3, name: "Quần", description: "Quần jeans nam nữ", createDate: "2023-10-21T00:55:48", updateDate: "2023-10-21T00:55:48")), productVariants: [ProductVariant(id: 1, color: "red", size: "M", quantity: 40)]))
                         .tabItem {
                             Image(systemName: "cart")
                             Text("Giỏ hàng")

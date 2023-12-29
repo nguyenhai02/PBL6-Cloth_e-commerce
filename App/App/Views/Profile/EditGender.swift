@@ -10,8 +10,7 @@ import SwiftUI
 struct EditGender: View {
     @ObservedObject var viewModel = ProfileViewModel()
     @Binding var path: NavigationPath
-    let array: [String] = ["Male", "Female"]
-    @State var isselected = 0
+    @State var isselected: Gender = .UNSPECIFIED
     var body: some View {
         ZStack {
             Color("F9F9F9")
@@ -21,17 +20,18 @@ struct EditGender: View {
                     Spacer()
                     Text("Giới tính")
                         .fontWeight(.bold)
+                        .padding(.top, 20)
                     Spacer()
                 }
-                ForEach(0..<array.count, id: \.self) { index in
+                ForEach(Gender.allCases, id: \.self) { gender in
                     Button(action: {
-                        isselected = index
-                        viewModel.gender = array[index]
+                        isselected = gender
+                        viewModel.gender = "\(gender)"
                         viewModel.updateProfile()
                         path.removeLast()
                     }) {
                         HStack {
-                            Text(array[index])
+                            Text(gender.rawValue)
                                 .foregroundColor(.black)
                                 .fontWeight(.medium)
                                 .font(.system(size: 14))

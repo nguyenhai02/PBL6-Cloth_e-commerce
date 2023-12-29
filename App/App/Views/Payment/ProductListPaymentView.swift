@@ -251,7 +251,7 @@ struct ProductListPaymentView: View, Hashable {
                                let ward = addressViewModel.selectedAddress?.ward,
                                let city = addressViewModel.selectedAddress?.city {
                                 let addressDelivery = "\(street), \(district), \(ward), \(city)"
-                                viewModel.createPayment(amount: cartViewModel.total, addressDelivery: addressDelivery, productId: cartViewModel.quantity, color: cartViewModel.color, size: cartViewModel.size, quantity: cartViewModel.quantity)
+                                viewModel.createPayment(amount: cartViewModel.total, addressDelivery: addressDelivery, productId: nil, color: nil, size: nil, quantity: nil)
                                 self.showAlert = true
                             }
                         } else {
@@ -283,7 +283,7 @@ struct ProductListPaymentView: View, Hashable {
                            let city = addressViewModel.selectedAddress?.city {
                             let addressDelivery = "\(street), \(district), \(ward), \(city)"
                             cartViewModel.CreateCOD(amount: cartViewModel.total, addressDelivery: addressDelivery, productId: nil, color: nil, size: nil, quantity: nil) {
-                                path.append("MyOrdersView")
+                                path.append("SuccessCODView")
                             }
                         }
                     }

@@ -22,6 +22,7 @@ class HomeViewModel: ObservableObject {
     @Published var sort = ""
     var quantity: Int = 0
     var productDetail: ProductDetail? = nil
+    var productDetailPayment: ProductDetail? = nil
     let searchPublicsher = PassthroughSubject<String, Never>()
     var searchText: String = ""
     
@@ -37,10 +38,13 @@ class HomeViewModel: ObservableObject {
             switch result {
             case let .success(moyaResponse):
                 do{
+                    self.productDetail = nil
                     print(self.id)
                     let filteredReponse = try moyaResponse.filterSuccessfulStatusCodes()
                     let productDetail = try filteredReponse.map(ProductDetail.self)
                     self.productDetail = productDetail
+                    print("####")
+                    print(productDetail)
 //                    print(self.productDetail)
                 } catch { print("product2")}
             case let .failure(error):

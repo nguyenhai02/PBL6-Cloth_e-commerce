@@ -67,56 +67,57 @@ struct LoginView: View {
                             path.append("TagBarView")
                         })
                     })
-                    Spacer().frame(height: 20)
-                    HStack {
-                        VStack {
-                            Rectangle()
-                                .frame(height: 1)
-                                .foregroundColor(Color.gray)
-                        }
-                        Text("or")
-                            .bold()
-                            .foregroundColor(Color("848484"))
-                        VStack {
-                            Rectangle()
-                                .frame(height: 1)
-                                .foregroundColor(Color.gray)
-                        }
-                    }
+//                    Spacer().frame(height: 10)
+//                    HStack {
+//                        VStack {
+//                            Rectangle()
+//                                .frame(height: 1)
+//                                .foregroundColor(Color.gray)
+//                        }
+//                        Text("or")
+//                            .bold()
+//                            .foregroundColor(Color("848484"))
+//                        VStack {
+//                            Rectangle()
+//                                .frame(height: 1)
+//                                .foregroundColor(Color.gray)
+//                        }
+//                    }
                 }
                 .padding([.leading, .trailing], 30)
                 Spacer().frame(height: 20)
                 Group {
-                    Text("Login using")
-                        .font(.system(size: 15))
-                        .foregroundColor(Color("323232"))
-                    Spacer().frame(height: 20)
-                    HStack(spacing: 15) {
-                        Button(action: {
-                            // ac
-                        }) {
-                            Image("apple")
-                                .resizable()
-                                .frame(width: 45, height: 48)
-                                .clipShape(Circle())
-                        }
-                        Button(action: {
-                            // ac
-                        }) {
-                            Image("google")
-                                .resizable()
-                                .frame(width: 40, height: 40)
-                                .clipShape(Circle())
-                        }
-                        Button(action: {
-                            // ac
-                        }) {
-                            Image("facebook")
-                                .resizable()
-                                .frame(width: 40, height: 40)
-                                .clipShape(Circle())
-                        }
-                    }
+//                    Text("Login using")
+//                        .font(.system(size: 15))
+//                        .foregroundColor(Color("323232"))
+//                    Spacer().frame(height: 20)
+//                    HStack(spacing: 15) {
+//                        Button(action: {
+//                            // ac
+//                        }) {
+//                            Image("apple")
+//                                .resizable()
+//                                .frame(width: 45, height: 48)
+//                                .clipShape(Circle())
+//                        }
+//                        Button(action: {
+//                            // ac
+//                        }) {
+//                            Image("google")
+//                                .resizable()
+//                                .frame(width: 40, height: 40)
+//                                .clipShape(Circle())
+//                        }
+//                        Button(action: {
+//                            // ac
+//                        }) {
+//                            Image("facebook")
+//                                .resizable()
+//                                .frame(width: 40, height: 40)
+//                                .clipShape(Circle())
+//                        }
+//                    }
+//                    Spacer().frame(height: 50)
                     HStack {
                         Text("Don’t have an account ?")
                             .foregroundColor(.gray)

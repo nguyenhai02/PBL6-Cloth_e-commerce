@@ -21,7 +21,6 @@ struct ResponseData: Decodable {
 
 struct ProductDetail: Identifiable, Decodable, Hashable {
     var id: String? = UUID().uuidString
-    
     let product: Product
     var productVariants: [ProductVariant]
 }
@@ -29,7 +28,8 @@ struct ProductDetail: Identifiable, Decodable, Hashable {
 struct Product: Decodable, Hashable {
     let id: Int
     let name, description: String
-    let price, discount: Int
+    let discount: Int?
+    let price: Int
     var image: String?
     let createDate, updateDate: String?
     let category: Categories

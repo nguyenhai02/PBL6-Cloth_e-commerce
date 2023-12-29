@@ -38,23 +38,21 @@ struct ProfileView: View {
                         .fontWeight(.medium)
                         .padding(.leading, 15)
                 }
-                Spacer().frame(height: 30)
+                Spacer().frame(height: 15)
                 Divider().background(Color("E1E2E7").opacity(0.7)).shadow(radius: 1)
                 VStack(alignment: .center, spacing: 0) {
-                    Spacer().frame(height: 25)
                     Button(action: {
                         viewModel.showProfile()
                     }) {
                         PhotosPicker(selection: $pickerImageViewModel.imageSelection, matching: .images) {
                             VStack() {
-                                ZStack() {
+                                ZStack(alignment: .bottom) {
                                     if let image = pickerImageViewModel.selectedImage {
                                         Image(uiImage: image)
                                             .resizable()
-                                            .aspectRatio(contentMode: .fit)
-                                            .scaledToFill()
-                                            .frame(width: 100, height: 100)
-                                            .clipShape(Circle())
+                                            .aspectRatio(contentMode: .fill)
+                                            .frame(width: UIScreen.main.bounds.width, height: 240)
+                                            .clipped()
                                         
                                     } else {
                                         KFImage(URL(string: viewModel.profile?.avatar ?? "https://i.pinimg.com/736x/c6/e5/65/c6e56503cfdd87da299f72dc416023d4.jpg"))
@@ -65,26 +63,34 @@ struct ProfileView: View {
                                             .onFailure { e in
                                                 print("err: \(e)")
                                             }
-                                            .placeholder {                                            ProgressView().frame(width: 100, height: 100)
+                                            .placeholder {                                            ProgressView().frame(width: UIScreen.main.bounds.width, height: 240)
                                                     .border(Color.blue)
                                             }
                                             .resizable()
                                             .scaledToFill()
-                                            .frame(width: 100, height: 100)
-                                            .cornerRadius(50)
-                                            .shadow(radius: 5)
+                                            .frame(width: UIScreen.main.bounds.width, height: 240)
+                                            .clipped()
+//                                            .cornerRadius(50)
+//                                            .shadow(radius: 5)
                                         
                                     }
+                                    HStack {
+                                        Spacer()
+                                        Text("Chạm để thay đổi")
+                                            .font(.system(size: 14))
+                                            .foregroundColor(.black.opacity(0.8))
+//                                            .padding(.top, 220)
+                                        Spacer()
+                                    }
+                                    .background(Color.gray.opacity(0.4))
                                 }
-                                Text("Edit photo")
-                                    .foregroundColor(Color("002482"))
                             }
+                            .frame(width: UIScreen.main.bounds.width, height: 240)
                         }
                     }
-                    .padding(.bottom, 25)
                     Divider().background(Color("E1E2E7"))
                 }
-                .background(Color("EBF0FF1"))
+//                .background(Color("EBF0FF1"))
                 VStack(spacing: 0) {
                     profileItem(icon: "name", title: "Tên", value: (viewModel.profile?.name ?? "")) {
                         path.append("EditNameView")
@@ -92,9 +98,15 @@ struct ProfileView: View {
                     profileItem(icon: "smartphone", title: "Số điện thoai", value: viewModel.profile?.phone ?? "") {
                         path.append("EditPhoneView")
                     }
-                    profileItem(icon: "gender", title: "Giới tính", value: viewModel.profile?.gender ?? "") {
-                        path.append("EditGender")
+                    ForEach(Gender.allCases, id: \.self) { gender in
+                        if viewModel.profile?.gender == "\(gender)" {
+                            profileItem(icon: "gender", title: "Giới tính", value: "\(gender.rawValue)") {
+                                path.append("EditGender")
+                            }
+                        }
                     }
+                   
+                   
                     //                profileItem(icon: "changePassword", title: "Change password", value: "") {
                     //                }
                 }

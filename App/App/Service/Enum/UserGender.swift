@@ -8,7 +8,8 @@
 import Foundation
 
 
-enum UserGender: String, Decodable  {
-    case Female
-    case Male
+enum Gender: String, CaseIterable, Decodable {
+    case MALE = "Nam"
+    case FEMALE = "Nữ"
+    case UNSPECIFIED = " "
 }

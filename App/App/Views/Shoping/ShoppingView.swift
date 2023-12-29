@@ -12,6 +12,10 @@ struct ShoppingView: View {
     @Binding var path: NavigationPath
     @State var searchText: String = ""
     @State var showSlideMenu = false
+    @State var dec: Bool = false
+    @State var asc: Bool = false
+    @State var decName: Bool = false
+    @State var ascName: Bool = false
     let columns: [GridItem] = Array(repeating: .init(.flexible(minimum: 10, maximum: 170)), count: 2)
     var body: some View {
         ZStack(alignment: .trailing){
@@ -138,7 +142,7 @@ struct ShoppingView_Previews: PreviewProvider {
 extension ShoppingView {
     var navigationView : some View {
         ZStack {
-            Color("F9F9F9")
+            Color.white
                 .edgesIgnoringSafeArea(.all)
             VStack(alignment: .leading) {
                 Button(action: {
@@ -151,12 +155,64 @@ extension ShoppingView {
                             .font(.system(size: 16))
                             .foregroundColor(.black)
                             .fontWeight(.medium)
-                            .padding([.top, .leading], 15)
+                            .padding([.leading], 15)
                         Spacer()
                         Image(systemName: "xmark")
                             .foregroundColor(.black)
                             .padding(.trailing, 15)
                     }
+                }
+                Text("Theo tên")
+                    .font(.system(size: 16))
+                    .foregroundColor(.black)
+                    .padding([.top, .leading], 15)
+                    .padding(.bottom, 10)
+                HStack {
+                    Button(action: {
+                        if ascName  == false {
+                            viewModel.sort = "name,asc"
+                            showSlideMenu = false
+                            decName = false
+                        } else {
+                            viewModel.sort = ""
+                            showSlideMenu = false
+                            decName = false
+                        }
+                        ascName.toggle()
+                    }) {
+                        HStack{
+                            Text("A - Z")
+                                .font(.system(size: 14))
+                                .foregroundColor(.black)
+                        }
+                    }
+                    .frame(width: 100, height: 40)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 5).stroke(ascName ? Color.red : Color.gray, lineWidth: 1))
+                    .padding(.leading, 15)
+                    Spacer()
+                    Button(action: {
+                        if decName  == false {
+                            viewModel.sort = "name,desc"
+                            showSlideMenu = false
+                            ascName = false
+                        } else {
+                            viewModel.sort = ""
+                            showSlideMenu = false
+                            ascName = false
+                        }
+                        decName.toggle()
+                    }) {
+                        HStack{
+                            Text("Z - A")
+                                .font(.system(size: 14))
+                                .foregroundColor(.black)
+                        }
+                    }
+                    .frame(width: 100, height: 40)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 5).stroke(decName ? Color.red : Color.gray, lineWidth: 1))
+                    .padding(.trailing, 20)
                 }
                 Text("Theo giá tiền")
                     .font(.system(size: 16))
@@ -165,9 +221,16 @@ extension ShoppingView {
                     .padding(.bottom, 10)
                 HStack {
                     Button(action: {
-                        viewModel.sort = "price,asc"
-                        //viewModel.showProduct()
-                        showSlideMenu = false
+                        if asc  == false {
+                            viewModel.sort = "price,asc"
+                            showSlideMenu = false
+                            dec = false
+                        } else {
+                            viewModel.sort = ""
+                            showSlideMenu = false
+                            dec = false
+                        }
+                        asc.toggle()
                     }) {
                         HStack{
                             Text("Giá tăng dần")
@@ -175,14 +238,22 @@ extension ShoppingView {
                                 .foregroundColor(.black)
                         }
                     }
-                    .frame(width: 120, height: 50)
-                    .background(Color.white)
+                    .frame(width: 100, height: 40)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 5).stroke(asc ? Color.red : Color.gray, lineWidth: 1))
                     .padding(.leading, 15)
                     Spacer()
                     Button(action: {
-                        viewModel.sort = "price,desc"
-                        //viewModel.showProduct()
-                        showSlideMenu = false
+                        if dec  == false {
+                            viewModel.sort = "price,desc"
+                            showSlideMenu = false
+                            asc = false
+                        } else {
+                            viewModel.sort = ""
+                            showSlideMenu = false
+                            asc = false
+                        }
+                        dec.toggle()
                     }) {
                         HStack{
                             Text("Giá giảm dần")
@@ -190,12 +261,13 @@ extension ShoppingView {
                                 .foregroundColor(.black)
                         }
                     }
-                    .frame(width: 120, height: 50)
-                    .background(Color.white)
+                    .frame(width: 100, height: 40)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 5).stroke(dec ? Color.red : Color.gray, lineWidth: 1))
                     .padding(.trailing, 20)
                 }
                 Spacer()
             }
-        }.frame(width: 300).transition(.move(edge: .trailing))
+        }.frame(width: 250).transition(.move(edge: .trailing))
     }
 }

@@ -50,47 +50,47 @@ struct CartView: View {
                                 }
                             }
                             VStack {
-                                HStack {
-                                    Text("Tổng tiền")
-                                        .font(.system(size: 14))
-                                        .foregroundColor(.gray)
-                                    Spacer()
-                                    Text("\(viewModel.cartItems.reduce(0, { $0 + Int($1.price) * $1.quantity })) VND")
-                                        .font(.system(size: 14))
-                                        .fontWeight(.medium)
-                                        .foregroundColor(.black)
-                                }
-                                .padding(.top, 10)
-                                .padding(.horizontal, 15)
+//                                HStack {
+//                                    Text("Tổng tiền")
+//                                        .font(.system(size: 14))
+//                                        .foregroundColor(.gray)
+//                                    Spacer()
+//                                    Text("\(viewModel.cartItems.reduce(0, { $0 + Int($1.price) * $1.quantity })) VND")
+//                                        .font(.system(size: 14))
+//                                        .fontWeight(.medium)
+//                                        .foregroundColor(.black)
+//                                }
+//                                .padding(.top, 10)
+//                                .padding(.horizontal, 15)
+//
+//                                HStack {
+//                                    Text("Phí giao hàng")
+//                                        .font(.system(size: 14))
+//                                        .foregroundColor(.gray)
+//                                    Spacer()
+//                                    Text("\(0) VND")
+//                                        .font(.system(size: 14))
+//                                        .fontWeight(.medium)
+//                                        .foregroundColor(.black)
+//                                }
+//                                .padding(.top, 5)
+//                                .padding(.horizontal, 15)
                                 
                                 HStack {
-                                    Text("Phí giao hàng")
-                                        .font(.system(size: 14))
-                                        .foregroundColor(.gray)
-                                    Spacer()
-                                    Text("\(0) VND")
-                                        .font(.system(size: 14))
-                                        .fontWeight(.medium)
-                                        .foregroundColor(.black)
-                                }
-                                .padding(.top, 5)
-                                .padding(.horizontal, 15)
-                                
-                                HStack {
-                                    Text("Discount")
-                                        .font(.system(size: 13))
-                                        .foregroundColor(.gray)
-                                    Spacer()
-                                    Text("\(0) VND")
-                                        .font(.system(size: 14))
-                                        .fontWeight(.medium)
-                                        .foregroundColor(.black)
+//                                    Text("Discount")
+//                                        .font(.system(size: 13))
+//                                        .foregroundColor(.gray)
+//                                    Spacer()
+//                                    Text("\(0) VND")
+//                                        .font(.system(size: 14))
+//                                        .fontWeight(.medium)
+//                                        .foregroundColor(.black)
                                     //                            Text("-VND\(viewModel.cartItems.reduce(0, { $0 + ($1.price * $1.discount)/100}))")
                                     //                                .font(.system(size: 14))
                                     //                                .foregroundColor(.black)
                                 }
-                                .padding(.top, 5)
-                                .padding(.horizontal, 15)
+//                                .padding(.top, 5)
+//                                .padding(.horizontal, 15)
                                 
                                 Divider()
                                     .padding(.vertical, 5)
@@ -275,7 +275,7 @@ struct CartItem: View {
 }
 struct CartView_Previews: PreviewProvider {
     static var previews: some View {
-        let product = Product(id: 1, name: "Quần áo là quần áo là quần áo", description: "Green printed woven fit and flare dress, has a notched lapel collar and sleevesless.", price: 10, discount: 10, createDate: "1/1/2023", updateDate: "1/2/2023", category: Categories(id: 3, name: "Quần", description: "Quần jeans nam nữ", createDate: "2023-10-21T00:55:48", updateDate: "2023-10-21T00:55:48"))
+        let product = Product(id: 1, name: "Quần áo là quần áo là quần áo", description: "Green printed woven fit and flare dress, has a notched lapel collar and sleevesless.", discount: 10, price: 10, createDate: "1/1/2023", updateDate: "1/2/2023", category: Categories(id: 3, name: "Quần", description: "Quần jeans nam nữ", createDate: "2023-10-21T00:55:48", updateDate: "2023-10-21T00:55:48"))
         let productVariants = [ProductVariant(id: 1, color: "red", size: "M", quantity: 40)]
         CartView(path: .constant(NavigationPath()), productDetail: ProductDetail(product: product, productVariants: productVariants))
     }

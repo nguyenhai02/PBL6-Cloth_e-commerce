@@ -77,10 +77,10 @@ struct ItemDetailView: View, Hashable {
                                 KFImage(URL(string: viewModel.productDetail?.product.image  ?? "https://i.pinimg.com/736x/c6/e5/65/c6e56503cfdd87da299f72dc416023d4.jpg"))
                                     .resizable()
                                     .scaledToFill()
-                                    .onAppear{
-                                        viewModel.id = viewModel.productDetail?.product.id ?? 0
-                                        viewModel.getProductDetail()
-                                    }
+//                                    .onAppear{
+//                                        viewModel.id = viewModel.productDetail?.product.id ?? 0
+//                                        viewModel.getProductDetail()
+//                                    }
                             }
                         }.frame(height: 450)
                             .aspectRatio(4/3, contentMode: .fill)
@@ -177,7 +177,7 @@ struct ItemDetailView: View, Hashable {
                     .sheet(isPresented: $show) {
                         ProductSelectionView(viewModel: cartModel, homeViewModel: viewModel, title: "Mua ngay") {
                             //                            path.append(ItemDetailView(path: $path, productId: cartItem.productId))
-                            path.append(PaymentView(path: $path, homeViewModel: viewModel, cartViewModel: cartModel, addressViewModel: addressViewModel, viewModel: paymentViewModel))
+                            path.append(PaymentView(path: $path, homeViewModel: viewModel, cartViewModel: cartModel, addressViewModel: addressViewModel, viewModel: paymentViewModel, productDetailPayment: viewModel.productDetail))
                             self.show = false
                         }
                         .presentationDetents([.fraction(0.6)])
@@ -337,7 +337,7 @@ struct SelectSizeView: View {
 
 struct ItemDetailView_Previews: PreviewProvider {
     static var previews: some View {
-        let product = Product(id: 1, name: "Quần áo là quần áo là quần áo", description: "Green printed woven fit and flare dress, has a notched lapel collar and sleevesless.", price: 10, discount: 10, createDate: "1/1/2023", updateDate: "1/2/2023", category: Categories(id: 3, name: "Quần", description: "Quần jeans nam nữ", createDate: "2023-10-21T00:55:48", updateDate: "2023-10-21T00:55:48"))
+        let product = Product(id: 1, name: "Quần áo là quần áo là quần áo", description: "Green printed woven fit and flare dress, has a notched lapel collar and sleevesless.", discount: 10, price: 10, createDate: "1/1/2023", updateDate: "1/2/2023", category: Categories(id: 3, name: "Quần", description: "Quần jeans nam nữ", createDate: "2023-10-21T00:55:48", updateDate: "2023-10-21T00:55:48"))
         let productVariants = [ProductVariant(id: 1, color: "red", size: "M", quantity: 40)]
         ItemDetailView(path: .constant(NavigationPath()), productId: 2)
     }
