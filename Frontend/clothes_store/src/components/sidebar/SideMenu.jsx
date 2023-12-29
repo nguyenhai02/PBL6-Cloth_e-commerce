@@ -18,6 +18,7 @@ function getItem(label, key, icon, children, type) {
 
 const items = [
   getItem("CLOTHES", "collections", <SkinOutlined />, [
+    getItem("ALL", "all"),
     getItem("SHIRT", "shirt"),
     getItem("PANT", "pants"),
     getItem("ACCESSORIES", "accessories"),

@@ -27,8 +27,8 @@ const PaymentMethod = ({ orderInfo }) => {
         console.log("Expire ----- ", response.vnp_ExpireDate);
         console.log("create -----", response.vnp_CreateDate);
         // Redirect đến trang thanh toán VNPAY
-        // window.location.href = response.redirect_url;
-        window.open(response.redirect_url, "_blank");
+        window.location.href = response.redirect_url;
+        // window.open(response.redirect_url, "_blank");
       } else {
         console.error("Phương thức thanh toán không hợp lệ");
       }

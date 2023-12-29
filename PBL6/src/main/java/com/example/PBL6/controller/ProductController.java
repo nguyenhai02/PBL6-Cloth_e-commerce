@@ -37,6 +37,21 @@ public class ProductController {
         return productService.getAllProductsByCategory(category, pageable);
     }
 
+    @GetMapping("/all/name")
+    public Page<ProductResponseDto> getAllProductsByName(@RequestParam(name = "name") String name, Pageable pageable) {
+        return productService.getAllProductsByName(name, pageable);
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<Object> searchProduct(@RequestParam(name = "name") String name) {
+        List<ProductResponseDto> products = productService.searchProduct(name);
+        if(products != null) {
+            return ResponseEntity.ok(products);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not found");
+        }
+    }
+
     @PostMapping("/add")
     public ProductResponseDto addProduct(@RequestBody ProductRequestDto productRequestDto) {
         return productService.addProduct(productRequestDto);

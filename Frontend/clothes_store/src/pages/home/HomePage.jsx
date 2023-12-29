@@ -46,7 +46,7 @@ const HomePage = () => {
         <div className="products">
           <div className="products">
             <span
-              onClick={() => navigate("/collections/shirt")}
+              onClick={() => navigate("/collections/all")}
               style={{ cursor: "pointer" }}
             >
               PRODUCTS
