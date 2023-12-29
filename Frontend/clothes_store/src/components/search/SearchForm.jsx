@@ -1,19 +1,38 @@
 import { Form, Space } from "antd";
 import Search from "antd/es/input/Search";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "./SearchForm.scss";
-import CartItemPreview from "../cart/CartItemPreview";
+import { searchProduct } from "../../api/products";
+import SearchItem from "./SearchItem";
 const SearchForm = () => {
   const [form] = Form.useForm();
-  const onSearch = (value) => console.log(value);
-  const item = 4;
+  const [searchTerm, setSearchTerm] = useState("");
+  const [products, setProducts] = useState([]);
+
+  const onSearch = (value) => {
+    setSearchTerm(value);
+  };
 
   useEffect(() => {
-    const cartContainer = document.querySelector(".search__item");
-    if (item > 3) {
-      cartContainer.classList.add("cart_scroll");
-    } else cartContainer.classList.remove("cart_scroll");
-  }, []);
+    const getSearchProduct = async () => {
+      try {
+        const response = await searchProduct(searchTerm);
+        setProducts(response);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    if (searchTerm) {
+      getSearchProduct();
+    } else {
+      setProducts([]);
+    }
+  }, [searchTerm]);
+
+  useEffect(() => {
+    console.log("product >>", products);
+  }, [products]);
+
   return (
     <div className="search__wrapper">
       <p className="search__title">Search</p>
@@ -23,14 +42,17 @@ const SearchForm = () => {
             className="search__input"
             placeholder="Search..."
             onSearch={onSearch}
+            allowClear
           />
         </Form.Item>
       </Form>
-      <Space className="search__item" direction="vertical">
-        <CartItemPreview />
-        <CartItemPreview />
-        <CartItemPreview />
-        <CartItemPreview />
+      <Space
+        className="search__item search__item--scrollable"
+        direction="vertical"
+      >
+        {products.map((product, index) => (
+          <SearchItem key={index} product={product} />
+        ))}
       </Space>
     </div>
   );

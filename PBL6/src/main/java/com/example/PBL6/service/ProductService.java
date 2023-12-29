@@ -32,4 +32,8 @@ public interface ProductService {
     ProductResponseDto updateProduct(Integer id, UpdateProductDto updateProductDto);
 
     List<ProductSellDto> getBestSeller();
+
+    Page<ProductResponseDto> getAllProductsByName(String name, Pageable pageable);
+
+    List<ProductResponseDto> searchProduct(String name);
 }

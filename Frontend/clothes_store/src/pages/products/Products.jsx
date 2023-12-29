@@ -15,17 +15,32 @@ import { get } from "lodash";
 import { ArrowDownOutlined, ArrowUpOutlined } from "@ant-design/icons";
 const Products = (props) => {
   const dispatch = useDispatch();
-  const { products, loading, total } = useSelector((state) => state.products);
-  // const [productSort, setProductSort] = useState([]);
+  const { products, loading } = useSelector((state) => state.products);
+  const [currentCategory, setCurrentCategory] = useState("");
   const [currentPage, setCurrentPage] = useState(1); // new line
+  const [total, setTotal] = useState(0); // Add this line
+
   const location = useLocation();
   useEffect(() => {
     const endpoint = location.pathname.split("/")[2];
-    dispatch(
-      getAllProductByCategory({ category: endpoint, page: currentPage - 1 })
-      // getAllProduct({ page: currentPage - 1 })
-    );
-  }, [dispatch, currentPage, location]);
+
+    if (endpoint !== currentCategory) {
+      setCurrentPage(1);
+      setCurrentCategory(endpoint);
+    }
+
+    if (endpoint === "all") {
+      dispatch(getAllProduct({ page: currentPage - 1 })).then((response) => {
+        setTotal(response.payload.totalElements);
+      });
+    } else {
+      dispatch(
+        getAllProductByCategory({ category: endpoint, page: currentPage - 1 })
+      ).then((response) => {
+        setTotal(response.payload.totalElements);
+      });
+    }
+  }, [dispatch, currentPage, location, currentCategory]);
 
   const {
     token: { colorBgContainer },
@@ -60,7 +75,13 @@ const Products = (props) => {
       default:
         break;
     }
-    dispatch(getAllProduct({ page: currentPage - 1, sort: sortParam }));
+    dispatch(
+      getAllProductByCategory({
+        // page: currentPage - 1,
+        sort: sortParam,
+        category: location.pathname.split("/")[2],
+      })
+    );
   };
 
   return (
@@ -124,14 +145,6 @@ const Products = (props) => {
           {loading ? (
             <div>
               <LoadingPage />
-              <Row>
-                <Pagination
-                  current={currentPage}
-                  pageSize={6}
-                  total={total}
-                  onChange={handlePageChange}
-                />
-              </Row>
             </div>
           ) : (
             <>
@@ -145,6 +158,15 @@ const Products = (props) => {
             </>
           )}
         </Space>
+        <Row style={{ display: "flex", justifyContent: "flex-end" }}>
+          <Pagination
+            showSizeChanger={false}
+            current={currentPage}
+            pageSize={6}
+            total={total}
+            onChange={handlePageChange}
+          />
+        </Row>
       </Content>
     </>
   );

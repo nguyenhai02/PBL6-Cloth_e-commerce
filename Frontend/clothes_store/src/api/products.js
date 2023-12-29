@@ -18,6 +18,25 @@ export const getProductByCategory = (category, page, size = 6, sort) => {
   });
 };
 
+export const getProductByName = (name, page, size = 6, sort) => {
+  return http.get("/product/all/name", {
+    params: {
+      name: name,
+      page: page,
+      size: size,
+      sort: sort,
+    },
+  });
+};
+
+export const searchProduct = (name) => {
+  return http.get("/product/search", {
+    params: {
+      name: name,
+    },
+  });
+};
+
 export const getAllProducts = (page, size = 6, sort) => {
   return http.get("/product/all", {
     params: {

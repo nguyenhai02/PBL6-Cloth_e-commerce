@@ -20,6 +20,12 @@ import java.util.Optional;
 public interface ProductRepository extends JpaRepository<Product, Integer> {
     @Query
     Optional<Product> findProductByName(String name);
+    @Query
+    Page<Product> findProductsByNameContaining(String name, Pageable pageable);
+
+    @Query
+    List<Product> findProductsByNameContaining(String name);
+
 
     Page<Product> findProductByCategory(Category category, Pageable pageable);
 

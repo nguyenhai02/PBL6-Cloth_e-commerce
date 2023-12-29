@@ -46,6 +46,12 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public Page<ProductResponseDto> getAllProducts(@PageableDefault(size = 4) Pageable pageable) {
+        Page<Product> productPage = productRepository.findAll(pageable);
+        return productPage.map(product -> modelMapper.map(product, ProductResponseDto.class));
+    }
+
+    @Override
     public Page<ProductResponseDto> getAllProductsByCategory(String category, Pageable pageable) {
         String categoryName = category.toLowerCase();
         String categoryQuery = "";
@@ -69,8 +75,10 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Page<ProductResponseDto> getAllProducts(@PageableDefault(size = 4) Pageable pageable) {
-        Page<Product> productPage = productRepository.findAll(pageable);
+    public Page<ProductResponseDto> getAllProductsByName(String name, Pageable pageable) {
+        System.out.println(name);
+        Page<Product> productPage = productRepository.findProductsByNameContaining(name, pageable);
+        System.out.println(productPage.getTotalElements());
         return productPage.map(product -> modelMapper.map(product, ProductResponseDto.class));
     }
 
@@ -230,4 +238,10 @@ public class ProductServiceImpl implements ProductService {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public List<ProductResponseDto> searchProduct(String name) {
+        return productRepository.findProductsByNameContaining(name).stream()
+                .map(product -> modelMapper.map(product, ProductResponseDto.class))
+                .collect(Collectors.toList());
+    }
 }

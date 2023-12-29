@@ -2,21 +2,21 @@ import { Col, Image, Space, Typography } from "antd";
 import React from "react";
 import "./Product.scss";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { addToCart } from "../../stores/cart/cart-slice";
-import { addCartItem } from "../../api/carts";
+// import { useDispatch } from "react-redux";
+// import { addToCart } from "../../stores/cart/cart-slice";
+// import { addCartItem } from "../../api/carts";
 const { Text } = Typography;
 const Product = (props) => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const buyNowHandler = async () => {
-    // try {
-    //   const response = await addCartItem();
-    //   const { items } = response.data;
-    // } catch (error) {
-    //   console.error("Error fetching cart items:", error);
-    // }
-  };
+  // const dispatch = useDispatch();
+  // const buyNowHandler = async () => {
+  //   // try {
+  //   //   const response = await addCartItem();
+  //   //   const { items } = response.data;
+  //   // } catch (error) {
+  //   //   console.error("Error fetching cart items:", error);
+  //   // }
+  // };
   const product = props?.product.product;
   const detailHandler = (id) => {
     navigate(`/products/${id}`);
@@ -48,7 +48,7 @@ const Product = (props) => {
         <Space className="product__infor" direction="vertical" align="center">
           <Text className="product__title font-Mont">{product?.name}</Text>
           <Text className="product__price font-Mont" strong>
-            {product?.price} VNĐ
+            {product?.price.toLocaleString("vi-VN")} VNĐ
           </Text>
         </Space>
       </Space>

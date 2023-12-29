@@ -21,6 +21,14 @@ export const getAllProductByCategory = createAsyncThunk(
   }
 );
 
+export const getAllProductByName = createAsyncThunk(
+  "getAllProductByName",
+  async ({ name, page, size = 6, sort }) => {
+    const response = await getAllProductByName(name, page, size, sort);
+    return response;
+  }
+);
+
 export const getProductDetail = createAsyncThunk(
   "getDetailProduct",
   async (id) => {
@@ -69,7 +77,20 @@ const productsSlice = createSlice({
         state.loading = false;
         state.error = action.error.message;
       })
-
+      //////////////////////////////////////////
+      .addCase(getAllProductByName.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getAllProductByName.fulfilled, (state, action) => {
+        state.loading = false;
+        state.products = action.payload.content;
+        state.total = action.payload.totalElements; // new line
+      })
+      .addCase(getAllProductByName.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
       // //////////////////////////////////////////
       .addCase(getProductDetail.pending, (state) => {
         state.loading = true;

@@ -17,9 +17,9 @@ const AdminOrder = () => {
   const convertStatus = (status) => {
     switch (status) {
       case "COMPLETE":
-        return "Hoàn thành";
+        return "Đã thanh toán";
       case "UN-COMPLETE":
-        return "Chưa hoàn thành";
+        return "Chưa thanh toán";
       case "CANCELLED":
         return "Đã hủy";
       default:
@@ -30,9 +30,9 @@ const AdminOrder = () => {
   const handleStatusChange = async (orderId, newStatus) => {
     let id = orderId.slice(2);
     let status = "";
-    if (newStatus === "Hoàn thành") {
+    if (newStatus === "Đã thanh toán") {
       status = "COMPLETE";
-    } else if (newStatus === "Chưa hoàn thành") {
+    } else if (newStatus === "Chưa thanh toán") {
       status = "UN-COMPLETE";
     } else {
       status = "CANCELLED";
@@ -120,7 +120,7 @@ const AdminOrder = () => {
       width: 180,
       render: (status, record) => {
         if (status === "COMPLETE") {
-          return <span style={{ color: "green" }}>Hoàn thành</span>;
+          return <span style={{ color: "green" }}>Đã thanh toán</span>;
         }
         if (status === "CANCELLED") {
           return <span style={{ color: "red" }}>Đã hủy</span>;
@@ -131,11 +131,11 @@ const AdminOrder = () => {
             style={{ width: 150 }}
             onChange={(newStatus) => handleStatusChange(record.id, newStatus)}
           >
-            <Option value="Hoàn thành">
-              <span style={{ color: "green" }}>Hoàn thành</span>
+            <Option value="Đã thanh toán">
+              <span style={{ color: "green" }}>Đã thanh toán</span>
             </Option>
-            <Option value="Chưa hoàn thành">
-              <span style={{ color: "orange" }}>Chưa hoàn thành</span>
+            <Option value="Chưa thanh toán">
+              <span style={{ color: "orange" }}>Chưa thanh toán</span>
             </Option>
             <Option value="Đã hủy">
               <span style={{ color: "red" }}>Đã hủy</span>

@@ -143,6 +143,10 @@ const routers = createBrowserRouter([
     element: <CollectionsLayout />,
     children: [
       {
+        path: "all",
+        element: <Products />,
+      },
+      {
         path: "shirt",
         element: <Products />,
 

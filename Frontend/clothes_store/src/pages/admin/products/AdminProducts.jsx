@@ -1,8 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Row, Col, Button, Pagination, Input, Modal, Select } from "antd";
 import Item from "./Item";
-import { getAllProducts } from "../../../api/products";
+import {
+  getAllProducts,
+  getProductByCategory,
+  getProductByName,
+} from "../../../api/products";
 import AddProduct from "./AddProduct";
+import { set } from "lodash";
 
 const { Search } = Input;
 
@@ -19,23 +24,41 @@ const AdminProducts = () => {
 
   useEffect(() => {
     const fetchProducts = async () => {
-      const response = await getAllProducts(currentPage - 1);
-      const data = response;
-      setProducts(data.content);
-      setTotalProducts(data.totalElements);
+      try {
+        if (searchTerm) {
+          const response = await getProductByName(searchTerm, currentPage - 1);
+          setProducts(response.content);
+          setTotalProducts(response.totalElements);
+        } else if (selectedType === "all") {
+          const response = await getAllProducts(currentPage - 1);
+          setProducts(response.content);
+          setTotalProducts(response.totalElements);
+        } else {
+          const response = await getProductByCategory(
+            selectedType,
+            currentPage - 1,
+            6,
+            "name,asc"
+          );
+          setProducts(response.content);
+          setTotalProducts(response.totalElements);
+        }
+      } catch (error) {
+        console.error(error); // Log the error for debugging
+      }
     };
     fetchProducts();
-  }, [currentPage]);
-
-  console.log(products);
+  }, [currentPage, selectedType, searchTerm]); // Add searchTerm to the dependency array
 
   const onSearch = (value, _e, info) => {
     console.log(value);
     setSearchTerm(value);
+    setCurrentPage(1);
   };
 
   const handleChange = (value) => {
     setSelectedType(value);
+    setCurrentPage(1); // Reset currentPage to 1 when selectedType changes
     console.log(`selected ${value}`);
   };
 
@@ -46,6 +69,12 @@ const AdminProducts = () => {
   const handleOk = () => {
     setIsModalOpen(false);
   };
+
+  const filteredProducts =
+    products &&
+    products.filter((product) =>
+      product?.product.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
 
   return (
     <div style={{ marginTop: 40, overflowX: "hidden" }}>
@@ -103,19 +132,19 @@ const AdminProducts = () => {
                 label: "Tất cả",
               },
               {
-                value: "áo",
+                value: "shirt",
                 label: "Áo",
               },
               {
-                value: "quần",
+                value: "pants",
                 label: "Quần",
               },
               {
-                value: "phụ kiện",
+                value: "accessories",
                 label: "Phụ kiện",
               },
               {
-                value: "khác",
+                value: "other",
                 label: "Khác",
               },
             ]}
@@ -142,22 +171,8 @@ const AdminProducts = () => {
       </Row>
 
       <Row gutter={15}>
-        {products
-          .filter((product) =>
-            searchTerm
-              ? product.product.name
-                  .toLowerCase()
-                  .includes(searchTerm.toLowerCase())
-              : true
-          )
-          .filter(
-            (
-              product // New filter for product type
-            ) =>
-              selectedType === "all" ||
-              product.product.category.name.toLowerCase() === selectedType
-          )
-          .map((product) => (
+        {products &&
+          filteredProducts.map((product) => (
             <Col
               span={8}
               key={product.id}
@@ -176,6 +191,7 @@ const AdminProducts = () => {
         style={{ marginTop: 20, display: "flex", justifyContent: "flex-end" }}
       >
         <Pagination
+          showSizeChanger={false}
           current={currentPage}
           pageSize={6}
           total={totalProducts}

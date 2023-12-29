@@ -1,0 +1,29 @@
+.clothes {
+    &__name {
+        font-weight: 600;
+    }
+}
+
+.delBtn {
+    position: absolute;
+    top: 8px;
+    right: 0;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.search__item--scrollable {
+    max-height: 400px;
+    /* Adjust this value as needed */
+    overflow-y: auto;
+}
+
+.clothes__name {
+    transition: color 0.3s ease;
+}
+
+.clothes__name:hover {
+    color: rgba(24, 0, 202, 0.829);
+    /* Change to the color you want */
+}

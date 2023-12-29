@@ -88,13 +88,16 @@ const CartItem = (props) => {
           <PlusOutlined />
         </div>
       </Space.Compact>
-      <div className="cartItem__price" style={{ paddingLeft: 20 }}>
-        {props.product?.price}
+      <div className="cartItem__total">
+        {/* <div className="cartItem__total_title">Price</div> */}
+        <div className="cartItem__price" style={{ paddingLeft: 20 }}>
+          {props.product?.price.toLocaleString("vi-VN")}
+        </div>
       </div>
       <div className="cartItem__total">
-        <div className="cartItem__total_title">Into money:</div>
+        <div className="cartItem__total_title">Total money</div>
         <div className="cartItem__total_price">
-          {props.product?.price * quantity}VNĐ
+          {(props.product?.price * quantity).toLocaleString("vi-VN")}VNĐ
         </div>
         <div className="cartItem__del">
           <DeleteOutlined onClick={deleteProductHandler} />

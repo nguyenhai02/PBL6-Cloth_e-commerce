@@ -1,4 +1,4 @@
-import { Col, Row, Image, Space } from "antd";
+import { Col, Row, Image, Space, Tag } from "antd";
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 // import { useNavigate } from "react-router-dom";
@@ -115,14 +115,19 @@ const OrderInformation = (props) => {
                 </Space>
 
                 <div className="cartItem__price" style={{ paddingLeft: 10 }}>
-                  Đơn giá: {itemBuyNow.product.product?.price}
+                  Đơn giá:{" "}
+                  {itemBuyNow.product.product?.price.toLocaleString("vi-VN")}{" "}
+                  VNĐ
                 </div>
                 <div className="cartItem__total">
-                  <div className="cartItem__total_price">Thành tiền: </div>
-                  <div className="cartItem__total_price">
-                    {itemBuyNow.product.product?.price * itemBuyNow?.quantity}
-                    VNĐ
-                  </div>
+                  <div className="cartItem__total_price">Thành tiền</div>
+                  <Tag>
+                    <h1>
+                      {(
+                        itemBuyNow.product.product?.price * itemBuyNow?.quantity
+                      ).toLocaleString("vi-VN")}
+                    </h1>
+                  </Tag>
                 </div>
               </Space>
             </>
@@ -138,7 +143,7 @@ const OrderInformation = (props) => {
         <div className="item__total border-bottom-solid">
           <span className="item__total_title"></span>
           <span className="item__total_number">
-            TỔNG TIỀN: {totalAmount} VNĐ
+            TỔNG TIỀN: {totalAmount.toLocaleString("vi-VN")} VNĐ
           </span>
           {props.onTotalAmountChange && props.onTotalAmountChange(totalAmount)}
         </div>

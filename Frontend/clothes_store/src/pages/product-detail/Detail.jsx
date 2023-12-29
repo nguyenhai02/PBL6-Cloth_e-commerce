@@ -267,7 +267,7 @@ const Detail = (props) => {
           <Image
             height={600}
             src={productCurrent?.product?.image}
-            preview={false}
+            // preview={}
           />
         </Space>
       </Col>
@@ -285,7 +285,7 @@ const Detail = (props) => {
           </div>
           <div>Price:</div>
           <div className="product__price border-bot-dashed">
-            {productCurrent?.product.price} VNĐ
+            {productCurrent?.product.price.toLocaleString("vi-VN")} VNĐ
           </div>
           <div>Size:</div>
           <Space className="product__size border-bot-dashed">

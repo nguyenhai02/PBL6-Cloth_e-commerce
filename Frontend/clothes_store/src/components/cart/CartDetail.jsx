@@ -67,11 +67,15 @@ const CartDetail = (props) => {
           </div>
           <div className="item__total border-bottom-solid">
             <span className="item__total_title">Total:</span>
-            <span className="item__total_number">{totalAmount} VNĐ</span>
+            <span className="item__total_number">
+              {totalAmount.toLocaleString("vi-VN")} VNĐ
+            </span>
           </div>
-          <div className="item__sub" onClick={() => navigate("/")}>
-            You can buy more{" "}
-            <ArrowRightOutlined style={{ margin: "0px 4px" }} />
+          <div
+            className="item__sub"
+            onClick={() => navigate("/collections/all")}
+          >
+            Mua thêm <ArrowRightOutlined style={{ margin: "0px 4px" }} />
           </div>
           <div className="item__btn_group">
             <div className="item__btn" onClick={checkoutsHandler}>
