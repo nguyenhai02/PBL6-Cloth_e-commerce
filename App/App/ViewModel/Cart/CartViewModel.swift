@@ -30,7 +30,7 @@ class CartViewModel: ObservableObject {
             switch result {
             case .success(_):
                 print("success")
-                self.deleteAllCartItems()
+//                self.deleteAllCartItems()
                 completed()
             case let .failure(error):
                 print("failure: \(error.localizedDescription)")

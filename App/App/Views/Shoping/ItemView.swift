@@ -19,7 +19,7 @@ struct ItemView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             KFImage(URL(string: product.product.image ?? "https://i.pinimg.com/736x/c6/e5/65/c6e56503cfdd87da299f72dc416023d4.jpg"))
-                .setProcessor(ResizingImageProcessor(referenceSize: CGSize(width:  160, height: 160)) |> RoundCornerImageProcessor(cornerRadius: 8))
+                .setProcessor(ResizingImageProcessor(referenceSize: CGSize(width:  160, height: 180)) |> RoundCornerImageProcessor(cornerRadius: 8))
                 .loadDiskFileSynchronously()
                 .overlay (
                     Button(action: {
@@ -60,26 +60,27 @@ struct ItemView: View {
                     .padding(.top, 9)
                     .padding([.horizontal], 10)
                 HStack {
-                    Text("đ\((product.product.price) - ((product.product.price) * (product.product.discount) / 100))")
+//                    Text("đ\((product.product.price) - ((product.product.price) * (product.product.discount ?? 0) ?? 0 / 100))")
+//                    Text("đ\((product.product.price) - ((product.product.price) * (product.product.discount ?? 0) / 100))")
+//                        .font(.system(size: 12))
+//                        .foregroundColor(.red)
+                    Text("đ\(product.product.price) VNĐ")
                         .font(.system(size: 12))
                         .foregroundColor(.red)
-                    Text("\(product.product.discount)% OFF")
-                        .font(.system(size: 11))
-                        .foregroundColor(Color("002482"))
                 }
                 .padding([.leading], 10)
                 .padding(.top, 5)
-                HStack {
-                    Text("Đã bán")
-                        .font(.system(size: 12))
-                        .foregroundColor(.black)
-                    Text("680")
-                        .font(.system(size: 12))
-                        .foregroundColor(.black)
-                }
-                .padding(.top, 5)
                 .padding(.bottom, 10)
-                .padding([.horizontal], 10)
+//                HStack {
+//                    Text("Đã bán")
+//                        .font(.system(size: 12))
+//                        .foregroundColor(.black)
+//                    Text("680")
+//                        .font(.system(size: 12))
+//                        .foregroundColor(.black)
+//                }
+//                .padding(.top, 5)
+//                .padding([.horizontal], 10)
             }
             .padding([.horizontal], 5)
         }
@@ -110,7 +111,7 @@ struct ItemView: View {
 
 struct ItemView_Previews: PreviewProvider {
     static var previews: some View {
-        let product = Product(id: 1, name: "Quần áo là quần áo là quần áo", description: "Green printed woven fit and flare dress, has a notched lapel collar and sleevesless.", price: 10, discount: 10, createDate: "1/1/2023", updateDate: "1/2/2023", category: Categories(id: 3, name: "Quần", description: "Quần jeans nam nữ", createDate: "2023-10-21T00:55:48", updateDate: "2023-10-21T00:55:48"))
+        let product = Product(id: 1, name: "Quần áo là quần áo là quần áo", description: "Green printed woven fit and flare dress, has a notched lapel collar and sleevesless.", discount: 10, price: 10, createDate: "1/1/2023", updateDate: "1/2/2023", category: Categories(id: 3, name: "Quần", description: "Quần jeans nam nữ", createDate: "2023-10-21T00:55:48", updateDate: "2023-10-21T00:55:48"))
         let productVariants = [ProductVariant(id: 1, color: "red", size: "M", quantity: 40)]
         ItemRow(path: .constant(NavigationPath()), product: ProductDetail(product: product, productVariants: productVariants))
     }

@@ -8,7 +8,6 @@
 import Foundation
 
 struct PaymentResponse: Decodable {
-    let vnp_BankCode: String
     let vnp_CurrCode: String
     let vnp_OrderType: String
     let vnp_ReturnUrl: String

@@ -9,7 +9,7 @@ import Foundation
 import Moya
 
 class OrderViewModel: ObservableObject {
-    @Published var orders: [Order] = []
+    @Published var orders: [OrderResponse] = []
     
     //    func CreateCOD(amount: Double) {
     //        let token = UserDefaults.standard.string(forKey: Constanst.tokenKey) ?? ""
@@ -38,7 +38,7 @@ class OrderViewModel: ObservableObject {
                 do {
                     let filteredResponse = try moyaResponse.filterSuccessfulStatusCodes()
                     let orderResponses = try filteredResponse.map([OrderResponse].self)
-                    self.orders = orderResponses.map { $0.order}
+                    self.orders = orderResponses
                     print(self.orders)
                     print("self.orders updated successfully")
                 } catch {

@@ -18,13 +18,13 @@ struct FavoriteView: View {
             VStack(alignment: .leading, spacing: 0) {
                 HStack {
                     Button(action: {
-                        path.removeLast()
+//                        path.removeLast()
                     }) {
-                        Image(systemName: "arrow.left")
-                            .resizable()
-                            .foregroundColor(.black)
-                            .frame(width: 22, height: 18)
-                            .padding(.leading, 25)
+//                        Image(systemName: "arrow.left")
+//                            .resizable()
+//                            .foregroundColor(.black)
+//                            .frame(width: 22, height: 18)
+//                            .padding(.leading, 25)
                         Text("Yêu thích")
                             .bold()
                             .frame(maxWidth: .infinity)
@@ -64,14 +64,14 @@ struct FavoriteView: View {
                                         .foregroundColor(.gray)
                                         .padding(.top, 5)
                                     HStack {
-                                        Text("đ\((favouriteItem.product.price ) - ((favouriteItem.product.price ) * (favouriteItem.product.discount ) / 100))")
+                                        Text("đ\((favouriteItem.product.price ) - ((favouriteItem.product.price ) * (favouriteItem.product.discount ?? 0) / 100))")
                                             .font(.system(size: 10))
                                             .foregroundColor(.black)
                                         Text("VND: \(favouriteItem.product.price )")
                                             .font(.system(size: 10))
                                             .foregroundColor(.black)
                                             .strikethrough()
-                                        Text("\(favouriteItem.product.discount )% OFF")
+                                        Text("\(favouriteItem.product.discount ?? 0 )% OFF")
                                             .font(.system(size: 10))
                                             .foregroundColor(.red)
                                     }

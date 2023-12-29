@@ -21,8 +21,9 @@ struct Order: Decodable, Hashable {
 }
 struct User: Decodable, Hashable {
     let id: Int
-    let name, email, gender: String
-    let avatar: String
+    let name, email: String
+    let gender: String?
+    let avatar: String?
     let address, phone, role: String
     let enabled: Bool
     let username: String
@@ -35,6 +36,7 @@ struct Authority:  Decodable, Hashable {
 }
 
 struct OrderItem:  Decodable, Hashable {
+    let product: Product
     let productVariant: ProductVariant
     let quantity: Int
 }
