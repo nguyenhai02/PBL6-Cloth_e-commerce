@@ -36,7 +36,6 @@ const Detail = (props) => {
   useEffect(() => {
     dispatch(getProductDetail(idProduct));
   }, [dispatch, idProduct]);
-  console.log(productDetail);
   useEffect(() => {
     setProductCurrent(productDetail);
     if (
@@ -55,9 +54,7 @@ const Detail = (props) => {
     }
   }, [productDetail, productCurrent]);
 
-  useEffect(() => {
-    console.log(color);
-  }, [color]);
+  useEffect(() => {}, [color]);
 
   const onSizeSelectHandler = (e, selectedSize) => {
     const newSelectedSize = e.target.innerHTML.toString();
@@ -101,7 +98,6 @@ const Detail = (props) => {
     try {
       const response = await addCartItem(item);
       const message = response.message;
-      console.log(message);
       if (message === "Sản phẩm tạm thời hết hàng") {
         notification.warning({
           message: "Warning",

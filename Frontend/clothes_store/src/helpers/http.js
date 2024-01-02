@@ -2,8 +2,9 @@ import axios from "axios";
 class Http {
   constructor() {
     this.instance = axios.create({
-      baseURL: "http://localhost:8080",
+      // baseURL: "http://localhost:8080",
       // baseURL: "https://pbl6.up.railway.app",
+      baseURL: "https://clothesshop.up.railway.app",
       name: "Clothes shop",
       timeout: 10000,
       headers: {

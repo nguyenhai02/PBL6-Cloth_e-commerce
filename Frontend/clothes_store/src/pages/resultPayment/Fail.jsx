@@ -6,7 +6,6 @@ const Fail = () => {
   const navigate = useNavigate();
 
   const handleOnClick = (key) => {
-    console.log(key);
     if (key === "console") {
       navigate("/");
     }

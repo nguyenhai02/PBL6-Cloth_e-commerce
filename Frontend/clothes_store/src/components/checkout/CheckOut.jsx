@@ -81,7 +81,6 @@ const CheckOut = () => {
     }, 1500);
   };
   const handleCancel = () => {
-    console.log("Clicked cancel button");
     setOpen(false);
   };
 

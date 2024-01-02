@@ -15,7 +15,6 @@ const Overview = () => {
   const [orders, setOrders] = useState([]);
   const [bestSellers, setBestSellers] = useState([]);
   const [bestCustomer, setBestCustomer] = useState([]);
-  console.log(orders);
   useEffect(() => {
     const fetchOrders = async () => {
       try {
@@ -61,7 +60,6 @@ const Overview = () => {
   };
 
   const groupedOrders = orders.reduce((acc, order) => {
-    console.log(order.order.orderDate);
     let orderDate;
     if (timePeriod === "month") {
       const date = new Date(order.order.orderDate);

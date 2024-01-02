@@ -51,7 +51,6 @@ const Customer = () => {
     };
     fetchOrders();
   }, []);
-  console.log(orders);
 
   const data = [];
   for (let i = 1; i < orders.length + 1; i++) {

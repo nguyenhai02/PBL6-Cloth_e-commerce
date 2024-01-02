@@ -29,9 +29,7 @@ const SearchForm = () => {
     }
   }, [searchTerm]);
 
-  useEffect(() => {
-    console.log("product >>", products);
-  }, [products]);
+  useEffect(() => {}, [products]);
 
   return (
     <div className="search__wrapper">

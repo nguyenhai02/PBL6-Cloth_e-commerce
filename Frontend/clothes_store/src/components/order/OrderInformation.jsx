@@ -21,7 +21,6 @@ const OrderInformation = (props) => {
     const item = localStorage.getItem("item");
     setItemBuyNow(JSON.parse(item));
   }, []);
-  console.log(itemBuyNow);
 
   // const item = localStorage.getItem("item");
 

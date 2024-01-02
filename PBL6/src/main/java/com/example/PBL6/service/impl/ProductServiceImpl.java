@@ -46,7 +46,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Page<ProductResponseDto> getAllProducts(@PageableDefault(size = 4) Pageable pageable) {
+    public Page<ProductResponseDto> getAllProducts(Pageable pageable) {
         Page<Product> productPage = productRepository.findAll(pageable);
         return productPage.map(product -> modelMapper.map(product, ProductResponseDto.class));
     }
@@ -228,11 +228,13 @@ public class ProductServiceImpl implements ProductService {
                     Integer productId = (Integer) result[0];
                     String productName = (String) result[1];
                     Long sellQuantity = (Long) result[2];
+                    String productImage = (String) result[3];
 
                     return ProductSellDto.builder()
                             .id(productId)
                             .name(productName)
                             .sellQuantity(sellQuantity.intValue())
+                            .image(productImage)
                             .build();
                 })
                 .collect(Collectors.toList());

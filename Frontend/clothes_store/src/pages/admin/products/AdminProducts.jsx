@@ -51,7 +51,6 @@ const AdminProducts = () => {
   }, [currentPage, selectedType, searchTerm]); // Add searchTerm to the dependency array
 
   const onSearch = (value, _e, info) => {
-    console.log(value);
     setSearchTerm(value);
     setCurrentPage(1);
   };
@@ -59,7 +58,6 @@ const AdminProducts = () => {
   const handleChange = (value) => {
     setSelectedType(value);
     setCurrentPage(1); // Reset currentPage to 1 when selectedType changes
-    console.log(`selected ${value}`);
   };
 
   const [isModalOpen, setIsModalOpen] = useState(false);
