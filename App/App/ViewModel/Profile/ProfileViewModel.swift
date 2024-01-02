@@ -15,7 +15,7 @@ class ProfileViewModel: ObservableObject {
     @Published var name: String = ""
     @Published var address: String = ""
     @Published var phone: String = ""
-    @Published var gender: String = ""
+    @Published var gender = ""
     @Published var avatar: String = ""
     @Published var isLogIned = false
     @Published var image: UIImage?
@@ -83,13 +83,14 @@ class ProfileViewModel: ObservableObject {
         let tokenPlugin = AccessTokenPlugin{_ in token }
         let plugin: PluginType = NetworkLoggerPlugin(configuration: .init(logOptions: .verbose))
         let provider = MoyaProvider<MyService>(plugins: [tokenPlugin, plugin])
-        provider.request(.updateProfile(name: name, address: address, phone: phone, gender: gender, avatar: avatar)) {result in
+        provider.request(.updateProfile(name: name, address: address, phone: phone, gender: gender, avatar: avatar)) { [self] result in
+            print(name, address, phone, gender, avatar)
             switch result {
             case .success(_):
                     print("update thành công")
             case let .failure(error):
                 print(error)
-                print(" update k thành công")
+                print(" update k thành công: \(error.localizedDescription)")
             }
             
         }

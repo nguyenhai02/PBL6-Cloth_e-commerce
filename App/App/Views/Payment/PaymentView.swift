@@ -18,6 +18,7 @@ struct PaymentView: View, Hashable{
     @ObservedObject var cartViewModel: CartViewModel
     @ObservedObject var addressViewModel: AddressViewModel
     @ObservedObject var viewModel: PaymentViewModel
+    @State var productDetailPayment: ProductDetail? = nil
     @State var showAlert: Bool = false
     @State var showAlertPayment: Bool = false
     var body: some View {
@@ -116,7 +117,7 @@ struct PaymentView: View, Hashable{
                         .navigationDestination(for: ChooseAddressView.self) {_ in
                             ChooseAddressView(viewModel: addressViewModel, path: $path)
                         }
-                    }
+                    } 
                     Spacer().frame(height: 25)
                     HStack {
                         KFImage(URL(string: homeViewModel.productDetail?.product.image ?? ""))
@@ -130,7 +131,8 @@ struct PaymentView: View, Hashable{
                                 .foregroundColor(.black)
                                 .padding(.top, 15)
                             HStack(spacing: 0) {
-                                Text("đ\((homeViewModel.productDetail?.product.price ?? 0) - ((homeViewModel.productDetail?.product.price ?? 0) * (homeViewModel.productDetail?.product.discount ?? 0) / 100))")
+                                Text("đ\(homeViewModel.productDetail?.product.price ?? 0)")
+//                                Text("đ\((homeViewModel.productDetail?.product.price ?? 0) - ((homeViewModel.productDetail?.product.price ?? 0) * (homeViewModel.productDetail?.product.discount ?? 0) / 100))")
                                     .font(.system(size: 16))
                                     .foregroundColor(.gray)
                                 Spacer()
@@ -244,8 +246,9 @@ struct PaymentView: View, Hashable{
                            let ward = addressViewModel.selectedAddress?.ward,
                            let city = addressViewModel.selectedAddress?.city {
                             let addressDelivery = "\(street), \(district), \(ward), \(city)"
-                            cartViewModel.CreateCOD(amount: amount, addressDelivery: addressDelivery, productId: cartViewModel.quantity, color: cartViewModel.color, size: cartViewModel.size, quantity: cartViewModel.quantity) {
-                                path.append("MyOrdersView")
+                            cartViewModel.CreateCOD(amount: amount, addressDelivery: addressDelivery, productId: cartViewModel.productId, color: cartViewModel.color, size: cartViewModel.size, quantity: cartViewModel.quantity) {
+//                                homeViewModel.productDetail = nil
+                                path.append("SuccessCODView")
                             }
                         }
                     } else if viewModel.paymentMethod == Payment.vnpay {

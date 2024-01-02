@@ -30,7 +30,11 @@ enum MyService {
 }
 
 extension MyService: TargetType, AccessTokenAuthorizable {
-    var baseURL: URL { URL(string: "http://localhost:8080")! }
+//    var baseURL: URL { URL(string: "https://valid-pie-production.up.railway.app")! }
+//    var baseURL: URL { URL(string: "http://localhost:8080")! }
+//    var baseURL: URL { URL(string: "https://pbl6.up.railway.app")! }
+    var baseURL: URL { URL(string: "https://clothesshop.up.railway.app")! }
+
     var path: String {
         switch self {
         case .register(_,_,_,_,_,_,_):
