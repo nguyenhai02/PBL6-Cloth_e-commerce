@@ -7,7 +7,6 @@ const Success = () => {
 
   const handleOnClick = (key) => {
     localStorage.removeItem("item");
-    console.log(key);
     if (key === "console") {
       navigate("/");
     }

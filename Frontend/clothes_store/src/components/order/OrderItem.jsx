@@ -37,9 +37,7 @@ const OrderItem = (props) => {
     };
 
     try {
-      console.log(item.id);
       const response = await deleteCartItemApi(item.id);
-      console.log(response);
       // dispatch(deleteProduct(item));
       window.location.reload();
     } catch (error) {
@@ -60,7 +58,6 @@ const OrderItem = (props) => {
     const item = {
       ...props.product,
     };
-    console.log(item);
     setQuantity(quantity - 1);
     dispatch(deleteCartItem(item));
   };

@@ -37,10 +37,8 @@ const AdminOrder = () => {
     } else {
       status = "CANCELLED";
     }
-    console.log(id, status);
     try {
       const response = await updateStatusOrder(id, status);
-      console.log(response);
       window.location.reload();
     } catch (error) {
       console.error("Error updating order status:", error);
@@ -240,16 +238,13 @@ const AdminOrder = () => {
       setOrders(fullOrders);
       return;
     }
-    console.log(startDate, endDate);
     const start = dateRange[0];
     const end = dateRange[1];
-    console.log(start, end);
 
     const filteredOrders = fullOrders.filter((order) => {
       const orderDate = new Date(order.order.orderDate).toLocaleDateString(
         "vi-VN"
       );
-      console.log(orderDate);
       return orderDate >= startDate && orderDate <= endDate;
     });
     setOrders(filteredOrders);

@@ -3,7 +3,6 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import "./SearchItem.scss";
 const SearchItem = (props) => {
-  console.log(props?.product.product);
   const navigate = useNavigate();
 
   const handleClick = () => {

@@ -28,7 +28,6 @@ const Order = () => {
     }, 1500);
   };
   const handleCancel = () => {
-    console.log("Clicked cancel button");
     setOpen(false);
   };
 
@@ -82,9 +81,9 @@ const Order = () => {
     if (status === "COMPLETE") {
       return <span style={{ color: "green" }}>Hoàn thành</span>;
     } else if (status === "UN-COMPLETE") {
-      return <span style={{ color: "red" }}>Chưa hoàn thành</span>;
+      return <span style={{ color: "orange" }}>Chưa hoàn thành</span>;
     } else {
-      return status;
+      return <span style={{ color: "red" }}>Đã hủy</span>;
     }
   };
 
@@ -96,7 +95,7 @@ const Order = () => {
         data.push({
           index: i,
           id: `DH${order.id}`,
-          date: moment(order.orderDate).format("HH:mm:ss DD/MM/YYYY"),
+          date: moment(order.orderDate).format("DD/MM/YYYY"),
           money: order.totalPrice.toLocaleString("vi-VN"),
           paymentMethod: order.paymentMethod,
           address: order.addressDelivery,

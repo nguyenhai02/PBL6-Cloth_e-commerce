@@ -35,9 +35,7 @@ const User = (props) => {
   useEffect(() => {
     if (userToken) {
       setIsLogin(true);
-      dispatch(userProfile(userToken)).then((response) => {
-        console.log(response);
-      });
+      dispatch(userProfile(userToken)).then((response) => {});
     }
   }, [dispatch, userToken]);
 
@@ -75,7 +73,6 @@ const User = (props) => {
       phone: values.phone,
       avatar: values.avatar,
     };
-    console.log(updateData);
     dispatch(userEditProfile(updateData));
     window.location.reload();
     setIsEditing(false);

@@ -7,7 +7,6 @@ const PaymentMethod = ({ orderInfo }) => {
   const [order, setOrder] = useState(null);
   useEffect(() => {
     setOrder(orderInfo);
-    console.log("Order: ", order);
   }, [orderInfo, order]);
 
   const handlePaymentMethodChange = (e) => {
@@ -20,12 +19,9 @@ const PaymentMethod = ({ orderInfo }) => {
         // Thanh toán COD
         const response = await createOrderCOD(orderInfo);
         window.location.href = "/payment/success";
-        console.log(response);
       } else if (paymentMethod === "VNPAY") {
         // Thanh toán VNPAY
         const response = await createPaymentVNPay(orderInfo);
-        console.log("Expire ----- ", response.vnp_ExpireDate);
-        console.log("create -----", response.vnp_CreateDate);
         // Redirect đến trang thanh toán VNPAY
         window.location.href = response.redirect_url;
         // window.open(response.redirect_url, "_blank");

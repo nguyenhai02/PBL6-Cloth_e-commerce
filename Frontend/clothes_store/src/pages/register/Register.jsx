@@ -1,8 +1,8 @@
 import { Button, Checkbox, Col, Form, Input, Row, Select, Space } from "antd";
 import { Link, useNavigate } from "react-router-dom";
-import { useDispatch } from 'react-redux';
+import { useDispatch } from "react-redux";
 import { userRegister } from "../../stores/user/user-slice";
-import _ from 'lodash';
+import _ from "lodash";
 
 const { Option } = Select;
 
@@ -48,12 +48,10 @@ const Register = () => {
     };
 
     dispatch(userRegister(updatedValues))
-    .unwrap()
+      .unwrap()
       .then((response) => {
-        console.log(response);
         navigate("/account/login");
       });
-    console.log("Received values of form: ", updatedValues);
   };
   const prefixSelector = (
     <Form.Item name="prefix" noStyle>
@@ -178,6 +176,10 @@ const Register = () => {
               {
                 required: true,
                 message: "Please input your phone number!",
+              },
+              {
+                pattern: /^0\d{9}$/,
+                message: "The input is not a valid phone number!",
               },
             ]}
           >

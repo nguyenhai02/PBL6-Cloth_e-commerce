@@ -14,13 +14,11 @@ const Login = () => {
     dispatch(userLogin(values))
       .unwrap()
       .then((response) => {
-        console.log(response);
         navigate("/");
       })
       .catch(() => {
         messageApi.error("Email or password is incorrect");
       });
-    console.log("Received values of form: ", values);
   };
   return (
     <Row justify={"center"} className="loginPage__row">

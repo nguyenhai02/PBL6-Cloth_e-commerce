@@ -14,9 +14,7 @@ import { addProduct, getAllCategories } from "../../../api/products";
 import chroma from "chroma-js";
 
 const { TextArea } = Input;
-const onChange = (e) => {
-  console.log("Change:", e.target.value);
-};
+const onChange = (e) => {};
 
 const AddProduct = () => {
   const formRef = useRef(null);
@@ -66,8 +64,6 @@ const AddProduct = () => {
     image: "",
   });
 
-  console.log(request);
-
   const onFinish = async (values) => {
     if (
       image === "" ||
@@ -92,7 +88,6 @@ const AddProduct = () => {
       );
       hexColor = color.hex();
     }
-    console.log(values.color);
     setRequest({
       name: values.name,
       categoryId: values.categoryId,
@@ -118,10 +113,8 @@ const AddProduct = () => {
     try {
       const response = await addProduct(newRequest);
       messageApi.success("Thêm thành công");
-      console.log(response);
     } catch (error) {
       messageApi.error("Thêm sản phẩm thất bại");
-      console.log(error);
     }
   };
 

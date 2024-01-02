@@ -12,5 +12,6 @@ import lombok.NoArgsConstructor;
 public class ProductSellDto {
     private Integer id;
     private String name;
+    private String image;
     private Integer sellQuantity;
 }

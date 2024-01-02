@@ -6,7 +6,6 @@ import { useDispatch } from "react-redux";
 import { deleteProduct } from "../../stores/cart/cart-slice";
 const CartItemPreview = (props) => {
   const dispatch = useDispatch();
-  console.log(props?.product);
   // const deleteProductHandler = () => {
   //   // const item = {
   //   //   ...props.product,

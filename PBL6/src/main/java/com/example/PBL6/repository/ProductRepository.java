@@ -50,7 +50,8 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
 
     @Query(value = "SELECT p.id AS product_id,\n" +
             "       p.name AS product_name,\n" +
-            "       COUNT(oi.id) AS order_count\n" +
+            "       COUNT(oi.id) AS order_count,\n" +
+            "       p.image AS product_image\n" +
             "  FROM products p\n" +
             "  JOIN product_variants pv \n" +
             "    ON p.id = pv.product_id\n" +

@@ -5,12 +5,9 @@ import { getAllCategories, updateProduct } from "../../../api/products";
 import moment from "moment";
 
 const { TextArea } = Input;
-const onChange = (e) => {
-  // console.log("Change:", e.target.value);
-};
+const onChange = (e) => {};
 
 const UpdateProduct = (props) => {
-  console.log(props);
   const formRef = useRef(null);
   const [messageApi, contextHolder] = message.useMessage();
   const [componentSize, setComponentSize] = useState("");
@@ -69,21 +66,17 @@ const UpdateProduct = (props) => {
       description: values.description,
       imageUrl: image,
     });
-    console.log(request);
     const newRequest = {
       categoryId: values.categoryId,
       price: values.price,
       description: values.description,
       imageUrl: image,
     };
-    console.log(newRequest);
     try {
       const response = await updateProduct(props.product?.id, newRequest);
-      console.log(response);
       messageApi.success("Chỉnh sửa thành công");
       // window.location.reload();
     } catch (error) {
-      console.log(error);
       messageApi.error("Chỉnh sửa thất bại");
     }
   };

@@ -14,6 +14,8 @@
     color: white;
     font-size: 8em;
     text-align: center;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    text-shadow: 10px 5px 4px rgba(0, 0, 0, 0.5);
+    font-family: 'Your Font Name', fallback;
+    /* Add this line */
   }
 }

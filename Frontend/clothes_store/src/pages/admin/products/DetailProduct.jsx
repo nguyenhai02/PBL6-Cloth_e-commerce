@@ -33,7 +33,6 @@ const columns = [
 ];
 
 const DetailProduct = (props) => {
-  console.log(props?.productVariants);
   const data = [];
   for (let i = 1; i < props?.productVariants.length + 1; i++) {
     data.push({
